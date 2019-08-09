@@ -1,0 +1,39 @@
+.main-search {
+	display: flex;
+	width: 50%;
+
+	&-input{
+  width: 100%;
+  border-radius: 6px;
+  background-color: #d8d8d8;
+  padding: 4px 0 4px 19px;
+  font-family: $font-openSans;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: $black;
+  border: none;
+  outline: none;
+	margin-right: 25px;
+	@include placeholder {
+		color: #333333;
+		font-size: 16px;
+	}
+}
+	&-btn {
+		padding: 8px;
+		min-width: 150px;
+		background-color: #333333;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 16px;
+		line-height: 30px;
+		color: #fff;
+		border-radius: 6px;
+		border: none;
+	}
+
+  @include max-width($landscape-tablet){
+    display: none;
+  }
+}
