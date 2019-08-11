@@ -60,7 +60,7 @@ class Param extends \yii\db\ActiveRecord
      */
     public function getCategoryParams()
     {
-        return $this->hasMany(CategoryParam::className(), ['param_id' => 'id']);
+        return $this->hasMany(CategoryParam::class(), ['param_id' => 'id']);
     }
 
     /**
@@ -68,7 +68,7 @@ class Param extends \yii\db\ActiveRecord
      */
     public function getProductParamValues()
     {
-        return $this->hasMany(ProductParamValue::className(), ['param_id' => 'id']);
+        return $this->hasMany(ProductParamValue::class(), ['param_id' => 'id']);
     }
 }
 

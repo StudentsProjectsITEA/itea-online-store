@@ -59,7 +59,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getCategoryParams()
     {
-        return $this->hasMany(CategoryParam::className(), ['category_id' => 'id']);
+        return $this->hasMany(CategoryParam::class(), ['category_id' => 'id']);
     }
 
     /**
@@ -67,7 +67,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getProducts()
     {
-        return $this->hasMany(Product::className(), ['category_id' => 'id']);
+        return $this->hasMany(Product::class(), ['category_id' => 'id']);
     }
 }
 

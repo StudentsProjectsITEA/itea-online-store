@@ -33,8 +33,8 @@ class CategoryParam extends \yii\db\ActiveRecord
             [['id', 'category_id', 'param_id'], 'required'],
             [['id', 'category_id', 'param_id'], 'string'],
             [['id'], 'unique'],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['param_id'], 'exist', 'skipOnError' => true, 'targetClass' => Param::className(), 'targetAttribute' => ['param_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class(), 'targetAttribute' => ['category_id' => 'id']],
+            [['param_id'], 'exist', 'skipOnError' => true, 'targetClass' => Param::class(), 'targetAttribute' => ['param_id' => 'id']],
         ];
     }
 
@@ -55,7 +55,7 @@ class CategoryParam extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(Category::class(), ['id' => 'category_id']);
     }
 
     /**
@@ -63,7 +63,7 @@ class CategoryParam extends \yii\db\ActiveRecord
      */
     public function getParam()
     {
-        return $this->hasOne(Param::className(), ['id' => 'param_id']);
+        return $this->hasOne(Param::class(), ['id' => 'param_id']);
     }
 }
 
