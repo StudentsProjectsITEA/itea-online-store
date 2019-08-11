@@ -71,7 +71,11 @@ composer install
 ```
 php init --env=Development --overwrite=All
 ```
-3. Run the command in terminal one by one to create database:
+3. Create .log files:
+```
+./makefile
+```
+4. Run the command in terminal one by one to create database:
 ```
 sudo -u postgres psql postgres
 # CREATE USER "store-admin" WITH PASSWORD 'itea1234';
@@ -80,7 +84,7 @@ sudo -u postgres psql postgres
 # \quit
 sudo systemctl restart postgresql
 ```
-4. Adjust the `components['db']` configuration in file `/common/config/main-local.php` like a:
+5. Adjust the `components['db']` configuration in file `/common/config/main-local.php` like a:
 ```
 'db' => [
     'class' => 'yii\db\Connection',
@@ -90,11 +94,11 @@ sudo systemctl restart postgresql
     'charset' => 'utf8',
 ],
 ```
-5. Open a console terminal, apply migrations with command:
+6. Open a console terminal, apply migrations with command:
 ```
 php yii migrate
 ```
-4. Configure the virtual host for Nginx and create empty log files like a `access_log` and `error_log` sections:
+7. Configure the virtual host for Nginx and create empty log files like a `access_log` and `error_log` sections:
 ```
 server {
     charset utf-8;
@@ -188,7 +192,7 @@ Thereafter your web server domens are:
 http://online-store.site/ - for frontend
 http://admin.online-store.site/ - for backend
 ```
-5. Change the hosts file to point the domain to your server.
+8. Change the hosts file to point the domain to your server.
 Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 ```
 127.0.0.1   online-store.site

@@ -7,7 +7,6 @@ use yii\console\Controller;
 use Yii;
 use common\models\Category;
 
-
 /**
  * Class DataController
  * @package console\controllers
@@ -29,7 +28,6 @@ class DataController extends Controller
             'name' => 'root',
             'parent_id' => NULL,
         ])->execute();
-
 
         $categories = [
             'electronics' => ['notebooks', 'laptops', 'monitors', 'mobile'],
