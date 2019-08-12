@@ -5,24 +5,24 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "category".
+ * This is the model class for table "param".
  *
  * @property string $id
  * @property string $name
- * @property string $parent_id
- * @property int $depth
+ * @property int $type_id
+ * @property bool $is_required
  *
  * @property CategoryParam[] $categoryParams
- * @property Product[] $products
+ * @property ProductParamValue[] $productParamValues
  */
-class Category extends \yii\db\ActiveRecord
+class Param extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'category';
+        return 'param';
     }
 
     /**
@@ -31,10 +31,11 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'name', 'depth'], 'required'],
-            [['id', 'parent_id'], 'string'],
-            [['depth'], 'default', 'value' => null],
-            [['depth'], 'integer'],
+            [['id', 'name', 'type_id', 'is_required'], 'required'],
+            [['id'], 'string'],
+            [['type_id'], 'default', 'value' => null],
+            [['type_id'], 'integer'],
+            [['is_required'], 'boolean'],
             [['name'], 'string', 'max' => 255],
             [['name'], 'unique'],
             [['id'], 'unique'],
@@ -49,8 +50,8 @@ class Category extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'parent_id' => 'Parent ID',
-            'depth' => 'Depth',
+            'type_id' => 'Type ID',
+            'is_required' => 'Is Required',
         ];
     }
 
@@ -59,14 +60,14 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getCategoryParams()
     {
-        return $this->hasMany(CategoryParam::class, ['category_id' => 'id']);
+        return $this->hasMany(CategoryParam::class, ['param_id' => 'id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProducts()
+    public function getProductParamValues()
     {
-        return $this->hasMany(Product::class, ['category_id' => 'id']);
+        return $this->hasMany(ProductParamValue::class, ['param_id' => 'id']);
     }
 }
