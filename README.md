@@ -94,7 +94,7 @@ sudo systemctl restart postgresql
 ```
 php yii migrate
 ```
-4. Configure the virtual host for Nginx and create empty log files like a `access_log` and `error_log` sections:
+6. Configure the virtual host for Nginx and create empty log files like a `access_log` and `error_log` sections:
 ```
 server {
     charset utf-8;
@@ -193,5 +193,9 @@ Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 ```
 127.0.0.1   online-store.site
 127.0.0.1   admin.online-store.site
+```
+6. If the system does not automatically create log files, run the command in terminal to create them:
+```
+./makefile
 ```
 To login into the project, you need to first sign up, with any of your email address, username and password. Then, you can login into the application with same email address and password at any time. Enjoy :)
