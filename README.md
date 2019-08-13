@@ -188,13 +188,13 @@ Thereafter your web server domens are:
 http://online-store.site/ - for frontend
 http://admin.online-store.site/ - for backend
 ```
-5. Change the hosts file to point the domain to your server.
+7. Change the hosts file to point the domain to your server.
 Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 ```
 127.0.0.1   online-store.site
 127.0.0.1   admin.online-store.site
 ```
-6. If the system does not automatically create log files, run the command in terminal to create them:
+8. If the system does not automatically create log files, run the command in terminal to create them:
 ```
 ./makefile
 ```

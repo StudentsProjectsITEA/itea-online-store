@@ -2,9 +2,9 @@
 
 namespace frontend\models;
 
+use Exception;
 use Yii;
 use yii\base\Model;
-use common\models\User;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -27,14 +27,14 @@ class SignupForm extends Model
         return [
             [['username', 'first_name', 'last_name'], 'trim'],
             [['username', 'first_name', 'last_name'], 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => '\frontend\models\User', 'message' => 'This username has already been taken.'],
             [['username', 'first_name', 'last_name'], 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\frontend\models\User', 'message' => 'This email address has already been taken.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -46,7 +46,7 @@ class SignupForm extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function signup()
     {

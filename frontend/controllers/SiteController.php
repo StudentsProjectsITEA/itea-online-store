@@ -1,19 +1,22 @@
 <?php
+
 namespace frontend\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use common\models\LoginForm;
+use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -92,8 +95,6 @@ class SiteController extends Controller
      * Logs in a user.
      *
      * @return mixed
-     *
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionLogin()
     {
@@ -185,10 +186,10 @@ class SiteController extends Controller
      *
      * @param string $token
      *
-     * @return string|\yii\web\Response
+     * @return string|Response
      *
      * @throws BadRequestHttpException
-     * @throws \yii\base\InvalidConfigException
+     * @throws Exception
      */
     public function actionResetPassword($token)
     {
@@ -214,7 +215,7 @@ class SiteController extends Controller
      *
      * @param string $token
      * @throws BadRequestHttpException
-     * @return yii\web\Response
+     * @return Response
      */
     public function actionVerifyEmail($token)
     {
@@ -236,8 +237,6 @@ class SiteController extends Controller
 
     /**
      * Resend verification email
-     *
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionResendVerificationEmail()
     {

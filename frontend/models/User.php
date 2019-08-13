@@ -1,8 +1,9 @@
 <?php
 
-namespace common\models;
+namespace frontend\models;
 
 use Yii;
+use yii\base\Exception;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -180,7 +181,7 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @param string $password
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function setPassword($password)
     {
@@ -190,7 +191,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Generates "remember me" authentication key
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function generateAuthKey()
     {
@@ -200,7 +201,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Generates new password reset token
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function generatePasswordResetToken()
     {
@@ -210,7 +211,7 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Generates new email verification token
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function generateEmailVerificationToken()
     {
