@@ -282,7 +282,7 @@ body {
 .listing-products {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between; }
+  justify-content: space-evenly; }
   @media (max-width: 992px) {
     .listing-products {
       justify-content: space-around;
@@ -929,8 +929,6 @@ body {
 .category-list {
   padding-bottom: 57px; }
 
-.category-item {
-  padding-left: 20px; }
   .category-item-title {
     display: inline-block;
     font-family: "OpenSans", sans-serif;
