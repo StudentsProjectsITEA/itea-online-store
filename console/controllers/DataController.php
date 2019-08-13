@@ -17,8 +17,9 @@ class DataController extends Controller
 {
     /**
      * @throws \yii\db\Exception
+     * @throws \Exception
      */
-    public function actionAddTestData()
+    public function actionAdd()
     {
         $uuid_root = Uuid::uuid4()->toString();
 
@@ -55,8 +56,6 @@ class DataController extends Controller
         ];
 
         $category_id = [];
-        $params = [];
-        $param_id = [];
 
         foreach($categories as $category => $subCategories) {
 
@@ -83,16 +82,20 @@ class DataController extends Controller
             }
         }
 
-        foreach($categoryParams as $category => $items) {
+        $param_id = [];
+        $params = [];
 
-            foreach($items as $param) {
+        foreach($categoryParams as $category => $paramList) {
+
+            foreach($paramList as $param) {
+
                 if(! in_array($param, $params)) {
 
-                    $params[] = $param;
-                    $param_id = Uuid::uuid4()->toString();
+                    $param_id[$param] = Uuid::uuid4()->toString();
 
+                    $params[] = $param;
                     $connection->createCommand()->insert('param', [
-                        'id' => $param_id,
+                        'id' => $param_id[$param],
                         'is_required' => false,
                         'name' => $param,
                         'type_id' => 1,
@@ -101,7 +104,15 @@ class DataController extends Controller
                     $connection->createCommand()->insert('category_param', [
                         'id' => Uuid::uuid4()->toString(),
                         'category_id' => $category_id[$category],
-                        'param_id' => $param_id,
+                        'param_id' => $param_id[$param],
+                    ])->execute();
+
+                } else {
+
+                    $connection->createCommand()->insert('category_param', [
+                        'id' => Uuid::uuid4()->toString(),
+                        'category_id' => $category_id[$category],
+                        'param_id' => $param_id[$param],
                     ])->execute();
 
                 }
@@ -109,15 +120,15 @@ class DataController extends Controller
         }
     }
 
-    public function actionDelTestData() {
+    public function actionDelete() {
 
         $category_table = new Category();
         $category_table::deleteAll();
 
-//        $category_table = new Param();
-//        $category_table::deleteAll();
-//
-//        $category_table = new CategoryParam();
-//        $category_table::deleteAll();
+        $category_table = new Param();
+        $category_table::deleteAll();
+
+        $category_table = new CategoryParam();
+        $category_table::deleteAll();
     }
 }
