@@ -13,12 +13,13 @@ use common\models\Category;
  * Class DataController
  * @package console\controllers
  */
-class DataController extends Controller
+class TestDataController extends Controller
 {
     /**
      * @throws \yii\db\Exception
+     * @throws \Exception
      */
-    public function actionAddTestData()
+    public function actionAdd()
     {
         $uuid_root = Uuid::uuid4()->toString();
 
@@ -109,15 +110,15 @@ class DataController extends Controller
         }
     }
 
-    public function actionDelTestData() {
+    public function actionDelete() {
 
         $category_table = new Category();
         $category_table::deleteAll();
 
-//        $category_table = new Param();
-//        $category_table::deleteAll();
-//
-//        $category_table = new CategoryParam();
-//        $category_table::deleteAll();
+        $category_table = new Param();
+        $category_table::deleteAll();
+
+        $category_table = new CategoryParam();
+        $category_table::deleteAll();
     }
 }
