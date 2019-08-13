@@ -15,87 +15,101 @@ use common\models\Category;
  */
 class TestDataController extends Controller
 {
+    private $categoryId = [];
+    private $categories = [
+        'electronics' => ['notebooks', 'laptops', 'monitors', 'mobile'],
+        'photos' => ['DSLR', 'lens', 'videos'],
+        'sport' => ['fishing', 'hiking', 'closes'],
+        'kinders' => ['plays', 'books', 'boots'],
+    ];
+
+    private $paramId = [];
+    private $params = [];
+
+    private $categoryParams = [
+        'notebooks' => ['Производитель', 'Диагональ экрана', 'Процессор', 'ОЗУ', 'HDD'],
+        'laptops' => ['Производитель', 'Диагональ экрана', 'Процессор', 'ОЗУ', 'HDD'],
+        'monitors' => ['Производитель', 'Диагональ экрана'],
+        'mobile' => ['Производитель', 'Диагональ экрана', 'Процессор', 'ОЗУ'],
+        'DSLR' => ['Производитель', 'Диагональ экрана', 'Размер матрицы'],
+        'lens' => ['Производитель'],
+        'videos' => ['Производитель', 'Диагональ экрана', 'Размер матрицы'],
+        'fishing' => ['Производитель'],
+        'hiking' => ['Производитель'],
+        'closes' => ['Производитель', 'Размер одежды'],
+        'plays' => ['Производитель', 'Возраст'],
+        'books' => ['Производитель', 'Возраст'],
+        'boots' => ['Производитель', 'Размер обуви'],
+    ];
+
     /**
      * @throws \yii\db\Exception
      * @throws \Exception
      */
     public function actionAdd()
     {
-        $uuid_root = Uuid::uuid4()->toString();
-
         $connection = Yii::$app->db;
 
+        $uuidUser = Uuid::uuid4()->toString();
+        $connection->createCommand()->insert('user', [
+            'id' => $uuidUser,
+            'username' => 'store-user',
+            'first_name' => 'Vasya',
+            'last_name' => 'Pupkin',
+            'mobile' => 380123654789,
+            'auth_key' => '23ubyub3uyh12ih42j',
+            'password_hash' => 'n1guy142ub124',
+            'password_reset_token' => 'n21u4b21y4u21',
+            'email' => 'user@example.com',
+            'verification_token' => 'qiwohfu32ug2iu',
+            'status_id' => 10,
+            'created_time' => time(),
+            'updated_time' => time(),
+        ])->execute();
+
+        $uuidRootCategory = Uuid::uuid4()->toString();
         $connection->createCommand()->insert('category', [
-            'id' => $uuid_root,
+            'id' => $uuidRootCategory,
             'depth' => 0,
             'name' => 'root',
             'parent_id' => NULL,
         ])->execute();
 
-        $categories = [
-            'electronics' => ['notebooks', 'laptops', 'monitors', 'mobile'],
-            'photos' => ['DSLR', 'lens', 'videos'],
-            'sport' => ['fishing', 'hiking', 'closes'],
-            'kinders' => ['plays', 'books', 'boots'],
-        ];
+        foreach($this->categories as $category => $subCategories) {
 
-        $categoryParams = [
-            'notebooks' => ['Производитель', 'Диагональ экрана', 'Процессор', 'ОЗУ', 'HDD'],
-            'laptops' => ['Производитель', 'Диагональ экрана', 'Процессор', 'ОЗУ', 'HDD'],
-            'monitors' => ['Производитель', 'Диагональ экрана'],
-            'mobile' => ['Производитель', 'Диагональ экрана', 'Процессор', 'ОЗУ'],
-            'DSLR' => ['Производитель', 'Диагональ экрана', 'Размер матрицы'],
-            'lens' => ['Производитель'],
-            'videos' => ['Производитель', 'Диагональ экрана', 'Размер матрицы'],
-            'fishing' => ['Производитель'],
-            'hiking' => ['Производитель'],
-            'closes' => ['Производитель', 'Размер одежды'],
-            'plays' => ['Производитель', 'Возраст'],
-            'books' => ['Производитель', 'Возраст'],
-            'boots' => ['Производитель', 'Размер обуви'],
-        ];
-
-        $category_id = [];
-
-        foreach($categories as $category => $subCategories) {
-
-            $category_id[$category] = Uuid::uuid4()->toString();
+            $this->categoryId[$category] = Uuid::uuid4()->toString();
 
             $connection->createCommand()->insert('category', [
-                'id' => $category_id[$category],
+                'id' => $this->categoryId[$category],
                 'depth' => 1,
                 'name' => $category,
-                'parent_id' => $uuid_root,
+                'parent_id' => $uuidRootCategory,
             ])->execute();
 
             foreach($subCategories as $subCategory) {
 
-                $category_id[$subCategory] = Uuid::uuid4()->toString();
+                $this->categoryId[$subCategory] = Uuid::uuid4()->toString();
 
                 $connection->createCommand()->insert('category', [
-                    'id' => $category_id[$subCategory],
+                    'id' => $this->categoryId[$subCategory],
                     'depth' => 2,
                     'name' => $subCategory,
-                    'parent_id' => $category_id[$category],
-                    // 'parent_id' => $uuid_cat,
+                    'parent_id' => $this->categoryId[$category],
                 ])->execute();
             }
         }
 
-        $param_id = [];
-        $params = [];
-
-        foreach($categoryParams as $category => $paramList) {
+        foreach($this->categoryParams as $category => $paramList) {
 
             foreach($paramList as $param) {
 
-                if(! in_array($param, $params)) {
+                if(! in_array($param, $this->params)) {
 
-                    $param_id[$param] = Uuid::uuid4()->toString();
+                    $this->paramId[$param] = Uuid::uuid4()->toString();
 
-                    $params[] = $param;
+                    $this->params[] = $param;
                     $connection->createCommand()->insert('param', [
-                        'id' => $param_id[$param],
+                        'id' => $this->paramId[$param],
                         'is_required' => false,
                         'name' => $param,
                         'type_id' => 1,
@@ -103,16 +117,16 @@ class TestDataController extends Controller
 
                     $connection->createCommand()->insert('category_param', [
                         'id' => Uuid::uuid4()->toString(),
-                        'category_id' => $category_id[$category],
-                        'param_id' => $param_id[$param],
+                        'category_id' => $this->categoryId[$category],
+                        'param_id' => $this->paramId[$param],
                     ])->execute();
 
                 } else {
 
                     $connection->createCommand()->insert('category_param', [
                         'id' => Uuid::uuid4()->toString(),
-                        'category_id' => $category_id[$category],
-                        'param_id' => $param_id[$param],
+                        'category_id' => $this->categoryId[$category],
+                        'param_id' => $this->paramId[$param],
                     ])->execute();
 
                 }

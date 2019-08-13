@@ -2,7 +2,8 @@
 
 namespace common\models;
 
-use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "param".
@@ -15,7 +16,7 @@ use Yii;
  * @property CategoryParam[] $categoryParams
  * @property ProductParamValue[] $productParamValues
  */
-class Param extends \yii\db\ActiveRecord
+class Param extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -56,7 +57,7 @@ class Param extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCategoryParams()
     {
@@ -64,7 +65,7 @@ class Param extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getProductParamValues()
     {
