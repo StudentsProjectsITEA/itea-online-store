@@ -198,4 +198,9 @@ Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 ```
 ./makefile
 ```
+9. For development, you can create test data for working with the project:
+```
+php yii test-data/add - to add test data
+php yii test-data/delete - to delete test data
+```
 To login into the project, you need to first sign up, with any of your email address, username and password. Then, you can login into the application with same email address and password at any time. Enjoy :)
