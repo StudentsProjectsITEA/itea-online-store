@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use common\models\Category;
+use common\components\CategoryViewer;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -55,7 +55,7 @@ class SiteController extends Controller
             ],
             */
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -89,8 +89,8 @@ class SiteController extends Controller
     {
         $this->layout = 'index-layout';
 
-        $allSubCategories = Category::getCategories();
-        $allCategories = Category::getSubcategories($allSubCategories);
+        $allSubCategories = CategoryViewer::getSubCategories();
+        $allCategories = CategoryViewer::getCategories($allSubCategories);
 
         return $this->render('index', [
             'allCategories' => $allCategories,
@@ -116,6 +116,7 @@ class SiteController extends Controller
 
             return $this->render('index', [
                 'loginModel' => $loginModel,
+                'allCategories' => '',
             ]);
         }
     }
@@ -136,8 +137,6 @@ class SiteController extends Controller
      * Displays contact page.
      *
      * @return mixed
-     *
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionContact()
     {
@@ -184,6 +183,7 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'signupModel' => $signupModel,
+            'allCategories' => '',
         ]);
     }
 

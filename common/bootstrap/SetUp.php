@@ -2,7 +2,7 @@
 
 namespace common\bootstrap;
 
-use Yii;
+use common\components\CategoryViewer;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
@@ -17,7 +17,7 @@ class SetUp implements BootstrapInterface
 
     public function __construct()
     {
-        $this->container = Yii::$container;
+        $this->container = \Yii::$container;
     }
 
     /**
@@ -27,6 +27,10 @@ class SetUp implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        $this->container->setDefinitions([]);
+        $this->container->setDefinitions([
+            CategoryViewer::class => [
+                ['class' => CategoryViewer::class]
+            ],
+        ]);
     }
 }

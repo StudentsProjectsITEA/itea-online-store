@@ -1,7 +1,11 @@
 <?php
 
-/* @var $this yii\web\View */
+/**
+ * @var $this yii\web\View
+ * @var $allCategories Category
+ */
 
+use common\models\Category;
 use yii\helpers\Url;
 
 $this->title = 'Online Store | ITEA';
