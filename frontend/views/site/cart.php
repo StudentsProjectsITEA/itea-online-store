@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <span class="basket-item-delete"><i class="fas fa-times"></i></span>
                 <img
                         class="basket-item-img"
-                        src="<?php echo Url::to('@web/img/images.png'); ?>"
+                        src="https://vignette.wikia.nocookie.net/leagueoflegends/images/7/79/Janna_OriginalCentered.jpg/revision/latest/scale-to-width-down/1215?cb=20180414203244"
                 />
                 <div class="basket-item-info">
                     <p class="basket-item-title">Sleeveless Cowl Neck Top</p>
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <span class="basket-item-delete"><i class="fas fa-times"></i></span>
                 <img
                         class="basket-item-img"
-                        src="<?php echo Url::to('@web/img/images.png'); ?>"
+                        src="https://vignette.wikia.nocookie.net/leagueoflegends/images/7/79/Janna_OriginalCentered.jpg/revision/latest/scale-to-width-down/1215?cb=20180414203244"
                 />
                 <div class="basket-item-info">
                     <p class="basket-item-title">Sleeveless Cowl Neck Top</p>

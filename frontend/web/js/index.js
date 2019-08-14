@@ -6,8 +6,10 @@ let logInBtnLink = document.getElementById('logInModalLink');
 let closeModalBtn = document.querySelectorAll('.login-cancel-btn');
 let deleteBasketItem = document.querySelectorAll(".basket-item-delete");
 let productCounterBtn = document.querySelectorAll(".product-counter-btn");
+console.log(logInBtnLink == true);
 
-if(closeModalBtn){
+if(closeModalBtn.length){
+
 	closeModalBtn.forEach((el) => {
 		el.addEventListener('click', function() {
 			hideModal(el.closest('.modal-backdrop'));
@@ -30,12 +32,12 @@ if(registerBtn) {
 
 if(logInBtnLink) {
 	logInBtnLink.addEventListener('click', function () {
-		hideModal(logInModal);
-		showModal(registerModal);
+		hideModal(registerModal);
+		showModal(logInModal);
 	});
 };
 
-if(deleteBasketItem){
+if(deleteBasketItem.length){
 	deleteBasketItem.forEach(item => {
 		item.addEventListener("click", () => {
 			item.closest(".basket-item").remove();
@@ -52,7 +54,7 @@ if(productCounterBtn){
 			if (counter.classList.contains("increase")) {
 				countInput.value++;
 			} else {
-				if(countInput.value >= 1){
+				if(countInput.value >= 2){
 					countInput.value--;
 				} else return;
 			}
@@ -78,6 +80,7 @@ if(productCounterBtn){
 	const allTabs = document.querySelectorAll(
 		".section-profile-navmenu-item"
 	);
+	console.log(allTabs)
 	const tabsContent = document.querySelectorAll('.section-profile-content-item');
 	let target = "";
 	allTabs.forEach(item => {
