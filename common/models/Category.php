@@ -18,6 +18,9 @@ use yii\db\ActiveRecord;
  */
 class Category extends ActiveRecord
 {
+    private static $categories;
+    private static $count;
+
     /**
      * {@inheritdoc}
      */
@@ -69,5 +72,50 @@ class Category extends ActiveRecord
     public function getProducts()
     {
         return $this->hasMany(Product::class, ['category_id' => 'id']);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getCategories()
+    {
+        $categories = \common\models\Category::find()
+            ->asArray()
+            ->all();
+
+        self::$categories = $categories;
+
+        $allSubCategories = [];
+
+        $count = count($categories);
+        self::$count = $count;
+
+        for ($i = 0; $i < $count; $i++) {
+            if (1 == $categories[$i]['depth']) {
+                $allSubCategories[$categories[$i]['name']] = $categories[$i]['id'];
+            }
+        }
+
+        return $allSubCategories;
+    }
+
+    /**
+     * @param $allSubCategories
+     * @return array
+     */
+    public static function getSubcategories($allSubCategories) {
+
+        $allCategories = [];
+
+        for ($i = 0; $i < self::$count; $i++) {
+
+            $key = array_search(self::$categories[$i]['parent_id'] , $allSubCategories);
+
+            if ($key) {
+                $allCategories[$key][] = self::$categories[$i]['name'];
+            }
+        }
+
+        return $allCategories;
     }
 }
