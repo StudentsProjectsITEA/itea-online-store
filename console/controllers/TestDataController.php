@@ -126,11 +126,13 @@ class TestDataController extends Controller
             'Diagonal' => '13,3',
             'Memory' => '128 ГБ',
             'OS' => 'Mac OS Mojave',
+            'Color' => ['gray', 'white', 'black'],
         ],
         'Xiaomi Redmi Note 5A Gray' => [
             'Sim-card' => '2',
             'Main camera, MP' => '13',
             'Battery capacity' => '3080',
+            'Color' => 'gray',
         ],
         'CANON EOS 80D' => [
             'HDR' => 'Allowed',
@@ -147,8 +149,8 @@ class TestDataController extends Controller
             'Material' => 'Lycra',
         ],
         'Puma Astro Kick' => [
-            'Size' => '42',
-            'Color' => 'black',
+            'Size' => ['39', '42', '43', '45'],
+            'Color' => ['brown', 'pink', 'black'],
         ],
         'Kinder Delice' => [
             'Filling' => 'молочный',
@@ -392,20 +394,41 @@ class TestDataController extends Controller
                         'name' => $param,
                         'type_id' => 1,
                     ])->execute();
-
-                    $connection->createCommand()->insert('product_param_value', [
-                        'id' => Uuid::uuid4()->toString(),
-                        'product_id' => $this->productId[$product],
-                        'param_id' => $this->paramId[$param],
-                        'value' => $value,
-                    ])->execute();
+                    if (!is_array($value)) {
+                        $connection->createCommand()->insert('product_param_value', [
+                            'id' => Uuid::uuid4()->toString(),
+                            'product_id' => $this->productId[$product],
+                            'param_id' => $this->paramId[$param],
+                            'value' => $value,
+                        ])->execute();
+                    } else {
+                        foreach ($value as $paramValue) {
+                            $connection->createCommand()->insert('product_param_value', [
+                                'id' => Uuid::uuid4()->toString(),
+                                'product_id' => $this->productId[$product],
+                                'param_id' => $this->paramId[$param],
+                                'value' => $paramValue,
+                            ])->execute();
+                        }
+                    }
                 } else {
-                    $connection->createCommand()->insert('product_param_value', [
-                        'id' => Uuid::uuid4()->toString(),
-                        'product_id' => $this->productId[$product],
-                        'param_id' => $this->paramId[$param],
-                        'value' => $value,
-                    ])->execute();
+                    if (!is_array($value)) {
+                        $connection->createCommand()->insert('product_param_value', [
+                            'id' => Uuid::uuid4()->toString(),
+                            'product_id' => $this->productId[$product],
+                            'param_id' => $this->paramId[$param],
+                            'value' => $value,
+                        ])->execute();
+                    } else {
+                        foreach ($value as $paramValue) {
+                            $connection->createCommand()->insert('product_param_value', [
+                                'id' => Uuid::uuid4()->toString(),
+                                'product_id' => $this->productId[$product],
+                                'param_id' => $this->paramId[$param],
+                                'value' => $paramValue,
+                            ])->execute();
+                        }
+                    }
                 }
             }
         }
