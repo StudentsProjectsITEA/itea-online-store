@@ -41,7 +41,6 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
-
     <form action="#" class="product-main-info">
         <h2 class="product-title"><?= Html::encode($this->title) ?></h2>
         <span class="product-meta">Item No. 25697212</span>
@@ -52,31 +51,47 @@ $this->params['breadcrumbs'][] = $this->title;
         </ul>
         <p class="product-filter">Size</p>
         <ul class="product-sizes">
-            <li class="size-item">1</li>
-            <li class="size-item active">2</li>
-            <li class="size-item">3</li>
-            <li class="size-item">4</li>
+            <li class="size-item"><input name="size" type="radio" value="1"><span>1</span></li>
+            <li class="size-item"><input name="size" type="radio" value="2"><span>2</span></li>
+            <li class="size-item"><input name="size" type="radio" value="3"><span>3</span></li>
+            <li class="size-item"><input name="size" type="radio" value="3"><span>4</span></li>
         </ul>
         <p class="product-filter">Quantity</p>
         <div class="product-counter">
-            <button class="product-counter-btn">-</button>
-            <span class="product-counter-value">0</span>
-            <button class="product-counter-btn">+</button>
+            <button class="product-counter-btn" type="button">-</button>
+            <input type="number" class="product-counter-value" value="1"/>
+            <button class="product-counter-btn increase" type="button">+</button>
         </div>
-
         <button type="submit" class="btn-add-to-cart">Add to cart</button>
     </form>
-
 </section>
-<section>
 
+<section>
     <div class="product-tabs">
         <ul class="product-tabs-options">
-            <li data-target="comments">Comments</li>
-            <li data-target="parameters">Additional parameters</li>
             <li data-target="description" class="active">Description</li>
+            <li data-target="parameters">Additional parameters</li>
+            <li data-target="comments">Comments</li>
         </ul>
         <div class="product-tabs-content">
+            <div class="product-tabs-item active" data-target="description">
+                <p class="product-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio
+                    cupiditate rem quam saepe reprehenderit sed voluptatibus eaque excepturi perspiciatis adipisci,
+                    officiis similique, dolor enim cum necessitatibus quos dolores impedit voluptates.</p>
+            </div>
+            <div class="product-tabs-item" data-target="parameters">
+                <ul class="parameters-list">
+                    <li>
+                        <span class="parameter-name">ParameterName</span>:<span>Parame</span>
+                    </li>
+                    <li>
+                        <span class="parameter-name">ParameterName</span>:<span>1</span>
+                    </li>
+                    <li>
+                        <span class="parameter-name">ParameterName</span>:<span>ParameterValue</span>
+                    </li>
+                </ul>
+            </div>
             <div class="product-tabs-item" data-target="comments">
                 <ul class="comments-list">
                     <li>
@@ -101,24 +116,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <textarea class="comments-input"></textarea>
                     <button class="comments-add-new">Add new comment</button>
                 </form>
-            </div>
-            <div class="product-tabs-item" data-target="parameters">
-                <ul class="parameters-list">
-                    <li>
-                        <span class="parameter-name">ParameterName</span>:<span>Parame</span>
-                    </li>
-                    <li>
-                        <span class="parameter-name">ParameterName</span>:<span>1</span>
-                    </li>
-                    <li>
-                        <span class="parameter-name">ParameterName</span>:<span>ParameterValue</span>
-                    </li>
-                </ul>
-            </div>
-            <div class="product-tabs-item active" data-target="description">
-                <p class="product-description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Distinctio
-                    cupiditate rem quam saepe reprehenderit sed voluptatibus eaque excepturi perspiciatis adipisci,
-                    officiis similique, dolor enim cum necessitatibus quos dolores impedit voluptates.</p>
             </div>
         </div>
     </div>

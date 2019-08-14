@@ -736,7 +736,7 @@ body {
 .gallery-thumbs {
   height: 20%;
   box-sizing: border-box;
-  padding: 10px 0; }
+  padding: 10px 0 !important; }
 
 .gallery-thumbs .swiper-slide {
   height: 100%;
@@ -1232,7 +1232,7 @@ body {
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  z-index: 1; }
+  z-index: 2; }
 .modal-backdrop.hidden {
   display: none; }
 
@@ -2070,7 +2070,7 @@ body {
   background-color: #fff; }
 
 .breadcrumbs-section {
-  background-color: #cfcfcf;
+  background-color: #d8d8d8;
   box-shadow: 0 2px 2px 1px #ababab; }
 
 .subscribe-email,
