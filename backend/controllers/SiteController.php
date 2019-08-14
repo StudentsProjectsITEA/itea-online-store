@@ -80,7 +80,7 @@ class SiteController extends Controller
     {
         $this->layout = 'login-layout';
 
-        if (!Yii::$app->admin->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
