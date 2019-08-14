@@ -10,51 +10,20 @@ $this->title = 'Online Store | ITEA';
     <div class="container">
         <div class="sub-menu-wrapper-inner">
             <div class="sub-menu-left">
-                <div class="sub-menu-left-list">
-                    <h2 class="sub-menu-left-title">Clothing</h2>
-                    <ul class="sub-menu-category-list">
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Outfits</a>
-                        </li>
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Tops</a>
-                        </li>
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Dresses</a>
-                        </li>
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Buttoms</a>
-                        </li>
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">jackets and coats</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="sub-menu-left-list">
-                    <h2 class="sub-menu-left-title">Jewerly</h2>
-                    <ul class="sub-menu-category-list">
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">earrings</a>
-                        </li>
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Bracelets</a>
-                        </li>
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Bracelets</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="sub-menu-left-list">
-                    <h2 class="sub-menu-left-title">Accessories</h2>
-                    <ul class="sub-menu-category-list">
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Houseware</a>
-                        </li>
-                        <li class="sub-menu-category-item">
-                            <a href="" class="sub-menu-category-link">Gift Cards</a>
-                        </li>
-                    </ul>
-                </div>
+
+                <?php foreach ($allCategories as $subCategory => $categories) : ?>
+                    <div class="sub-menu-left-list">
+                        <h2 class="sub-menu-left-title"><?php echo $subCategory; ?></h2>
+                        <ul class="sub-menu-category-list">
+                            <?php foreach ($categories as $category) : ?>
+                            <li class="sub-menu-category-item">
+                                <a href="" class="sub-menu-category-link"><?php echo $category; ?></a>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
+
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Category;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -88,7 +89,12 @@ class SiteController extends Controller
     {
         $this->layout = 'index-layout';
 
-        return $this->render('index');
+        $allSubCategories = Category::getCategories();
+        $allCategories = Category::getSubcategories($allSubCategories);
+
+        return $this->render('index', [
+            'allCategories' => $allCategories,
+        ]);
     }
 
     /**
