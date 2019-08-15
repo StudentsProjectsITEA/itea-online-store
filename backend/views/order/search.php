@@ -15,15 +15,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'status_id') ?>
+    <?php echo $form->field($model, 'status_id') ?>
 
-    <?= $form->field($model, 'payment_id') ?>
+    <?php echo $form->field($model, 'payment_id') ?>
 
-    <?= $form->field($model, 'shipping_id') ?>
+    <?php echo $form->field($model, 'shipping_id') ?>
 
-    <?= $form->field($model, 'shipping_address') ?>
+    <?php echo $form->field($model, 'shipping_address') ?>
 
     <?php // echo $form->field($model, 'created_time') ?>
 
@@ -32,8 +32,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'user_id') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -2,9 +2,14 @@
 
 namespace backend\controllers;
 
+use common\repositories\OrderRepository;
+use Exception;
+use Ramsey\Uuid\Uuid;
+use Throwable;
 use Yii;
 use common\models\Order;
 use backend\models\OrderSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +19,15 @@ use yii\filters\VerbFilter;
  */
 class OrderController extends Controller
 {
+    private $repository;
+
+    public function __construct($id, $module, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->layout = 'main';
+        $this->repository = new OrderRepository();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +35,7 @@ class OrderController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -53,7 +67,7 @@ class OrderController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->repository->findOrderById($id),
         ]);
     }
 
@@ -61,6 +75,7 @@ class OrderController extends Controller
      * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws Exception
      */
     public function actionCreate()
     {
@@ -72,6 +87,13 @@ class OrderController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'orderId' => Uuid::uuid4()->toString(),
+            'statusId' => 1,
+            'paymentId' => 1,
+            'shippingId' => 1,
+            'createdTime' => time(),
+            'updatedTime' => time(),
+            'userId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -84,7 +106,7 @@ class OrderController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->repository->findOrderById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -101,29 +123,13 @@ class OrderController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->repository->findOrderById($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Order model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Order the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Order::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

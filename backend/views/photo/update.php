@@ -12,10 +12,14 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="photo-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
-    <?= $this->render('form', [
+    <?php echo $this->render('form', [
         'model' => $model,
+        'photoId' => null,
+        'photoName' => null,
+        'createdTime' => null,
+        'productId' => null,
     ]) ?>
 
 </div>

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\UserSearch */
+/* @var $model common\models\UserSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,15 +15,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'username') ?>
+    <?php echo $form->field($model, 'username') ?>
 
-    <?= $form->field($model, 'first_name') ?>
+    <?php echo $form->field($model, 'first_name') ?>
 
-    <?= $form->field($model, 'last_name') ?>
+    <?php echo $form->field($model, 'last_name') ?>
 
-    <?= $form->field($model, 'mobile') ?>
+    <?php echo $form->field($model, 'mobile') ?>
 
     <?php // echo $form->field($model, 'auth_key') ?>
 
@@ -42,8 +42,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'updated_time') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

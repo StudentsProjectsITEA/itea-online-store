@@ -15,17 +15,17 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'name') ?>
+    <?php echo $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'type_id') ?>
+    <?php echo $form->field($model, 'type_id') ?>
 
-    <?= $form->field($model, 'is_required')->checkbox() ?>
+    <?php echo $form->field($model, 'is_required')->checkbox() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

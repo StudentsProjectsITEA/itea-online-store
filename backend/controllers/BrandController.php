@@ -2,9 +2,14 @@
 
 namespace backend\controllers;
 
+use common\repositories\BrandRepository;
+use Exception;
+use Ramsey\Uuid\Uuid;
+use Throwable;
 use Yii;
 use common\models\Brand;
 use backend\models\BrandSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +19,15 @@ use yii\filters\VerbFilter;
  */
 class BrandController extends Controller
 {
+    private $repository;
+    
+    public function __construct($id, $module, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->layout = 'main';
+        $this->repository = new BrandRepository();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +35,7 @@ class BrandController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -53,7 +67,7 @@ class BrandController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->repository->findBrandById($id),
         ]);
     }
 
@@ -61,6 +75,7 @@ class BrandController extends Controller
      * Creates a new Brand model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws Exception
      */
     public function actionCreate()
     {
@@ -72,6 +87,7 @@ class BrandController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'brandId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -84,7 +100,7 @@ class BrandController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->repository->findBrandById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -101,27 +117,13 @@ class BrandController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->repository->findBrandById($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Brand model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Brand the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Brand::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -2,9 +2,14 @@
 
 namespace backend\controllers;
 
+use backend\repositories\AdminRepository;
+use Exception;
+use Ramsey\Uuid\Uuid;
+use Throwable;
 use Yii;
 use backend\models\Admin;
 use backend\models\AdminSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +19,15 @@ use yii\filters\VerbFilter;
  */
 class AdminController extends Controller
 {
+    private $repository;
+
+    public function __construct($id, $module, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->layout = 'main';
+        $this->repository = new AdminRepository();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +35,7 @@ class AdminController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -53,7 +67,7 @@ class AdminController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->repository->findAdminById($id),
         ]);
     }
 
@@ -61,6 +75,7 @@ class AdminController extends Controller
      * Creates a new Admin model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws Exception
      */
     public function actionCreate()
     {
@@ -72,6 +87,10 @@ class AdminController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'adminId' => Uuid::uuid4()->toString(),
+            'email' => 'email@example.com',
+            'createdTime' => time(),
+            'updatedTime' => time(),
         ]);
     }
 
@@ -84,7 +103,7 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->repository->findAdminById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -101,27 +120,13 @@ class AdminController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->repository->findAdminById($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Admin model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Admin the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Admin::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -12,10 +12,14 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="admin-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?php echo $this->render('form', [
         'model' => $model,
+        'adminId' => null,
+        'email' => null,
+        'createdTime' => null,
+        'updatedTime' => null,
     ]) ?>
 
 </div>

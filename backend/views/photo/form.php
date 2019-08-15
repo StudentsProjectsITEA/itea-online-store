@@ -6,24 +6,28 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Photo */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $photoId string */
+/* @var $photoName string */
+/* @var $createdTime int */
+/* @var $productId string */
 ?>
 
 <div class="photo-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
+    <?php echo $form->field($model, 'id')->textInput(['value' => $photoId]) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true, 'value' => $photoName]) ?>
 
-    <?= $form->field($model, 'is_main')->checkbox() ?>
+    <?php echo $form->field($model, 'is_main')->checkbox() ?>
 
-    <?= $form->field($model, 'created_time')->textInput() ?>
+    <?php echo $form->field($model, 'created_time')->textInput(['value' => $createdTime]) ?>
 
-    <?= $form->field($model, 'product_id')->textInput() ?>
+    <?php echo $form->field($model, 'product_id')->textInput(['value' => $productId]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

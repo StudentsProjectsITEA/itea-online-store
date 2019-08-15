@@ -6,30 +6,37 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Order */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $orderId string */
+/* @var $statusId int */
+/* @var $paymentId int */
+/* @var $shippingId int */
+/* @var $createdTime string */
+/* @var $updatedTime string */
+/* @var $userId string */
 ?>
 
 <div class="order-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
+    <?php echo $form->field($model, 'id')->textInput(['value' => $orderId]) ?>
 
-    <?= $form->field($model, 'status_id')->textInput() ?>
+    <?php echo $form->field($model, 'status_id')->textInput(['value' => $statusId]) ?>
 
-    <?= $form->field($model, 'payment_id')->textInput() ?>
+    <?php echo $form->field($model, 'payment_id')->textInput(['value' => $paymentId]) ?>
 
-    <?= $form->field($model, 'shipping_id')->textInput() ?>
+    <?php echo $form->field($model, 'shipping_id')->textInput(['value' => $shippingId]) ?>
 
-    <?= $form->field($model, 'shipping_address')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'shipping_address')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'created_time')->textInput() ?>
+    <?php echo $form->field($model, 'created_time')->textInput(['value' => $createdTime]) ?>
 
-    <?= $form->field($model, 'updated_time')->textInput() ?>
+    <?php echo $form->field($model, 'updated_time')->textInput(['value' => $updatedTime]) ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <?php echo $form->field($model, 'user_id')->textInput(['value' => $userId]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

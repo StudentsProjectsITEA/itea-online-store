@@ -12,10 +12,17 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="order-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
-    <?= $this->render('form', [
+    <?php echo $this->render('form', [
         'model' => $model,
+        'orderId' => null,
+        'statusId' => null,
+        'paymentId' => null,
+        'shippingId' => null,
+        'createdTime' => null,
+        'updatedTime' => null,
+        'userId' => null,
     ]) ?>
 
 </div>

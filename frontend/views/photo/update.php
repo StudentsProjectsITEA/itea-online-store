@@ -4,10 +4,6 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Photo */
-/* @var $photoId string */
-/* @var $photoName string */
-/* @var $createdTime int */
-/* @var $productId string */
 
 $this->title = 'Update Photo: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Photos', 'url' => ['index']];

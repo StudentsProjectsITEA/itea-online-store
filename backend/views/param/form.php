@@ -6,22 +6,23 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Param */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $paramId string */
 ?>
 
 <div class="param-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
+    <?php echo $form->field($model, 'id')->textInput(['value' => $paramId]) ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'type_id')->textInput() ?>
+    <?php echo $form->field($model, 'type_id')->textInput() ?>
 
-    <?= $form->field($model, 'is_required')->checkbox() ?>
+    <?php echo $form->field($model, 'is_required')->checkbox() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

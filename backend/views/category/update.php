@@ -12,10 +12,12 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="category-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?php echo Html::encode($this->title) ?></h1>
 
-    <?= $this->render('form', [
+    <?php echo $this->render('form', [
         'model' => $model,
+        'categoryId' => null,
+        'categoryParentId' => null,
     ]) ?>
 
 </div>

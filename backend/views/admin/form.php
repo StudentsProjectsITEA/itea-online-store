@@ -6,34 +6,32 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Admin */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $adminId string */
+/* @var $email string */
+/* @var $createdTime string */
+/* @var $updatedTime string */
 ?>
 
 <div class="admin-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
+    <?php echo $form->field($model, 'id')->textInput(['value' => $adminId]) ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'email')->textInput(['maxlength' => true, 'value' => $email]) ?>
 
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'status_id')->textInput() ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'created_time')->textInput(['value' => $createdTime]) ?>
 
-    <?= $form->field($model, 'verification_token')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'status_id')->textInput() ?>
-
-    <?= $form->field($model, 'created_time')->textInput() ?>
-
-    <?= $form->field($model, 'updated_time')->textInput() ?>
+    <?php echo $form->field($model, 'updated_time')->textInput(['value' => $updatedTime]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

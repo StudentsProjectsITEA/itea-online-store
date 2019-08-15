@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ProductSearch */
+/* @var $model common\models\ProductSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,15 +15,15 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?php echo $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'title') ?>
+    <?php echo $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'description') ?>
+    <?php echo $form->field($model, 'description') ?>
 
-    <?= $form->field($model, 'quantity') ?>
+    <?php echo $form->field($model, 'quantity') ?>
 
-    <?= $form->field($model, 'price') ?>
+    <?php echo $form->field($model, 'price') ?>
 
     <?php // echo $form->field($model, 'main_photo') ?>
 
@@ -38,8 +38,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'brand_id') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
