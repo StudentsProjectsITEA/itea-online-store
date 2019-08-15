@@ -126,11 +126,13 @@ class TestDataController extends Controller
             'Diagonal' => '13,3',
             'Memory' => '128 ГБ',
             'OS' => 'Mac OS Mojave',
+            'Color' => ['gray', 'white', 'black'],
         ],
         'Xiaomi Redmi Note 5A Gray' => [
             'Sim-card' => '2',
             'Main camera, MP' => '13',
             'Battery capacity' => '3080',
+            'Color' => 'gray',
         ],
         'CANON EOS 80D' => [
             'HDR' => 'Allowed',
@@ -147,8 +149,8 @@ class TestDataController extends Controller
             'Material' => 'Lycra',
         ],
         'Puma Astro Kick' => [
-            'Size' => '42',
-            'Color' => 'black',
+            'Size' => ['39', '42', '43', '45'],
+            'Color' => ['brown', 'pink', 'black'],
         ],
         'Kinder Delice' => [
             'Filling' => 'молочный',
@@ -313,7 +315,7 @@ class TestDataController extends Controller
             'last_name' => 'Pupkin',
             'mobile' => 380123654789,
             'auth_key' => '23ubyub3uyh12ih42j',
-            'password_hash' => 'n1guy142ub124',
+            'password_hash' => '$2y$13$KypgB9B.QAtftIntp/tPV.crNr1tA9HY9FCHSmre0CUa1sLzwiijq',
             'password_reset_token' => 'n21u4b21y4u21',
             'email' => 'user@example.com',
             'verification_token' => 'qiwohfu32ug2iu',
@@ -392,20 +394,41 @@ class TestDataController extends Controller
                         'name' => $param,
                         'type_id' => 1,
                     ])->execute();
-
-                    $connection->createCommand()->insert('product_param_value', [
-                        'id' => Uuid::uuid4()->toString(),
-                        'product_id' => $this->productId[$product],
-                        'param_id' => $this->paramId[$param],
-                        'value' => $value,
-                    ])->execute();
+                    if (!is_array($value)) {
+                        $connection->createCommand()->insert('product_param_value', [
+                            'id' => Uuid::uuid4()->toString(),
+                            'product_id' => $this->productId[$product],
+                            'param_id' => $this->paramId[$param],
+                            'value' => $value,
+                        ])->execute();
+                    } else {
+                        foreach ($value as $paramValue) {
+                            $connection->createCommand()->insert('product_param_value', [
+                                'id' => Uuid::uuid4()->toString(),
+                                'product_id' => $this->productId[$product],
+                                'param_id' => $this->paramId[$param],
+                                'value' => $paramValue,
+                            ])->execute();
+                        }
+                    }
                 } else {
-                    $connection->createCommand()->insert('product_param_value', [
-                        'id' => Uuid::uuid4()->toString(),
-                        'product_id' => $this->productId[$product],
-                        'param_id' => $this->paramId[$param],
-                        'value' => $value,
-                    ])->execute();
+                    if (!is_array($value)) {
+                        $connection->createCommand()->insert('product_param_value', [
+                            'id' => Uuid::uuid4()->toString(),
+                            'product_id' => $this->productId[$product],
+                            'param_id' => $this->paramId[$param],
+                            'value' => $value,
+                        ])->execute();
+                    } else {
+                        foreach ($value as $paramValue) {
+                            $connection->createCommand()->insert('product_param_value', [
+                                'id' => Uuid::uuid4()->toString(),
+                                'product_id' => $this->productId[$product],
+                                'param_id' => $this->paramId[$param],
+                                'value' => $paramValue,
+                            ])->execute();
+                        }
+                    }
                 }
             }
         }
@@ -480,11 +503,11 @@ class TestDataController extends Controller
         $connection->createCommand()->insert('admin', [
             'id' => Uuid::uuid4()->toString(),
             'username' => 'store-admin',
-            'auth_key' => 'nj23bi2121onlk',
-            'password_hash' => ' 2jrb21uio421nip4n2;1m',
-            'password_reset_token' => 'j2n1bui421124nl21',
+            'auth_key' => '-lHJBuVjZapEt5rFjuvFJ9yG25DmSbPx',
+            'password_hash' => '$2y$13$KypgB9B.QAtftIntp/tPV.crNr1tA9HY9FCHSmre0CUa1sLzwiijq',
+            'password_reset_token' => null,
             'email' => 'admin@example.com',
-            'verification_token' => 'n23j5b321p;251m',
+            'verification_token' => '2nSuijnqA-zwVCB1A7nim3y3xocqYVjz_1565102166',
             'status_id' => 10,
             'created_time' => time(),
             'updated_time' => time(),

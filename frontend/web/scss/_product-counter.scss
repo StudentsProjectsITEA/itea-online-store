@@ -14,8 +14,18 @@
 
 	}
 	&-value{
-		padding: 5px 18px;
+		@include clear-default-inputs-style;
+		padding: 5px 10px;
 		background-color: #fff;
 		font-size: 14px;
+		width: 48px;
+		box-sizing: border-box;
+		text-align: center;
+		margin: 0;
+		-moz-appearance:textfield;
+		&::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+		}
 	}
 }
