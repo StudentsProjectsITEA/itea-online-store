@@ -6,36 +6,42 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model common\models\Product */
 /* @var $form yii\widgets\ActiveForm */
+/* @var $productId string */
+/* @var $productMainPhoto string */
+/* @var $createdTime int */
+/* @var $updatedTime int */
+/* @var $categoryId string */
+/* @var $brandId string */
 ?>
 
 <div class="product-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'id')->textInput() ?>
+    <?php echo $form->field($model, 'id')->textInput(['value' => $productId]) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?php echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'quantity')->textInput() ?>
+    <?php echo $form->field($model, 'quantity')->textInput() ?>
 
-    <?= $form->field($model, 'price')->textInput() ?>
+    <?php echo $form->field($model, 'price')->textInput() ?>
 
-    <?= $form->field($model, 'main_photo')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'main_photo')->textInput(['maxlength' => true, 'value' => $productMainPhoto]) ?>
 
-    <?= $form->field($model, 'is_deleted')->checkbox() ?>
+    <?php echo $form->field($model, 'is_deleted')->checkbox() ?>
 
-    <?= $form->field($model, 'created_time')->textInput() ?>
+    <?php echo $form->field($model, 'created_time')->textInput(['value' => $createdTime]) ?>
 
-    <?= $form->field($model, 'updated_time')->textInput() ?>
+    <?php echo $form->field($model, 'updated_time')->textInput(['value' => $updatedTime]) ?>
 
-    <?= $form->field($model, 'category_id')->textInput() ?>
+    <?php echo $form->field($model, 'category_id')->textInput(['value' => $categoryId]) ?>
 
-    <?= $form->field($model, 'brand_id')->textInput() ?>
+    <?php echo $form->field($model, 'brand_id')->textInput(['value' => $brandId]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -2,9 +2,14 @@
 
 namespace frontend\controllers;
 
+use common\repositories\ProductRepository;
+use Exception;
+use Ramsey\Uuid\Uuid;
+use Throwable;
 use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
+use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +19,15 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends Controller
 {
+    private $repository;
+    
+    public function __construct($id, $module, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->layout = 'main-layout';
+        $this->repository = new ProductRepository();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +35,7 @@ class ProductController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -53,7 +67,7 @@ class ProductController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->repository->findProductById($id),
         ]);
     }
 
@@ -61,6 +75,7 @@ class ProductController extends Controller
      * Creates a new Product model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
+     * @throws Exception
      */
     public function actionCreate()
     {
@@ -72,6 +87,12 @@ class ProductController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'productId' => Uuid::uuid4()->toString(),
+            'productMainPhoto' => 'main_photo.jpg',
+            'createdTime' => time(),
+            'updatedTime' => time(),
+            'categoryId' => Uuid::uuid4()->toString(),
+            'brandId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -84,7 +105,7 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->repository->findProductById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -101,29 +122,13 @@ class ProductController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $this->repository->findProductById($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Product model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Product the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Product::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
