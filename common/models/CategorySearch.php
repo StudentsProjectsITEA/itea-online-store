@@ -1,15 +1,14 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Photo;
 
 /**
- * PhotoSearch represents the model behind the search form of `common\models\Photo`.
+ * CategorySearch represents the model behind the search form of `common\models\Category`.
  */
-class PhotoSearch extends Photo
+class CategorySearch extends Category
 {
     /**
      * {@inheritdoc}
@@ -17,9 +16,8 @@ class PhotoSearch extends Photo
     public function rules()
     {
         return [
-            [['id', 'name', 'product_id'], 'safe'],
-            [['is_main'], 'boolean'],
-            [['created_time'], 'integer'],
+            [['id', 'name', 'parent_id'], 'safe'],
+            [['depth'], 'integer'],
         ];
     }
 
@@ -41,7 +39,7 @@ class PhotoSearch extends Photo
      */
     public function search($params)
     {
-        $query = Photo::find();
+        $query = Category::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +57,12 @@ class PhotoSearch extends Photo
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'is_main' => $this->is_main,
-            'created_time' => $this->created_time,
+            'depth' => $this->depth,
         ]);
 
         $query->andFilterWhere(['ilike', 'id', $this->id])
             ->andFilterWhere(['ilike', 'name', $this->name])
-            ->andFilterWhere(['ilike', 'product_id', $this->product_id]);
+            ->andFilterWhere(['ilike', 'parent_id', $this->parent_id]);
 
         return $dataProvider;
     }

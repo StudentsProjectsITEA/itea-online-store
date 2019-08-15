@@ -1,15 +1,14 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use frontend\models\User;
 
 /**
- * UserSearch represents the model behind the search form of `frontend\models\User`.
+ * ProductSearch represents the model behind the search form of `common\models\Product`.
  */
-class UserSearch extends User
+class ProductSearch extends Product
 {
     /**
      * {@inheritdoc}
@@ -17,8 +16,9 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'username', 'first_name', 'last_name', 'auth_key', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'safe'],
-            [['mobile', 'status_id', 'created_time', 'updated_time'], 'integer'],
+            [['id', 'title', 'description', 'main_photo', 'category_id', 'brand_id'], 'safe'],
+            [['quantity', 'price', 'created_time', 'updated_time'], 'integer'],
+            [['is_deleted'], 'boolean'],
         ];
     }
 
@@ -40,7 +40,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = Product::find();
 
         // add conditions that should always apply here
 
@@ -58,21 +58,19 @@ class UserSearch extends User
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'mobile' => $this->mobile,
-            'status_id' => $this->status_id,
+            'quantity' => $this->quantity,
+            'price' => $this->price,
+            'is_deleted' => $this->is_deleted,
             'created_time' => $this->created_time,
             'updated_time' => $this->updated_time,
         ]);
 
         $query->andFilterWhere(['ilike', 'id', $this->id])
-            ->andFilterWhere(['ilike', 'username', $this->username])
-            ->andFilterWhere(['ilike', 'first_name', $this->first_name])
-            ->andFilterWhere(['ilike', 'last_name', $this->last_name])
-            ->andFilterWhere(['ilike', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['ilike', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['ilike', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['ilike', 'email', $this->email])
-            ->andFilterWhere(['ilike', 'verification_token', $this->verification_token]);
+            ->andFilterWhere(['ilike', 'title', $this->title])
+            ->andFilterWhere(['ilike', 'description', $this->description])
+            ->andFilterWhere(['ilike', 'main_photo', $this->main_photo])
+            ->andFilterWhere(['ilike', 'category_id', $this->category_id])
+            ->andFilterWhere(['ilike', 'brand_id', $this->brand_id]);
 
         return $dataProvider;
     }
