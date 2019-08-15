@@ -14,7 +14,7 @@ class ProductRepository
      * @return Product the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findProductById($id)
+    public function findProductById(string $id)
     {
         if (($model = Product::findOne($id)) !== null) {
             return $model;
@@ -22,4 +22,18 @@ class ProductRepository
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * @throws \yii\base\InvalidConfigException
+     * @throws NotFoundHttpException
+     */
+    public function findProductColor()
+    {
+        if ($model = (new Product)->getParams()->where(['name' => 'Color']) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
 }

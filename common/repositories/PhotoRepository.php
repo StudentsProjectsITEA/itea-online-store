@@ -14,12 +14,17 @@ class PhotoRepository
      * @return Photo|null
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findPhotoById($id)
+    public function findPhotoById(string $id)
     {
         if (($model = Photo::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function findProductPhotos($id)
+    {
+
     }
 }
