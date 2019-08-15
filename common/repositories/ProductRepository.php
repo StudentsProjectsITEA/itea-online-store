@@ -22,18 +22,4 @@ class ProductRepository
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    /**
-     * @throws \yii\base\InvalidConfigException
-     * @throws NotFoundHttpException
-     */
-    public function findProductColor()
-    {
-        if ($model = (new Product)->getParams()->where(['name' => 'Color']) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
 }

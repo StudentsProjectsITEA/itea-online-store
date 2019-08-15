@@ -22,9 +22,4 @@ class PhotoRepository
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    public function findProductPhotos($id)
-    {
-
-    }
 }

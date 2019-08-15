@@ -22,9 +22,4 @@ class ParamRepository
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
-    public function findProductParams()
-    {
-
-    }
 }
