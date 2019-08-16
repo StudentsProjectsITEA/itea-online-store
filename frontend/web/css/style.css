@@ -1890,6 +1890,18 @@ body {
   font-size: 18px;
   text-transform: uppercase; }
 
+.dashboard-title {
+  height: inherit;
+  background-color: inherit;
+  font-size: large;
+  font-weight: bold;
+  padding-bottom: 10px; }
+.dashboard-text {
+  height: inherit;
+  background-color: inherit;
+  font-size: medium;
+  font-weight: lighter;
+  padding-bottom: 15px; }
 .section-profile-title {
   height: 72px;
   background-color: #f3f3f3; }
@@ -1947,7 +1959,7 @@ body {
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  background-image: url("../img/arrow-right-orange.png");
+  background-image: url("../img/arrow-right-grey.png");
   background-size: 16px 16px;
   height: 16px;
   width: 16px; }
@@ -2076,6 +2088,13 @@ body {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 12px; }
+
+.order-history-total {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: row-reverse; }
 
 body {
   padding-bottom: 200px; }
