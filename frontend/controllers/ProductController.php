@@ -3,6 +3,8 @@
 namespace frontend\controllers;
 
 use common\models\Category;
+use common\models\Param;
+use common\models\ProductParamValue;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use Exception;
@@ -72,6 +74,7 @@ class ProductController extends Controller
 
         return $this->render('view', [
             'model' => $this->repository->findProductById($id),
+            'category' => new Category(),
         ]);
     }
 
