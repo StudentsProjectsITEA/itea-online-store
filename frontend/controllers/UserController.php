@@ -2,6 +2,9 @@
 
 namespace frontend\controllers;
 
+use common\models\Order;
+use common\models\Product;
+use common\models\ProductOrder;
 use Exception;
 use frontend\repositories\UserRepository;
 use Ramsey\Uuid\Uuid;
@@ -66,8 +69,24 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->repository->findUserById($id);
+        $userOrders = Order::findAll(['user_id' => $model->id]);
+        $products = [];
+        foreach ($userOrders as $userOrder) {
+            $productOrders = ProductOrder::findAll(['order_id' => $userOrder->id]);
+            foreach ($productOrders as $productOrder) {
+                $products[$userOrder->id][] = Product::findOne(['id' => $productOrder->product_id]);
+            };
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
         return $this->render('view', [
-            'model' => $this->repository->findUserById($id),
+            'model' => $model,
+            'userOrders' => $userOrders,
+            'products' => $products,
         ]);
     }
 

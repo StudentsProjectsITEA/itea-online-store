@@ -24,6 +24,7 @@ use yii\db\ActiveRecord;
  * @property Brand $brand
  * @property Category $category
  * @property ProductOrder[] $productOrders
+ * @property int $order_quantity
  * @property ProductParamValue[] $productParamValues
  */
 class Product extends ActiveRecord
