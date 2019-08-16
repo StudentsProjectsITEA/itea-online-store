@@ -2,21 +2,21 @@
 
 namespace common\repositories;
 
-use common\models\Product;
+use common\models\Order;
 use yii\web\NotFoundHttpException;
 
-class ProductRepository
+class OrderRepository
 {
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Product the loaded model
+     * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findProductById($id)
+    public function findOrderById($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+        if (($model = Order::findOne($id)) !== null) {
             return $model;
         }
 

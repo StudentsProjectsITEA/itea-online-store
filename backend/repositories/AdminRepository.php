@@ -1,22 +1,22 @@
 <?php
 
-namespace common\repositories;
+namespace backend\repositories;
 
-use common\models\Product;
+use backend\models\Admin;
 use yii\web\NotFoundHttpException;
 
-class ProductRepository
+class AdminRepository
 {
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Admin model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Product the loaded model
+     * @return Admin the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findProductById($id)
+    public function findAdminById($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+        if (($model = Admin::findOne($id)) !== null) {
             return $model;
         }
 

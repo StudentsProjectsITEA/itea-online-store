@@ -1,22 +1,22 @@
 <?php
 
-namespace common\repositories;
+namespace frontend\repositories;
 
-use common\models\Product;
+use frontend\models\User;
 use yii\web\NotFoundHttpException;
 
-class ProductRepository
+class UserRepository
 {
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Product the loaded model
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findProductById($id)
+    public function findUserById($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         }
 

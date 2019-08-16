@@ -2,21 +2,21 @@
 
 namespace common\repositories;
 
-use common\models\Product;
+use common\models\Photo;
 use yii\web\NotFoundHttpException;
 
-class ProductRepository
+class PhotoRepository
 {
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Photo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Product the loaded model
+     * @return Photo|null
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findProductById($id)
+    public function findPhotoById($id)
     {
-        if (($model = Product::findOne($id)) !== null) {
+        if (($model = Photo::findOne($id)) !== null) {
             return $model;
         }
 
