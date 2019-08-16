@@ -14,7 +14,7 @@ class ProductRepository
      * @return Product the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findProductById($id)
+    public function findProductById(string $id)
     {
         if (($model = Product::findOne($id)) !== null) {
             return $model;
