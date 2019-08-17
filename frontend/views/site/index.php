@@ -3,6 +3,9 @@
 /**
  * @var $this yii\web\View
  * @var $allCategories Category
+ * @var $allProducts
+ * @var $popularProducts
+ * @var $popularCategories
  */
 
 use common\models\Category;
@@ -39,41 +42,19 @@ $this->title = 'Online Store | ITEA';
             <h2 class="listing-title">All goods</h2>
 
             <div class="listing-products">
-                <div class="product-item">
-                    <a href="#"><img src="<?php echo Url::to('@web/img/img_1.jpg'); ?>" alt="" class="product-img" />
-                        <p class="product-name">No-Iron Easy Care Sleeveless Shirt</p>
-                        <p class="product-price">$599.00</p>
-                    </a>
-                    <button class="product-add-to-cart-btn">Add to cart</button>
-                </div>
-                <div class="product-item">
-                    <a href="#"><img src="<?php echo Url::to('@web/img/img_2.jpg'); ?>" alt="" class="product-img" />
-                        <p class="product-name">No-Iron Easy Care Sleeveless Shirt</p>
-                        <p class="product-price">$599.00</p>
-                    </a>
-                    <button class="product-add-to-cart-btn">Add to cart</button>
-                </div>
-                <div class="product-item">
-                    <a href="#"><img src="<?php echo Url::to('@web/img/img_3.jpg'); ?>" alt="" class="product-img" />
-                        <p class="product-name">No-Iron Easy Care Sleeveless Shirt</p>
-                        <p class="product-price">$599.00</p>
-                    </a>
-                    <button class="product-add-to-cart-btn">Add to cart</button>
-                </div>
-                <div class="product-item">
-                    <a href="#"><img src="<?php echo Url::to('@web/img/img_4.jpg'); ?>" alt="" class="product-img" />
-                        <p class="product-name">No-Iron Easy Care Sleeveless Shirt</p>
-                        <p class="product-price">$599.00</p>
-                    </a>
-                    <button class="product-add-to-cart-btn">Add to cart</button>
-                </div>
-                <div class="product-item">
-                    <a href="#"><img src="<?php echo Url::to('@web/img/img_5.jpg'); ?>" alt="" class="product-img" />
-                        <p class="product-name">No-Iron Easy Care Sleeveless Shirt</p>
-                        <p class="product-price">$599.00</p>
-                    </a>
-                    <button class="product-add-to-cart-btn">Add to cart</button>
-                </div>
+
+                <?php foreach($allProducts as $key => $product) {; ?>
+
+                    <div class="product-item">
+                        <a href="#"><img src="<?php echo Url::to('@web/img/') . $product['main_photo']; ?>" alt="" class="product-img" />
+                            <p class="product-name"><?php echo $product['title']; ?></p>
+                            <p class="product-price"><?php echo $product['price']; ?></p>
+                        </a>
+                        <button class="product-add-to-cart-btn">Add to cart</button>
+                    </div>
+
+                <?php }; ?>
+
             </div>
         </div>
     </div>

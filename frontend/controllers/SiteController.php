@@ -19,6 +19,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\web\Response;
+use common\components\ProductViewer;
 
 /**
  * Site controller
@@ -93,11 +94,14 @@ class SiteController extends Controller
         $allSubCategories = CategoryViewer::getSubCategories();
         $allCategories = CategoryViewer::getCategories($allSubCategories);
 
+        $allProducts = ProductViewer::getAllProducts();
+
         $popularProducts = PopularRepository::findPopularProducts();
         $popularCategories = PopularRepository::findAllCategories();
 
         return $this->render('index', [
             'allCategories' => $allCategories,
+            'allProducts' => $allProducts,
             'popularProducts' => $popularProducts,
             'popularCategories' => $popularCategories,
         ]);

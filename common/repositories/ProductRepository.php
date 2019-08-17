@@ -3,6 +3,7 @@
 namespace common\repositories;
 
 use common\models\Product;
+use yii\db\ActiveRecord;
 use yii\web\NotFoundHttpException;
 
 class ProductRepository
@@ -21,5 +22,15 @@ class ProductRepository
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @return array|Product[]|ActiveRecord[]
+     */
+    public function findAllProducts()
+    {
+        return Product::find()
+            ->asArray()
+            ->all();
     }
 }
