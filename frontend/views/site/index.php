@@ -98,28 +98,31 @@ $this->title = 'Online Store | ITEA';
 
 <section class="shop-category">
     <div class="container">
+        <h2 class="category-title">Popular products</h2>
+        <div class="category-list">
+            <?php foreach ($popularProducts as $popularProduct) : ?>
+                <a href="" class="category-item">
+                    <img src="<?php echo Url::to('@web/img/' . $popularProduct['main_photo']); ?>" alt=""
+                         class="category-img" />
+                    <div class="category-name"><?php echo $popularProduct['title']; ?></div>
+                    <div class="category-link">shop now</div>
+                </a>
+            <?php endforeach; ?>
+        </div>
         <h2 class="category-title">Popular categories</h2>
         <div class="category-list">
-            <a href="" class="category-item">
-                <img src="<?php echo Url::to('@web/img/img_1.jpg'); ?>" alt="" class="category-img" />
-                <div class="category-name">Pants</div>
-                <div class="category-link">shop now</div>
-            </a>
-            <a href="" class="category-item">
-                <img src="<?php echo Url::to('@web/img/img_2.jpg'); ?>" alt="" class="category-img" />
-                <div class="category-name">Jumpsuits</div>
-                <div class="category-link">shop now</div>
-            </a>
-            <a href="" class="category-item">
-                <img src="<?php echo Url::to('@web/img/img_3.jpg'); ?>" alt="" class="category-img" />
-                <div class="category-name">Tops</div>
-                <div class="category-link">shop now</div>
-            </a>
-            <a href="" class="category-item">
-                <img src="<?php echo Url::to('@web/img/img_4.jpg'); ?>" alt="" class="category-img" />
-                <div class="category-name">Accessories</div>
-                <div class="category-link">shop now</div>
-            </a>
+
+            <?php foreach ($popularCategories as $name=>$popularCategory) : ?>
+                <a href="" class="category-item">
+                    <img src="<?php echo Url::to('@web/img/img_1.jpg'); ?>" alt=""
+                         class="category-img" />
+                    <div class="category-name">
+                        <?php echo $name . ' - ' . $popularCategory['count'] . ' ' . $popularCategory['end']; ?>
+                    </div>
+                    <div class="category-link">shop now</div>
+                </a>
+            <?php endforeach; ?>
         </div>
+
     </div>
 </section>
