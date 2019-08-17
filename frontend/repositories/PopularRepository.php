@@ -34,12 +34,43 @@ class PopularRepository
     {
         $limit = Yii::$app->params['countOfPopularCategories'];
 
-        $popularCategories = Product::find()
-            ->orderBy(['quantity' => SORT_DESC])
-            ->limit($limit)
-            ->all();
+        $categories = [];
+
+        foreach (Product::find()->all() as $product) {
+            $categories[] = $product->category->name;
+        }
+
+        $categories = array_count_values($categories);
+        arsort($categories);
+
+        $categories = array_slice($categories, 0, $limit);
+
+        $popularCategories = [];
+
+        foreach ($categories as $category => $count) {
+            $popularCategories[$category]['count'] = $count;
+            $popularCategories[$category]['end'] = self::getEndings($count);
+        }
 
         return $popularCategories;
+    }
+
+    /**
+     * @param array $category
+     * @return array $category
+     */
+    public static function getEndings($category)
+    {
+        $n = substr($category, - 1);
+        if (1 == $n) {
+            $end =  'товар';
+        } elseif ((2 == $n) || (3 == $n) || (4 == $n)) {
+            $end =  'товара';
+        } else {
+            $end = 'товаров';
+        }
+
+        return $end;
     }
 
     /**
@@ -73,25 +104,5 @@ class PopularRepository
     public static function getCategoryById($id)
     {
         return Category::findOne($id)->name;
-    }
-
-    /**
-     * @param array $category
-     * @return array $category
-     */
-    public static function getEndings($category)
-    {
-        foreach ($category as $key => $val) {
-            $n = substr($val['count'], - 1);
-            if (1 == $n) {
-                $category[$key]['end'] = 'товар';
-            } elseif ((2 == $n) || (3 == $n) || (4 == $n)) {
-                $category[$key]['end'] = 'товара';
-            } else {
-                $category[$key]['end'] = 'товаров';
-            }
-        }
-
-        return $category;
     }
 }

@@ -97,7 +97,7 @@ class SiteController extends Controller
         $allProducts = ProductViewer::getAllProducts();
 
         $popularProducts = PopularRepository::findPopularProducts();
-        $popularCategories = PopularRepository::findAllCategories();
+        $popularCategories = PopularRepository::findPopularCategories();
 
         return $this->render('index', [
             'allCategories' => $allCategories,

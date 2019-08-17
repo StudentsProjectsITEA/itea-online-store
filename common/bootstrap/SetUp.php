@@ -3,6 +3,7 @@
 namespace common\bootstrap;
 
 use common\components\CategoryViewer;
+use common\components\ProductViewer;
 use common\models\Product;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
