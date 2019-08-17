@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\components\CategoryViewer;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use frontend\repositories\PopularRepository;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
@@ -92,8 +93,13 @@ class SiteController extends Controller
         $allSubCategories = CategoryViewer::getSubCategories();
         $allCategories = CategoryViewer::getCategories($allSubCategories);
 
+        $popularProducts = PopularRepository::findPopularProducts();
+        $popularCategories = PopularRepository::findAllCategories();
+
         return $this->render('index', [
             'allCategories' => $allCategories,
+            'popularProducts' => $popularProducts,
+            'popularCategories' => $popularCategories,
         ]);
     }
 
@@ -116,7 +122,6 @@ class SiteController extends Controller
 
             return $this->render('index', [
                 'loginModel' => $loginModel,
-                'allCategories' => '',
             ]);
         }
     }
@@ -183,7 +188,6 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'signupModel' => $signupModel,
-            'allCategories' => '',
         ]);
     }
 
