@@ -7,12 +7,11 @@ use yii\web\YiiAsset;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Product */
-/* @var $category common\models\Category */
+/* @var $parentCategory common\models\Category */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
-$parentId = $category::findOne($model->category->parent_id)->name;
-$parentId === 'root' ? null : $this->params['breadcrumbs'][] = ['label' => $parentId, 'url' => ['category/view', 'id' => $model->category->parent_id]];
+$parentCategory === 'root' ? null : $this->params['breadcrumbs'][] = ['label' => $parentCategory, 'url' => ['category/view', 'id' => $model->category->parent_id]];
 $this->params['breadcrumbs'][] = ['label' => $model->category->name, 'url' => ['category/view', 'id' => $model->category->id]];
 $this->params['breadcrumbs'][] = ['label' => $model->brand->name, 'url' => ['brand/view', 'id' => $model->brand->id]];
 $this->params['breadcrumbs'][] = $this->title;

@@ -3,9 +3,6 @@
 namespace frontend\controllers;
 
 use common\models\Category;
-use common\models\Param;
-use common\models\ProductParamValue;
-use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -72,9 +69,12 @@ class ProductController extends Controller
     {
         $this->layout = 'product-layout';
 
+        $model = $this->repository->findProductById($id);
+        $parentCategory = Category::findOne($model->category->parent_id)->name;
+
         return $this->render('view', [
-            'model' => $this->repository->findProductById($id),
-            'category' => new Category(),
+            'model' => $model,
+            'parentCategory' => $parentCategory,
         ]);
     }
 
