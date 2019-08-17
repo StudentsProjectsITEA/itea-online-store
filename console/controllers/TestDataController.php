@@ -27,27 +27,28 @@ class TestDataController extends Controller
     private $categories = [
         'electronics' => ['notebooks', 'laptops', 'monitors', 'mobile'],
         'photos' => ['DSLR', 'lens', 'videos'],
-        'sport' => ['fishing', 'hiking', 'closes'],
-        'kinders' => ['plays', 'books', 'boots'],
+        'sport' => ['fishing', 'hiking', 'closes', 'boots'],
+        'kinders' => ['plays', 'books', 'sweets'],
     ];
 
     private $paramId = [];
     private $params = [];
 
     private $categoryParams = [
-        'notebooks' => ['Manufacturer', 'Screen diagonal', 'CPU', 'RAM', 'HDD'],
-        'laptops' => ['Manufacturer', 'Screen diagonal', 'CPU', 'RAM', 'HDD'],
+        'notebooks' => ['Manufacturer', 'Screen diagonal', 'CPU', 'RAM', 'HDD', 'Color'],
+        'laptops' => ['Manufacturer', 'Screen diagonal', 'CPU', 'RAM', 'HDD', 'Color'],
         'monitors' => ['Manufacturer', 'Screen diagonal'],
-        'mobile' => ['Manufacturer', 'Screen diagonal', 'CPU', 'RAM'],
-        'DSLR' => ['Manufacturer', 'Screen diagonal', 'Matrix'],
+        'mobile' => ['Manufacturer', 'Screen diagonal', 'CPU', 'RAM', 'Color'],
+        'DSLR' => ['Manufacturer', 'Matrix', 'Color'],
         'lens' => ['Manufacturer'],
-        'videos' => ['Manufacturer', 'Screen diagonal', 'Matrix'],
-        'fishing' => ['Manufacturer'],
-        'hiking' => ['Manufacturer'],
-        'closes' => ['Manufacturer', 'Clothing size'],
+        'videos' => ['Manufacturer', 'Screen diagonal', 'Matrix', 'Color'],
+        'fishing' => ['Manufacturer', 'Length', 'Color'],
+        'hiking' => ['Manufacturer', 'Color'],
+        'closes' => ['Manufacturer', 'Size', 'Color'],
+        'boots' => ['Manufacturer', 'Size', 'Color'],
         'plays' => ['Manufacturer', 'Age'],
         'books' => ['Manufacturer', 'Age'],
-        'boots' => ['Manufacturer', 'Shoe size'],
+        'sweets' => ['Manufacturer'],
     ];
 
     private $brandId = [];
@@ -76,7 +77,7 @@ class TestDataController extends Controller
             'quantity' => 5,
             'price' => 30300,
             'main_photo' => 'canon_eos_1.jpg',
-            'category' => 'videos',
+            'category' => 'DSLR',
             'brand' => 'Canon',
         ],
         'SONY Alpha a6500' => [
@@ -84,7 +85,7 @@ class TestDataController extends Controller
             'quantity' => 35,
             'price' => 27800,
             'main_photo' => 'sony_alpha_1.jpg',
-            'category' => 'lens',
+            'category' => 'videos',
             'brand' => 'Sony',
         ],
         'Adidas Size M Blue' => [
@@ -92,7 +93,7 @@ class TestDataController extends Controller
             'quantity' => 50,
             'price' => 750,
             'main_photo' => 'adidas_size_1.jpg',
-            'category' => 'sport',
+            'category' => 'hiking',
             'brand' => 'Adidas',
         ],
         'Puma Astro Kick' => [
@@ -100,7 +101,7 @@ class TestDataController extends Controller
             'quantity' => 1,
             'price' => 1600,
             'main_photo' => 'puma_astro_1.jpg',
-            'category' => 'closes',
+            'category' => 'boots',
             'brand' => 'Puma',
         ],
         'Kinder Delice' => [
@@ -108,7 +109,7 @@ class TestDataController extends Controller
             'quantity' => 100,
             'price' => 300,
             'main_photo' => 'kinder_delice_1.jpg',
-            'category' => 'kinders',
+            'category' => 'sweets',
             'brand' => 'Kinder',
         ],
         'Barbie Dreamtopia' => [
@@ -123,40 +124,59 @@ class TestDataController extends Controller
 
     private $productParams = [
         'APPLE A2159 MacBook Pro 13"' => [
-            'Diagonal' => '13,3',
-            'Memory' => '128 ГБ',
+            'Manufacturer' => 'USA',
+            'Screen diagonal' => '13,3"',
+            'CPU' => '4 Ghz',
+            'RAM' => '8 Gb',
+            'HDD' => '1 Tb',
             'OS' => 'Mac OS Mojave',
             'Color' => ['gray', 'white', 'black'],
         ],
         'Xiaomi Redmi Note 5A Gray' => [
+            'Manufacturer' => 'China',
+            'Screen diagonal' => '5"',
+            'CPU' => '2 Ghz',
+            'RAM' => '4 Gb',
             'Sim-card' => '2',
-            'Main camera, MP' => '13',
+            'Main camera' => '13 MP',
             'Battery capacity' => '3080',
             'Color' => 'gray',
         ],
         'CANON EOS 80D' => [
+            'Manufacturer' => 'Japan',
+            'Screen diagonal' => '3"',
+            'Matrix' => 'Discreet',
             'HDR' => 'Allowed',
-            'Diagonal' => '3"',
+            'Color' => 'black',
         ],
         'SONY Alpha a6500' => [
+            'Manufacturer' => 'Japan',
+            'Screen diagonal' => '4"',
             'Nutrition' => 'NP-FW50',
             'Movie Frame Rate' => '4K - 30 кадр/сек, Full HD - 120 кадр/сек',
             'Matrix' => 'APS-C',
+            'Color' => 'grey',
         ],
         'Adidas Size M Blue' => [
+            'Manufacturer' => 'USA',
             'Type' => 'пеpчатки для фитнеса, культуpизма',
             'Genre' => 'unisex',
             'Material' => 'Lycra',
+            'Color' => ['grey', 'white'],
         ],
         'Puma Astro Kick' => [
+            'Manufacturer' => 'China',
             'Size' => ['39', '42', '43', '45'],
             'Color' => ['brown', 'pink', 'black'],
         ],
         'Kinder Delice' => [
+            'Manufacturer' => 'Poland',
             'Filling' => 'молочный',
             'Packaging' => 'Картонная коробка',
         ],
         'Barbie Dreamtopia' => [
+            'Manufacturer' => 'China',
+            'Age' => '2019',
             'Brand Registration Country' => 'USA',
             'Warranty' => '14 дней',
         ],
