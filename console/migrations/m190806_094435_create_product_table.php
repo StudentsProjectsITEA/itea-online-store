@@ -1,5 +1,6 @@
 <?php
 
+use yii\base\NotSupportedException;
 use yii\db\Migration;
 
 /**
@@ -10,7 +11,7 @@ class m190806_094435_create_product_table extends Migration
     /**
      * {@inheritdoc}
      *
-     * @throws \yii\base\NotSupportedException
+     * @throws NotSupportedException
      */
     public function safeUp()
     {
