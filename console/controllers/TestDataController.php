@@ -210,36 +210,48 @@ class TestDataController extends Controller
             'discount' => null,
             'product' => 'APPLE A2159 MacBook Pro 13"',
             'order' => 'Заказ #329589',
+            'color_value' => 'gray',
+            'size_value' => null,
         ],
         1 => [
             'quantity' => 2,
             'discount' => null,
             'product' => 'Puma Astro Kick',
             'order' => 'Заказ #329589',
+            'color_value' => 'pink',
+            'size_value' => '42',
         ],
         2 => [
             'quantity' => 1,
             'discount' => null,
             'product' => 'Xiaomi Redmi Note 5A Gray',
             'order' => 'Заказ #234212',
+            'color_value' => 'gray',
+            'size_value' => null,
         ],
         3 => [
             'quantity' => 1,
             'discount' => null,
             'product' => 'CANON EOS 80D',
             'order' => 'Заказ #142124',
+            'color_value' => 'black',
+            'size_value' => null,
         ],
         4 => [
             'quantity' => 3,
             'discount' => null,
             'product' => 'Barbie Dreamtopia',
             'order' => 'Заказ #142124',
+            'color_value' => null,
+            'size_value' => null,
         ],
         5 => [
             'quantity' => 1,
             'discount' => 10,
             'product' => 'Kinder Delice',
             'order' => 'Заказ #142124',
+            'color_value' => null,
+            'size_value' => null,
         ],
     ];
 
@@ -505,6 +517,8 @@ class TestDataController extends Controller
                 'discount' => $orderProducts['discount'],
                 'product_id' => $this->productId[$orderProducts['product']],
                 'order_id' => $this->orderId[$orderProducts['order']],
+                'color_value' => $orderProducts['color_value'],
+                'size_value' => $orderProducts['size_value'],
             ])->execute();
         }
 
