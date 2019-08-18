@@ -3,11 +3,9 @@
 namespace frontend\controllers;
 
 use common\models\Order;
-use common\models\Product;
-use common\models\ProductOrder;
+use common\repositories\OrderRepository;
 use Exception;
 use frontend\repositories\UserRepository;
-use Ramsey\Uuid\Uuid;
 use Throwable;
 use Yii;
 use frontend\models\User;
@@ -23,12 +21,14 @@ use yii\filters\VerbFilter;
 class UserController extends Controller
 {
     private $repository;
+    private $orderRepository;
 
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->layout = 'main-layout';
         $this->repository = new UserRepository();
+        $this->orderRepository = new OrderRepository();
     }
 
     /**
@@ -70,14 +70,7 @@ class UserController extends Controller
     public function actionView($id)
     {
         $model = $this->repository->findUserById($id);
-        $userOrders = Order::findAll(['user_id' => $model->id]);
-        $products = [];
-        foreach ($userOrders as $userOrder) {
-            $productOrders = ProductOrder::findAll(['order_id' => $userOrder->id]);
-            foreach ($productOrders as $productOrder) {
-                $products[$userOrder->id][] = Product::findOne(['id' => $productOrder->product_id]);
-            };
-        }
+        $userOrders = $this->orderRepository->findOrdersByUserId($model->id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -86,7 +79,6 @@ class UserController extends Controller
         return $this->render('view', [
             'model' => $model,
             'userOrders' => $userOrders,
-            'products' => $products,
         ]);
     }
 
@@ -106,11 +98,6 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'userId' => Uuid::uuid4()->toString(),
-            'mobile' => 380,
-            'email' => 'email@example.com',
-            'createdTime' => time(),
-            'updatedTime' => time(),
         ]);
     }
 
