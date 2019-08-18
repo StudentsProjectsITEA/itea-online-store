@@ -1,17 +1,19 @@
 <?php
 
-use common\models\Param;
 use yii\helpers\Html;
-use yii\helpers\Url;
+use yii\web\View;
 use yii\web\YiiAsset;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Product */
 /* @var $parentCategory common\models\Category */
+/* @var $params array */
+/* @var $colorValues array */
+/* @var $sizeValues array */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
-$parentCategory === 'root' ? null : $this->params['breadcrumbs'][] = ['label' => $parentCategory, 'url' => ['category/view', 'id' => $model->category->parent_id]];
+$this->params['breadcrumbs'][] = ['label' => $parentCategory, 'url' => ['category/view', 'id' => $model->category->parent_id]];
 $this->params['breadcrumbs'][] = ['label' => $model->category->name, 'url' => ['category/view', 'id' => $model->category->id]];
 $this->params['breadcrumbs'][] = ['label' => $model->brand->name, 'url' => ['brand/view', 'id' => $model->brand->id]];
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,6 +26,8 @@ YiiAsset::register($this);
 
     <?php echo $this->render('information', [
         'model' => $model,
+        'colorValues' => $colorValues,
+        'sizeValues' => $sizeValues,
     ]) ?>
 </section>
 
@@ -41,9 +45,32 @@ YiiAsset::register($this);
 
             <?php echo $this->render('parameters', [
                 'model' => $model,
+                'params' => $params,
+                'colorValues' => $colorValues,
+                'sizeValues' => $sizeValues,
             ]) ?>
 
             <?php echo $this->render('comments') ?>
         </div>
     </div>
 </section>
+
+<?php $this->registerJs("
+        var galleryThumbs = new Swiper('.gallery-thumbs', {
+            spaceBetween: 10,
+            slidesPerView: 4,
+            freeMode: true,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+        });
+        var galleryTop = new Swiper('.gallery-top', {
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            thumbs: {
+                swiper: galleryThumbs
+            }
+        });
+    ", View::POS_END) ?>

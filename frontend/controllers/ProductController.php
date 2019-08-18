@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Category;
+use common\models\ProductParamValue;
 use common\repositories\ProductRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -67,14 +68,27 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
-        $this->layout = 'product-layout';
-
         $model = $this->repository->findProductById($id);
         $parentCategory = Category::findOne($model->category->parent_id)->name;
+        $params = [];
+        $colorValues = [];
+        $sizeValues = [];
+        foreach (ProductParamValue::findAll(['product_id' => $model->id]) as $productParamValue) {
+            if ($productParamValue->param->name === 'Color') {
+                $colorValues[] = $productParamValue->value;
+            } elseif ($productParamValue->param->name === 'Size') {
+                $sizeValues[] = $productParamValue->value;
+            } else {
+                $params[$productParamValue->param->name] = $productParamValue->value;
+            }
+        }
 
         return $this->render('view', [
             'model' => $model,
             'parentCategory' => $parentCategory,
+            'params' => $params,
+            'colorValues' => $colorValues,
+            'sizeValues' => $sizeValues,
         ]);
     }
 
