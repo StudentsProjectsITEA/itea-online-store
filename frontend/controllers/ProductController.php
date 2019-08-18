@@ -2,8 +2,7 @@
 
 namespace frontend\controllers;
 
-use common\models\Category;
-use common\models\ProductParamValue;
+use common\components\ProductParamsFinder;
 use common\repositories\ProductRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -69,26 +68,16 @@ class ProductController extends Controller
     public function actionView($id)
     {
         $model = $this->repository->findProductById($id);
-        $parentCategory = Category::findOne($model->category->parent_id)->name;
-        $params = [];
-        $colorValues = [];
-        $sizeValues = [];
-        foreach (ProductParamValue::findAll(['product_id' => $model->id]) as $productParamValue) {
-            if ($productParamValue->param->name === 'Color') {
-                $colorValues[] = $productParamValue->value;
-            } elseif ($productParamValue->param->name === 'Size') {
-                $sizeValues[] = $productParamValue->value;
-            } else {
-                $params[$productParamValue->param->name] = $productParamValue->value;
-            }
-        }
+        $parentCategory = $this->repository->findProductParentCategoryName($model->category->parent_id);
+        $productParams = new ProductParamsFinder();
+        $productParams->recordProductParams($this->repository->findAllProductParamValuesById($model->id));
 
         return $this->render('view', [
             'model' => $model,
             'parentCategory' => $parentCategory,
-            'params' => $params,
-            'colorValues' => $colorValues,
-            'sizeValues' => $sizeValues,
+            'params' => $productParams->getParams(),
+            'colorValues' => $productParams->getColorValues(),
+            'sizeValues' => $productParams->getSizeValues(),
         ]);
     }
 

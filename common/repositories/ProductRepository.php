@@ -2,7 +2,9 @@
 
 namespace common\repositories;
 
+use common\models\Category;
 use common\models\Product;
+use common\models\ProductParamValue;
 use yii\web\NotFoundHttpException;
 
 class ProductRepository
@@ -21,5 +23,25 @@ class ProductRepository
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function findProductParentCategoryName(string $id): string
+    {
+        return Category::findOne($id)->name;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return array
+     */
+    public function findAllProductParamValuesById(string $id): array
+    {
+        return ProductParamValue::findAll(['product_id' => $id]);
     }
 }
