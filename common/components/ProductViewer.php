@@ -2,7 +2,10 @@
 
 namespace common\components;
 
+use common\models\Product;
 use common\repositories\ProductRepository;
+use Yii;
+use yii\data\Pagination;
 
 /**
  * Class CategoryViewer
@@ -11,11 +14,32 @@ use common\repositories\ProductRepository;
  */
 class ProductViewer
 {
-    public static function getAllProducts ()
+    public static function getAllProducts()
     {
-        $allProducts = [];
         $products = (new ProductRepository)->findAllProducts();
-        $count = count($products);
+
         return $products;
+    }
+
+    public static function getProductsWithPagination($orderBy = '')
+    {
+        if ('' === $orderBy) {
+            $orderBy = Yii::$app->params['productsOrderBy'];
+        }
+
+        $productsCount = Product::find()->count();
+        $paginationlimit = Yii::$app->params['countOfPopularCategories'];
+
+        $pagination = new Pagination([
+            'defaultPageSize' => $paginationlimit,
+            'totalCount' => $productsCount,
+        ]);
+
+        $allProducts = Product::find()->orderBy($orderBy)
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        return array($allProducts, $pagination);
     }
 }

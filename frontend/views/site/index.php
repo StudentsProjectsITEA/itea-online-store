@@ -1,11 +1,14 @@
 <?php
 
+use yii\widgets\LinkPager;
+
 /**
  * @var $this yii\web\View
  * @var $allCategories Category
  * @var $allProducts
  * @var $popularProducts
  * @var $popularCategories
+ * @var $pagination
  */
 
 use common\models\Category;
@@ -59,22 +62,40 @@ $this->title = 'Online Store | ITEA';
         </div>
     </div>
 
+<!--    <div class="container">-->
+<!--        <ul class="store-pagination" id = "id-pagination">-->
+<!--            <li class="nav-links">-->
+<!--                <a href="#"><i class="fas fa-arrow-left"></i></a>-->
+<!--            </li>-->
+<!--            <li class="active"><a href="#">1</a></li>-->
+<!--            <li><a href="#">2</a></li>-->
+<!--            <li><a href="#">3</a></li>-->
+<!--            <li><a href="#">4</a></li>-->
+<!--            <li><a href="#">5</a></li>-->
+<!--            <li><a href="#">6</a></li>-->
+<!--            <li class="nav-links">-->
+<!--                <a href="#"><i class="fas fa-arrow-right"></i></a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+
     <div class="container">
-        <ul class="store-pagination">
-            <li class="nav-links">
-                <a href="#"><i class="fas fa-arrow-left"></i></a>
-            </li>
-            <li class="active"><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">6</a></li>
-            <li class="nav-links">
-                <a href="#"><i class="fas fa-arrow-right"></i></a>
-            </li>
-        </ul>
+        <?php echo LinkPager::widget([
+            'pagination' => $pagination,
+            'maxButtonCount' => Yii::$app->params['maxButtonPaginationCount'],
+            'options' => [
+                'tag' => 'ul',
+                'class' => 'store-pagination',
+            ],
+            'linkOptions' => [
+                'tag' => 'li',
+            ],
+            'activePageCssClass' => 'active',
+            'prevPageLabel' =>  '<li class="nav-links"><a href="#"><i class="fas fa-arrow-left"></i></a></li>',
+            'nextPageLabel' =>  '<li class="nav-links"><a href="#"><i class="fas fa-arrow-right"></i></a></li>',
+        ]) ?>
     </div>
+
 </section>
 
 <section class="shop-category">
@@ -90,6 +111,7 @@ $this->title = 'Online Store | ITEA';
                 </a>
             <?php endforeach; ?>
         </div>
+
         <h2 class="category-title">Popular categories</h2>
         <div class="category-list">
 

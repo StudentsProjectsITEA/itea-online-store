@@ -3,12 +3,14 @@
 namespace frontend\controllers;
 
 use common\components\CategoryViewer;
+use common\models\Product;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use frontend\repositories\PopularRepository;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\data\Pagination;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -94,7 +96,8 @@ class SiteController extends Controller
         $allSubCategories = CategoryViewer::getSubCategories();
         $allCategories = CategoryViewer::getCategories($allSubCategories);
 
-        $allProducts = ProductViewer::getAllProducts();
+        // $allProducts = ProductViewer::getAllProducts();
+        list($allProducts, $pagination) = ProductViewer::getProductsWithPagination();
 
         $popularProducts = PopularRepository::findPopularProducts();
         $popularCategories = PopularRepository::findPopularCategories();
@@ -104,6 +107,7 @@ class SiteController extends Controller
             'allProducts' => $allProducts,
             'popularProducts' => $popularProducts,
             'popularCategories' => $popularCategories,
+            'pagination' => $pagination,
         ]);
     }
 
