@@ -30,8 +30,7 @@ abstract class BaseApplication extends yii\base\Application
  * Class WebApplication
  * Include only Web application related components here.
  *
- * @property Admin $admin
- * @property User $user
+ * @property \devanych\cart\Cart $cart
  */
 class WebApplication extends yii\web\Application
 {
