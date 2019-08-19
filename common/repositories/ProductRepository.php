@@ -2,8 +2,10 @@
 
 namespace common\repositories;
 
+use common\models\Category;
 use common\models\Product;
 use yii\db\ActiveRecord;
+use common\models\ProductParamValue;
 use yii\web\NotFoundHttpException;
 
 class ProductRepository
@@ -15,7 +17,7 @@ class ProductRepository
      * @return Product the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function findProductById($id)
+    public function findProductById(string $id)
     {
         if (($model = Product::findOne($id)) !== null) {
             return $model;
@@ -32,5 +34,25 @@ class ProductRepository
         return Product::find()
             ->asArray()
             ->all();
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function findProductParentCategoryName(string $id): string
+    {
+        return Category::findOne($id)->name;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return array
+     */
+    public function findAllProductParamValuesById(string $id): array
+    {
+        return ProductParamValue::findAll(['product_id' => $id]);
     }
 }

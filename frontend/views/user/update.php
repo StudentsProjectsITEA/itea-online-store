@@ -14,13 +14,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <h1><?php echo Html::encode($this->title) ?></h1>
 
-    <?php echo $this->render('form', [
+    <?php echo $this->render('settings-form', [
         'model' => $model,
-        'userId' => null,
-        'mobile' => null,
-        'email' => null,
-        'createdTime' => null,
-        'updatedTime' => null,
     ]) ?>
 
 </div>

@@ -1,49 +1,56 @@
 <?php
 
-use yii\helpers\Html;
 use yii\web\YiiAsset;
-use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\User */
+/* @var $userOrders array */
 
-$this->title = $model->id;
+$this->title = 'My Account';
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
-<div class="user-view">
+<section class="section-profile">
+    <div class="section-profile-main container">
+        <ul class="section-profile-navmenu">
+            <li class="section-profile-navmenu-item active" data-target="dashboard">
+                Personal Information
+            </li>
+            <li class="section-profile-navmenu-item" data-target="personal-info">
+                Settings
+            </li>
+            <li class="section-profile-navmenu-item" data-target="change-password">
+                Change Password
+            </li>
+            <li class="section-profile-navmenu-item" data-target="addresses">
+                My addresses
+            </li>
+            <li class="section-profile-navmenu-item" data-target="order-history">
+                My Orders
+            </li>
+            <li class="section-profile-navmenu-item logout">Logout</li>
+        </ul>
+        <div class="section-profile-content">
+            <?php echo $this->render('dashboard', [
+                'model' => $model,
+            ]) ?>
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+            <?php echo $this->render('settings-form', [
+                'model' => $model,
+            ]); ?>
 
-    <p>
-        <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+            <?php echo $this->render('change-password', [
+                'model' => $model,
+            ]); ?>
 
-    <?php echo DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'username',
-            'first_name',
-            'last_name',
-            'mobile',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
-            'email:email',
-            'verification_token',
-            'status_id',
-            'created_time:datetime',
-            'updated_time:datetime',
-        ],
-    ]) ?>
+            <?php echo $this->render('addresses.php', [
+                'model' => $model,
+            ]); ?>
 
-</div>
+            <?php echo $this->render('orders', [
+                'userOrders' => $userOrders,
+            ]) ?>
+        </div>
+    </div>
+</section>

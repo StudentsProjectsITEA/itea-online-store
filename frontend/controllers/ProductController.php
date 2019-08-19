@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\components\ProductParamsFinder;
 use common\repositories\ProductRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -66,8 +67,17 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->repository->findProductById($id);
+        $parentCategory = $this->repository->findProductParentCategoryName($model->category->parent_id);
+        $productParams = new ProductParamsFinder();
+        $productParams->recordProductParams($this->repository->findAllProductParamValuesById($model->id));
+
         return $this->render('view', [
-            'model' => $this->repository->findProductById($id),
+            'model' => $model,
+            'parentCategory' => $parentCategory,
+            'params' => $productParams->getParams(),
+            'colorValues' => $productParams->getColorValues(),
+            'sizeValues' => $productParams->getSizeValues(),
         ]);
     }
 

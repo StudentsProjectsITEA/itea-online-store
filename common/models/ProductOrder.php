@@ -13,6 +13,8 @@ use yii\db\ActiveRecord;
  * @property int $discount
  * @property string $product_id
  * @property string $order_id
+ * @property string $color_value
+ * @property string $size_value
  *
  * @property Order $order
  * @property Product $product

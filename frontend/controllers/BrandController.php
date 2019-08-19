@@ -2,33 +2,30 @@
 
 namespace frontend\controllers;
 
-use common\models\Order;
-use common\repositories\OrderRepository;
+use common\repositories\BrandRepository;
 use Exception;
-use frontend\repositories\UserRepository;
+use Ramsey\Uuid\Uuid;
 use Throwable;
 use Yii;
-use frontend\models\User;
-use common\models\UserSearch;
+use common\models\Brand;
+use backend\models\BrandSearch;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * UserController implements the CRUD actions for User model.
+ * BrandController implements the CRUD actions for Brand model.
  */
-class UserController extends Controller
+class BrandController extends Controller
 {
     private $repository;
-    private $orderRepository;
-
+    
     public function __construct($id, $module, $config = [])
     {
         parent::__construct($id, $module, $config);
-        $this->layout = 'main-layout';
-        $this->repository = new UserRepository();
-        $this->orderRepository = new OrderRepository();
+        $this->layout = 'main';
+        $this->repository = new BrandRepository();
     }
 
     /**
@@ -47,12 +44,12 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
+     * Lists all Brand models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
+        $searchModel = new BrandSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -62,35 +59,27 @@ class UserController extends Controller
     }
 
     /**
-     * Displays a single User model.
+     * Displays a single Brand model.
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
-        $model = $this->repository->findUserById($id);
-        $userOrders = $this->orderRepository->findOrdersByUserId($model->id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
         return $this->render('view', [
-            'model' => $model,
-            'userOrders' => $userOrders,
+            'model' => $this->repository->findBrandById($id),
         ]);
     }
 
     /**
-     * Creates a new User model.
+     * Creates a new Brand model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      * @throws Exception
      */
     public function actionCreate()
     {
-        $model = new User();
+        $model = new Brand();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -98,11 +87,12 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'brandId' => Uuid::uuid4()->toString(),
         ]);
     }
 
     /**
-     * Updates an existing User model.
+     * Updates an existing Brand model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -110,7 +100,7 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findUserById($id);
+        $model = $this->repository->findBrandById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -122,7 +112,7 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing Brand model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -132,7 +122,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findUserById($id)->delete();
+        $this->repository->findBrandById($id)->delete();
 
         return $this->redirect(['index']);
     }
