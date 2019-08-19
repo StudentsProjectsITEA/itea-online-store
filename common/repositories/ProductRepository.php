@@ -55,4 +55,14 @@ class ProductRepository
     {
         return ProductParamValue::findAll(['product_id' => $id]);
     }
+
+    /**
+     * @param string $name
+     *
+     * @return Product|null
+     */
+    public function findProductByName(string $name)
+    {
+        return Product::findOne(['title' => $name]);
+    }
 }

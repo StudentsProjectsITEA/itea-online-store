@@ -4,12 +4,15 @@ namespace frontend\controllers;
 
 use common\components\CategoryViewer;
 use common\models\Product;
+use common\repositories\CategoryRepository;
+use common\repositories\ProductRepository;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use frontend\repositories\PopularRepository;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -102,12 +105,23 @@ class SiteController extends Controller
         $popularProducts = PopularRepository::findPopularProducts();
         $popularCategories = PopularRepository::findPopularCategories();
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find(),
+            'pagination' => [
+                'pageSize' => 4,
+            ],
+        ]);
+
+
         return $this->render('index', [
             'allCategories' => $allCategories,
             'allProducts' => $allProducts,
             'popularProducts' => $popularProducts,
             'popularCategories' => $popularCategories,
             'pagination' => $pagination,
+            'categoriesFind' => new CategoryRepository(),
+            'productsFind' => new ProductRepository(),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

@@ -39,4 +39,14 @@ class CategoryRepository
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * @param string $name
+     *
+     * @return Category|null
+     */
+    public function findCategoryByName(string $name)
+    {
+        return Category::findOne(['name' => $name]);
+    }
 }
