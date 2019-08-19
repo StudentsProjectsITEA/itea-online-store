@@ -4,9 +4,9 @@
 
 /* @var $content string */
 
+use frontend\repositories\UserRepository;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 
@@ -45,7 +45,9 @@ AppAsset::register($this);
                 <button class="header-login-btn" id="logInBtn">Log in</button>
                 <div class="user-info">
 
-                    <div class="user-avatar"><a href="<?php echo Url::toRoute('account', true); ?>"><img alt="user-avatar"
+                    <div class="user-avatar"><a href="<?php echo Url::to([
+                            'user/view', 'id' => (new UserRepository())->findUserByName('Vasya')->id,
+                        ]) ?>"><img alt="user-avatar"
                                                   src="<?php echo Url::to('@web/img/featured.png'); ?>"></div>
                     Vasya Pupkin</a>
                 </div>
