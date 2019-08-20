@@ -97,10 +97,10 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->repository->findProductById($id);
-        $parentCategory = $this->repository->findProductParentCategoryName($model->category->parent_id);
+        $model = $this->productRepository->findProductById($id);
+        $parentCategory = $this->productRepository->findProductParentCategoryName($model->category->parent_id);
         $productParams = new ProductParamsFinder();
-        $productParams->recordProductParams($this->repository->findAllProductParamValuesById($model->id));
+        $productParams->recordProductParams($this->productRepository->findAllProductParamValuesById($model->id));
 
         return $this->render('view', [
             'model' => $model,
@@ -145,7 +145,7 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findProductById($id);
+        $model = $this->productRepository->findProductById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -167,7 +167,7 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findProductById($id)->delete();
+        $this->productRepository->findProductById($id)->delete();
 
         return $this->redirect(['index']);
     }
