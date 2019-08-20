@@ -116,22 +116,8 @@ class SiteController extends Controller
 //        $allProducts = ProductViewer::getAllProducts();
         list($allProducts, $pagination) = (new ProductViewer())->getProductsWithPagination();
 
-//        $popularProducts = (new PopularRepository())->findPopularProducts();
-//        $popularCategories = (new PopularRepository())->findPopularCategories();
         $popularProducts = $this->popularRepository->findPopularProducts();
         $popularCategories = $this->popularRepository->findPopularCategories();
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
-            'pagination' => [
-                'pageSize' => 4,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'quantity' => SORT_DESC,
-                ]
-            ],
-        ]);
 
         return $this->render('index', [
             'allCategories' => $allCategories,
@@ -141,7 +127,6 @@ class SiteController extends Controller
             'pagination' => $pagination,
             'categoriesFind' => new CategoryRepository(),
             'productsFind' => new ProductRepository(),
-            'dataProvider' => $dataProvider,
         ]);
     }
 

@@ -14,10 +14,13 @@ use yii\widgets\ListView;
  * @var $allCategories
  * @var $pagination
  * @var $productsFind
+ * @var $dataProvider
  */
 
 $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
+
+var_dump($dataProvider);
 
 ?>
 

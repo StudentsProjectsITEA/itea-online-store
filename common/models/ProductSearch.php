@@ -66,19 +66,11 @@ class ProductSearch extends Product
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'quantity' => $this->quantity,
-            'price' => $this->price,
-            'is_deleted' => $this->is_deleted,
-            'created_time' => $this->created_time,
-            'updated_time' => $this->updated_time,
+            'category' => $this->category,
+            'brand' => $this->brand,
         ]);
 
-        $query->andFilterWhere(['ilike', 'id', $this->id])
-            ->andFilterWhere(['ilike', 'title', $this->title])
-            ->andFilterWhere(['ilike', 'description', $this->description])
-            ->andFilterWhere(['ilike', 'main_photo', $this->main_photo])
-            ->andFilterWhere(['ilike', 'category_id', $this->category_id])
-            ->andFilterWhere(['ilike', 'brand_id', $this->brand_id]);
+        $query->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
 
         return $dataProvider;
     }

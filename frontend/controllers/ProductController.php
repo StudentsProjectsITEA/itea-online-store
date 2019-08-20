@@ -61,7 +61,7 @@ class ProductController extends Controller
         $this->layout = 'index-layout';
 
         $searchModel = new ProductSearch();
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $allProducts = ProductViewer::getAllProducts();
         $allCategories = (new CategoryRepository())->getMainCategories();
@@ -71,11 +71,6 @@ class ProductController extends Controller
         $pagination = new Pagination([
             'defaultPageSize' => $paginationLimit,
             'totalCount' => Product::find()->count(),
-        ]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
-
         ]);
 
         return $this->render('index', [

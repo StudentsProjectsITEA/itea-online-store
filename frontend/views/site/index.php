@@ -29,7 +29,6 @@ $this->title = 'Online Store | ITEA';
     'productsFind' => $productsFind,
 ]) ?>
 
-
 <section class="shop-category">
     <div class="container">
 
