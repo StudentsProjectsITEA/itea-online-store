@@ -1,9 +1,12 @@
 <?php
 
+use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\YiiAsset;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\User */
+/* @var $changePasswordModel frontend\models\ChangePasswordForm */
 /* @var $userOrders array */
 
 $this->title = 'My Account';
@@ -23,13 +26,19 @@ YiiAsset::register($this);
             <li class="section-profile-navmenu-item" data-target="change-password">
                 Change Password
             </li>
-            <li class="section-profile-navmenu-item" data-target="addresses">
-                My addresses
-            </li>
+            <!--
+                <li class="section-profile-navmenu-item" data-target="addresses">
+                    My addresses
+                </li>
+            -->
             <li class="section-profile-navmenu-item" data-target="order-history">
                 My Orders
             </li>
-            <li class="section-profile-navmenu-item logout">Logout</li>
+            <a class="logout" href="<?php echo Url::to(['user/logout']) ?>">
+            <li class="section-profile-navmenu-item logout" data-target="logout">
+                Logout
+            </li>
+            </a>
         </ul>
         <div class="section-profile-content">
             <?php echo $this->render('dashboard', [
@@ -42,15 +51,20 @@ YiiAsset::register($this);
 
             <?php echo $this->render('change-password', [
                 'model' => $model,
+                'changePasswordModel' => $changePasswordModel,
             ]); ?>
 
-            <?php echo $this->render('addresses.php', [
+            <?php /* echo $this->render('addresses', [
                 'model' => $model,
-            ]); ?>
+            ]); */ ?>
 
             <?php echo $this->render('orders', [
                 'userOrders' => $userOrders,
             ]) ?>
+
+            <?php
+                echo Html::beginForm(['logout'], 'post', ['data-target' => 'logout']) . Html::endForm();
+            ?>
         </div>
     </div>
 </section>

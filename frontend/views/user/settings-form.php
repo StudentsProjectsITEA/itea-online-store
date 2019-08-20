@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 ?>
 
 <?php $form = ActiveForm::begin([
+    'action' => ['update', 'id' => $model->id],
     'options' => [
         'id' => 'formPersonalInfo',
         'class' => 'section-profile-content-item',

@@ -2,9 +2,9 @@
 
 namespace common\bootstrap;
 
-use common\components\CategoryViewer;
-use common\components\ProductViewer;
-use common\models\Product;
+use common\repositories\CategoryRepository;
+use frontend\models\ChangePasswordForm;
+use frontend\repositories\UserRepository;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
@@ -29,13 +29,8 @@ class SetUp implements BootstrapInterface
      */
     public function bootstrap ($app)
     {
-        $this->container->setDefinitions([
-            CategoryViewer::class => [
-                ['class' => CategoryViewer::class]
-            ],
-            ProductViewer::class => [
-                ['class' => ProductViewer::class]
-            ],
-        ]);
+        $this->container->setSingleton(UserRepository::class);
+        $this->container->setSingleton(CategoryRepository::class);
+        $this->container->setSingleton(ChangePasswordForm::class);
     }
 }

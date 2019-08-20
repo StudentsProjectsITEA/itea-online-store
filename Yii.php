@@ -31,7 +31,6 @@ abstract class BaseApplication extends yii\base\Application
  * Include only Web application related components here.
  *
  * @property Admin $admin
- * @property User $user
  */
 class WebApplication extends yii\web\Application
 {
