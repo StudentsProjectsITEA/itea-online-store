@@ -64,20 +64,12 @@ class ProductController extends Controller
 
         $allBrands = (new BrandRepository())->findBrands();
 
-//        $dataProvider = new ActiveDataProvider([
-//            'query' => Product::find(),
-//            'pagination' => [
-//                'pageSize' => 4,
-//            ],
-//        ]);
-
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            //'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'allProducts' => $allProducts,
             'allCategories' => $allCategories,
             'allBrands' => $allBrands,
-            'productsFind' => new ProductRepository(),
             'pagination' => 4,
         ]);
     }

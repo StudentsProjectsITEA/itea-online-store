@@ -46,6 +46,14 @@ class ProductSearch extends Product
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 4,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'quantity' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $this->load($params);
