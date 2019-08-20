@@ -14,6 +14,7 @@ use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
 use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -24,14 +25,16 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends Controller
 {
-    private $repository;
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
     
     public function __construct($id, $module, ProductRepository $productRepository, $config = [])
     {
         $this->layout = 'main-layout';
-        $this->repository = $productRepository;
+        $this->productRepository = $productRepository;
         parent::__construct($id, $module, $config);
-
     }
 
     /**
@@ -55,22 +58,34 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = 'index-layout';
+
         $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $allProducts = ProductViewer::getAllProducts();
-
         $allCategories = (new CategoryRepository())->getMainCategories();
-
         $allBrands = (new BrandRepository())->findBrands();
 
+        $paginationLimit = Yii::$app->params['countOfPopularCategories'];
+        $pagination = new Pagination([
+            'defaultPageSize' => $paginationLimit,
+            'totalCount' => Product::find()->count(),
+        ]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find(),
+
+        ]);
+
         return $this->render('index', [
-            //'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
             'allProducts' => $allProducts,
             'allCategories' => $allCategories,
             'allBrands' => $allBrands,
-            'pagination' => 4,
+            'productsFind' => new ProductRepository(),
+            'dataProvider' => $dataProvider,
+            'pagination' => $pagination,
         ]);
     }
 

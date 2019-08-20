@@ -10,7 +10,7 @@
 
 <div class="category-filter">
 
-    <h3 class="filter-title">ФИЛЬТР :</h3>
+    <h2 class="filter-title">ФИЛЬТР :</h2>
     <form action="#" method="GET">
 
         <ul class="category-tree">
@@ -28,7 +28,7 @@
                 </ul>
             </li>
             <li class="category-tree-item">
-                Бренд
+                Бренды
                 <ul class="category-tree-item-secondary">
                     <?php foreach ($allBrands as $brand) : ?>
                         <li>

@@ -50,7 +50,7 @@ class PopularRepository
 
         foreach ($categories as $category => $count) {
             $popularCategories[$category]['count'] = $count;
-            $popularCategories[$category]['end'] = self::getEndings($count);
+            $popularCategories[$category]['end'] = $this->getEndings($count);
         }
 
         return $popularCategories;
@@ -60,7 +60,7 @@ class PopularRepository
      * @param string $category
      * @return string $category
      */
-    public static function getEndings($category)
+    public function getEndings($category)
     {
         $n = substr($category, - 1);
         if (1 == $n) {
@@ -77,7 +77,7 @@ class PopularRepository
     /**
      * @return string
      */
-    public static function findAllCategories()
+    public function findAllCategories()
     {
         // Based on Product table
         // In case base on Category table use $allCategories = Category::find()->all()
@@ -85,7 +85,7 @@ class PopularRepository
 
         $category = [];
         foreach ($allProducts as $item) {
-            $cat = self::getCategoryById($item['category_id']);
+            $cat = $this->getCategoryById($item['category_id']);
             if (! array_key_exists($cat , $category)) {
                 $category[$cat]['count'] = 1;
             } else {
@@ -93,7 +93,7 @@ class PopularRepository
             }
         }
 
-        $category = self::getEndings($category);
+        $category = $this->getEndings($category);
 
         return $category;
     }
@@ -102,7 +102,7 @@ class PopularRepository
      * @param $id
      * @return string
      */
-    public static function getCategoryById($id)
+    public function getCategoryById($id)
     {
         return Category::findOne($id)->name;
     }
