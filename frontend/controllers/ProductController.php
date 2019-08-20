@@ -3,6 +3,9 @@
 namespace frontend\controllers;
 
 use common\components\ProductParamsFinder;
+use common\components\ProductViewer;
+use common\repositories\BrandRepository;
+use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -10,6 +13,7 @@ use Throwable;
 use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
+use yii\data\ActiveDataProvider;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -22,11 +26,12 @@ class ProductController extends Controller
 {
     private $repository;
     
-    public function __construct($id, $module, $config = [])
+    public function __construct($id, $module, ProductRepository $productRepository, $config = [])
     {
-        parent::__construct($id, $module, $config);
         $this->layout = 'main-layout';
-        $this->repository = new ProductRepository();
+        $this->repository = $productRepository;
+        parent::__construct($id, $module, $config);
+
     }
 
     /**
@@ -53,9 +58,27 @@ class ProductController extends Controller
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $allProducts = ProductViewer::getAllProducts();
+
+        $allCategories = (new CategoryRepository())->getMainCategories();
+
+        $allBrands = (new BrandRepository())->findBrands();
+
+//        $dataProvider = new ActiveDataProvider([
+//            'query' => Product::find(),
+//            'pagination' => [
+//                'pageSize' => 4,
+//            ],
+//        ]);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'allProducts' => $allProducts,
+            'allCategories' => $allCategories,
+            'allBrands' => $allBrands,
+            'productsFind' => new ProductRepository(),
+            'pagination' => 4,
         ]);
     }
 

@@ -5,6 +5,7 @@ namespace frontend\repositories;
 use common\models\Category;
 use common\models\Product;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * Class PopularRepository
@@ -13,9 +14,9 @@ use Yii;
 class PopularRepository
 {
     /**
-     * @return array|Product[]|\yii\db\ActiveRecord[]
+     * @return array|Product[]|ActiveRecord[]
      */
-    public static function findPopularProducts()
+    public function findPopularProducts()
     {
         $limit = Yii::$app->params['countOfPopularProducts'];
 
@@ -28,9 +29,9 @@ class PopularRepository
     }
 
     /**
-     * @return array|Category[]|\yii\db\ActiveRecord[]
+     * @return array|Category[]|ActiveRecord[]
      */
-    public static function findPopularCategories()
+    public function findPopularCategories()
     {
         $limit = Yii::$app->params['countOfPopularCategories'];
 
@@ -56,8 +57,8 @@ class PopularRepository
     }
 
     /**
-     * @param array $category
-     * @return array $category
+     * @param string $category
+     * @return string $category
      */
     public static function getEndings($category)
     {
@@ -74,7 +75,7 @@ class PopularRepository
     }
 
     /**
-     * @return array
+     * @return string
      */
     public static function findAllCategories()
     {

@@ -100,10 +100,10 @@ class SiteController extends Controller
         $allCategories = CategoryViewer::getCategories($allSubCategories);
 
         // $allProducts = ProductViewer::getAllProducts();
-        list($allProducts, $pagination) = ProductViewer::getProductsWithPagination();
+        list($allProducts, $pagination) = (new ProductViewer())->getProductsWithPagination();
 
-        $popularProducts = PopularRepository::findPopularProducts();
-        $popularCategories = PopularRepository::findPopularCategories();
+        $popularProducts = (new PopularRepository())->findPopularProducts();
+        $popularCategories = (new PopularRepository())->findPopularCategories();
 
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find(),

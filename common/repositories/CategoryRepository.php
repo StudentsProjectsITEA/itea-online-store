@@ -24,6 +24,47 @@ class CategoryRepository
     }
 
     /**
+     * @return array|Category[]|ActiveRecord[]
+     */
+    public function getMainCategories()
+    {
+        return Category::find()
+            ->where(['depth' => 1])
+            ->all();
+    }
+
+    /**
+     * @return array|Category[]|ActiveRecord[]
+     */
+    public function getMinorCategories()
+    {
+        return Category::find()
+            ->where(['depth' => 2])
+            ->all();
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllCategories()
+    {
+        $mainCategories = $this->getMainCategories();
+        $minorCategories = $this->getMinorCategories();
+
+        $allCategoriesArray = [];
+
+        foreach ($mainCategories as $mainCategory) {
+            foreach ($minorCategories as $minorCategory) {
+                if ($mainCategory->id == $minorCategory->parent_id) {
+                    $allCategoriesArray[$mainCategory->name][] = $minorCategory;
+                }
+            }
+        }
+
+        return $allCategoriesArray;
+    }
+
+    /**
      * Finds the Category model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id

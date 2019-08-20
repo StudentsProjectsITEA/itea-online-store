@@ -4,7 +4,9 @@ namespace common\bootstrap;
 
 use common\components\CategoryViewer;
 use common\components\ProductViewer;
+use common\repositories\ProductRepository;
 use common\models\Product;
+use frontend\repositories\PopularRepository;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
@@ -37,5 +39,8 @@ class SetUp implements BootstrapInterface
                 ['class' => ProductViewer::class]
             ],
         ]);
+
+        $this->container->setSingleton(ProductRepository::class);
+        $this->container->setSingleton(PopularRepository::class);
     }
 }
