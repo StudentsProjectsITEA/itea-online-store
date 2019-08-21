@@ -34,11 +34,12 @@ class ProductSearch extends Product
     /**
      * Creates data provider instance with search query applied
      *
+     * @param int $pageSize
      * @param array $params
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(int $pageSize, array $params)
     {
         $query = Product::find();
 
@@ -46,6 +47,14 @@ class ProductSearch extends Product
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => $pageSize,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'quantity' => SORT_DESC,
+                ]
+            ],
         ]);
 
         $this->load($params);
@@ -57,20 +66,16 @@ class ProductSearch extends Product
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'quantity' => $this->quantity,
-            'price' => $this->price,
-            'is_deleted' => $this->is_deleted,
-            'created_time' => $this->created_time,
-            'updated_time' => $this->updated_time,
+        /*
+        $query->andFilterWhere(['ilike',
+            'category' => $params['minPrice'],
+            'brand' => $params['minPrice'],
         ]);
+        */
 
-        $query->andFilterWhere(['ilike', 'id', $this->id])
-            ->andFilterWhere(['ilike', 'title', $this->title])
-            ->andFilterWhere(['ilike', 'description', $this->description])
-            ->andFilterWhere(['ilike', 'main_photo', $this->main_photo])
-            ->andFilterWhere(['ilike', 'category_id', $this->category_id])
-            ->andFilterWhere(['ilike', 'brand_id', $this->brand_id]);
+        if (isset($params['minPrice']) && isset($params['maxPrice'])) {
+            $query->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
+        }
 
         return $dataProvider;
     }

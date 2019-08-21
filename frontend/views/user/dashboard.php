@@ -17,5 +17,11 @@ use yii\helpers\Html;
     <h1 class="dashboard-title"><b>Email address:</b></h1>
     <p class="dashboard-text"><?php echo Html::encode($model->email) ?></p>
     <h1 class="dashboard-title"><b>Created time:</b></h1>
-    <p class="dashboard-text"><?php echo date('d.m.Y H:i:s', Html::encode($model->created_time)) ?></p>
+    <p class="dashboard-text">
+        <?php echo date('d.m.Y H:i:s', Html::encode($model->created_time + (3 * 60 * 60))) ?>
+    </p>
+    <h1 class="dashboard-title"><b>Updated time:</b></h1>
+    <p class="dashboard-text">
+        <?php echo date('d.m.Y H:i:s', Html::encode($model->updated_time + (3 * 60 * 60))) ?>
+    </p>
 </div>

@@ -2,15 +2,17 @@
 
 namespace frontend\controllers;
 
-use common\models\Order;
 use common\repositories\OrderRepository;
 use Exception;
+use frontend\models\ChangePasswordForm;
 use frontend\repositories\UserRepository;
 use Throwable;
 use Yii;
 use frontend\models\User;
 use common\models\UserSearch;
+use yii\base\InvalidConfigException;
 use yii\db\StaleObjectException;
+use yii\di\NotInstantiableException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,15 +22,32 @@ use yii\filters\VerbFilter;
  */
 class UserController extends Controller
 {
+    /**
+     * @var $repository UserRepository
+     */
     private $repository;
+    /**
+     * @var $repository OrderRepository
+     */
     private $orderRepository;
+    /**
+     * @var $repository ChangePasswordForm
+     */
+    private $changePasswordModel;
 
+    /**
+     * UserController constructor.
+     * {@inheritdoc}
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
+     */
     public function __construct($id, $module, $config = [])
     {
-        parent::__construct($id, $module, $config);
         $this->layout = 'main-layout';
-        $this->repository = new UserRepository();
-        $this->orderRepository = new OrderRepository();
+        $this->repository = Yii::$container->get(UserRepository::class);
+        $this->orderRepository = Yii::$container->get(OrderRepository::class);
+        $this->changePasswordModel = Yii::$container->get(ChangePasswordForm::class);
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -47,21 +66,6 @@ class UserController extends Controller
     }
 
     /**
-     * Lists all User models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
      * Displays a single User model.
      * @param string $id
      * @return mixed
@@ -70,34 +74,11 @@ class UserController extends Controller
     public function actionView($id)
     {
         $model = $this->repository->findUserById($id);
-        $userOrders = $this->orderRepository->findOrdersByUserId($model->id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
 
         return $this->render('view', [
             'model' => $model,
-            'userOrders' => $userOrders,
-        ]);
-    }
-
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     * @throws Exception
-     */
-    public function actionCreate()
-    {
-        $model = new User();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
+            'userOrders' => $this->orderRepository->findOrdersByUserId($model->id),
+            'changePasswordModel' => $this->changePasswordModel,
         ]);
     }
 
@@ -105,35 +86,62 @@ class UserController extends Controller
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
+     *
      * @return mixed
+     *
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \yii\base\Exception
      */
     public function actionUpdate($id)
     {
         $model = $this->repository->findUserById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Your information was successfully changed.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        return $this->render('view', [
             'model' => $model,
+            'userOrders' => $this->orderRepository->findOrdersByUserId($model->id),
+            'changePasswordModel' => $this->changePasswordModel,
         ]);
     }
 
     /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Updates an existing User model.
+     * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
+     *
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     * @throws Throwable
-     * @throws StaleObjectException
+     *
+     * @throws \yii\base\Exception
      */
-    public function actionDelete($id)
+    public function actionChangePassword($id)
     {
-        $this->repository->findUserById($id)->delete();
+        $model = $this->repository->findUserById($id);
 
-        return $this->redirect(['index']);
+        if ($this->changePasswordModel->load(Yii::$app->request->post()) && $this->changePasswordModel->changePassword()) {
+            Yii::$app->session->setFlash('success', 'Your password was successfully changed.');
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('view', [
+            'model' => $model,
+            'userOrders' => $this->orderRepository->findOrdersByUserId($model->id),
+            'changePasswordModel' => $this->changePasswordModel,
+        ]);
+    }
+
+    /**
+     * Logs out the current user.
+     *
+     * @return mixed
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 }

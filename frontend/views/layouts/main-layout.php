@@ -4,6 +4,7 @@
 
 /* @var $content string */
 
+use frontend\repositories\UserRepository;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
@@ -14,13 +15,13 @@ AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?php echo Yii::$app->language ?>">
 <head>
-    <meta charset="<?= Yii::$app->charset ?>">
+    <meta charset="<?php echo Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?php echo Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -44,10 +45,14 @@ AppAsset::register($this);
             <div class="header-icons">
                 <button class="header-login-btn" id="logInBtn">Log in</button>
                 <div class="user-info">
-
-                    <div class="user-avatar"><a href="<?php echo Url::toRoute('account', true); ?>"><img alt="user-avatar"
-                                                  src="<?php echo Url::to('@web/img/featured.png'); ?>"></div>
-                    Vasya Pupkin</a>
+                    <div class="user-avatar">
+                        <a href="<?php echo Url::to([
+                            'user/view',
+                            'id' => (new UserRepository())->findUserByName('Vasya')->id,
+                        ]) ?>">
+                            <img alt="user-avatar" src="<?php echo Url::to('@web/img/featured.png'); ?>"></div>
+                    Vasya Pupkin
+                        </a>
                 </div>
             </div>
             <a href="<?php echo Url::toRoute('cart', true); ?>" class="header-icon"><i class="fas fa-shopping-cart"></i><span
@@ -127,20 +132,22 @@ AppAsset::register($this);
     </div>
 </div>
 
+<?php if(isset($this->params['breadcrumbs'])): ?>
 <section class="breadcrumbs-section">
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        <?php  echo Breadcrumbs::widget([
+            'links' => $this->params['breadcrumbs'],
             'options' => [
                 'class' => 'breadcrumbs-list',
             ],
-        ]) ?>
+        ]) ?? '' ?>
     </div>
 </section>
+<?php endif;?>
 
 <div class="container">
-    <?= Alert::widget() ?>
-    <?= $content ?>
+    <?php echo Alert::widget() ?>
+    <?php echo $content ?>
 </div>
 
 <footer class="main-footer">

@@ -17,7 +17,7 @@ class CategoryViewer
     /**
      * @return array
      */
-    public static function getSubCategories()
+    public function getSubCategories()
     {
         $allSubCategories = [];
         self::$categories = (new CategoryRepository())->findCategories();
@@ -37,7 +37,7 @@ class CategoryViewer
      *
      * @return array
      */
-    public static function getCategories($allSubCategories)
+    public function getCategories($allSubCategories)
     {
         $allCategories = [];
 
@@ -49,5 +49,24 @@ class CategoryViewer
         }
 
         return $allCategories;
+    }
+
+
+    /**
+     * @param string $category
+     * @return string $category
+     */
+    public function getEndings($category)
+    {
+        $n = substr($category, - 1);
+        if (1 == $n) {
+            $end =  'товар';
+        } elseif ((2 == $n) || (3 == $n) || (4 == $n)) {
+            $end =  'товара';
+        } else {
+            $end = 'товаров';
+        }
+
+        return $end;
     }
 }

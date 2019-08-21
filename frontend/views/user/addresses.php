@@ -14,7 +14,6 @@ use yii\widgets\ActiveForm;
         'data-target' => 'addresses',
     ]
 ]); ?>
-
 <?php foreach ($model->address as $key => $address) : ?>
     <?php echo $form
         ->field($model, 'address')

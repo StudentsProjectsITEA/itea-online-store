@@ -3,6 +3,9 @@
 namespace frontend\controllers;
 
 use common\components\ProductParamsFinder;
+use common\components\ProductViewer;
+use common\repositories\BrandRepository;
+use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -10,7 +13,11 @@ use Throwable;
 use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
+use yii\base\InvalidConfigException;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 use yii\db\StaleObjectException;
+use yii\di\NotInstantiableException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,13 +27,42 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends Controller
 {
-    private $repository;
-    
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+    /**
+     * @var BrandRepository
+     */
+    private $brandRepository;
+    /**
+     * @var ProductViewer
+     */
+    private $productViewer;
+    /**
+     * @var ProductSearch
+     */
+    private $productSearchModel;
+
+    /**
+     * SiteController constructor.
+     * {@inheritdoc}
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
+     */
     public function __construct($id, $module, $config = [])
     {
-        parent::__construct($id, $module, $config);
         $this->layout = 'main-layout';
-        $this->repository = new ProductRepository();
+        $this->productRepository = Yii::$container->get(ProductRepository::class);
+        $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
+        $this->brandRepository = Yii::$container->get(BrandRepository::class);
+        $this->productViewer = Yii::$container->get(ProductViewer::class);
+        $this->productSearchModel = Yii::$container->get(ProductSearch::class);
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -50,12 +86,10 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'allCategories' => $this->categoryRepository->getMainCategories(),
+            'allBrands' => $this->brandRepository->findBrands(),
+            'dataProvider' => $this->productSearchModel->search(6, Yii::$app->request->queryParams),
         ]);
     }
 
@@ -67,14 +101,13 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->repository->findProductById($id);
-        $parentCategory = $this->repository->findProductParentCategoryName($model->category->parent_id);
+        $model = $this->productRepository->findProductById($id);
         $productParams = new ProductParamsFinder();
-        $productParams->recordProductParams($this->repository->findAllProductParamValuesById($model->id));
+        $productParams->recordProductParams($this->productRepository->findAllProductParamValuesById($model->id));
 
         return $this->render('view', [
             'model' => $model,
-            'parentCategory' => $parentCategory,
+            'parentCategory' => $this->productRepository->findProductParentCategoryName($model->category->parent_id),
             'params' => $productParams->getParams(),
             'colorValues' => $productParams->getColorValues(),
             'sizeValues' => $productParams->getSizeValues(),
@@ -115,7 +148,7 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findProductById($id);
+        $model = $this->productRepository->findProductById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -137,7 +170,7 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findProductById($id)->delete();
+        $this->productRepository->findProductById($id)->delete();
 
         return $this->redirect(['index']);
     }

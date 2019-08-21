@@ -22,4 +22,14 @@ class UserRepository
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * @param string $name
+     *
+     * @return User|null
+     */
+    public function findUserByName(string $name)
+    {
+        return User::findOne(['first_name' => $name]);
+    }
 }

@@ -2,35 +2,61 @@
 
 namespace frontend\controllers;
 
+use common\models\ProductSearch;
+use Yii;
 use common\components\CategoryViewer;
-use common\models\Product;
+use common\repositories\CategoryRepository;
+use common\repositories\ProductRepository;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
-use frontend\repositories\PopularRepository;
-use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
-use yii\data\Pagination;
+use yii\base\InvalidConfigException;
+use yii\di\NotInstantiableException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use frontend\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\web\Response;
-use common\components\ProductViewer;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+    /**
+     * @var CategoryViewer
+     */
+    private $categoryViewer;
+    /**
+     * @var ProductSearch
+     */
+    private $productSearchModel;
+
+    /**
+     * SiteController constructor.
+     * {@inheritdoc}
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
+     */
     public function __construct($id, $module, $config = [])
     {
         $this->layout = 'main-layout';
+        $this->productRepository = Yii::$container->get(ProductRepository::class);
+        $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
+        $this->categoryViewer = Yii::$container->get(CategoryViewer::class);
+        $this->productSearchModel = Yii::$container->get(ProductSearch::class);
         parent::__construct($id, $module, $config);
     }
 
@@ -88,26 +114,20 @@ class SiteController extends Controller
      * Displays homepage.
      *
      * @return mixed
+     *
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
      */
     public function actionIndex()
     {
-        $this->layout = 'index-layout';
-
-        $allSubCategories = CategoryViewer::getSubCategories();
-        $allCategories = CategoryViewer::getCategories($allSubCategories);
-
-        // $allProducts = ProductViewer::getAllProducts();
-        list($allProducts, $pagination) = ProductViewer::getProductsWithPagination();
-
-        $popularProducts = PopularRepository::findPopularProducts();
-        $popularCategories = PopularRepository::findPopularCategories();
+        $allSubCategories = $this->categoryViewer->getSubCategories();
 
         return $this->render('index', [
-            'allCategories' => $allCategories,
-            'allProducts' => $allProducts,
-            'popularProducts' => $popularProducts,
-            'popularCategories' => $popularCategories,
-            'pagination' => $pagination,
+            'allCategories' => $this->categoryViewer->getCategories($allSubCategories),
+            'popularProducts' => $this->productRepository->findPopularProducts(),
+            'popularCategories' => $this->categoryRepository->findPopularCategories(),
+            'categoriesFind' => $this->categoryRepository,
+            'dataProvider' => $this->productSearchModel->search(4, Yii::$app->request->queryParams),
         ]);
     }
 
@@ -115,9 +135,13 @@ class SiteController extends Controller
      * Logs in a user.
      *
      * @return mixed
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
      */
     public function actionLogin()
     {
+        $allSubCategories = $this->categoryViewer->getSubCategories();
+
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -130,6 +154,11 @@ class SiteController extends Controller
 
             return $this->render('index', [
                 'loginModel' => $loginModel,
+                'allCategories' => $this->categoryViewer->getCategories($allSubCategories),
+                'popularProducts' => $this->productRepository->findPopularProducts(),
+                'popularCategories' => $this->categoryRepository->findPopularCategories(),
+                'categoriesFind' => $this->categoryRepository,
+                'dataProvider' => $this->productSearchModel->search(Yii::$app->request->queryParams),
             ]);
         }
     }
@@ -188,6 +217,8 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+        $allSubCategories = $this->categoryViewer->getSubCategories();
+
         $signupModel = new SignupForm();
         if ($signupModel->load(Yii::$app->request->post()) && $signupModel->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
@@ -196,6 +227,11 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'signupModel' => $signupModel,
+            'allCategories' => $this->categoryViewer->getCategories($allSubCategories),
+            'popularProducts' => $this->productRepository->findPopularProducts(),
+            'popularCategories' => $this->categoryRepository->findPopularCategories(),
+            'categoriesFind' => $this->categoryRepository,
+            'dataProvider' => $this->productSearchModel->search(Yii::$app->request->queryParams),
         ]);
     }
 
@@ -232,8 +268,8 @@ class SiteController extends Controller
      * Verify email address
      *
      * @param string $token
-     * @throws BadRequestHttpException
      * @return Response
+     * @throws BadRequestHttpException
      */
     public function actionVerifyEmail($token)
     {

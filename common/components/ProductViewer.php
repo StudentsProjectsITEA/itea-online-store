@@ -14,24 +14,25 @@ use yii\data\Pagination;
  */
 class ProductViewer
 {
-    public static function getAllProducts()
+    public function getAllProducts()
     {
         $products = (new ProductRepository)->findAllProducts();
 
         return $products;
     }
 
-    public static function getProductsWithPagination($orderBy = '')
+    public function getProductsWithPagination($orderBy = '')
     {
         if ('' === $orderBy) {
             $orderBy = Yii::$app->params['productsOrderBy'];
         }
 
         $productsCount = Product::find()->count();
-        $paginationlimit = Yii::$app->params['countOfPopularCategories'];
+        $paginationLimit = Yii::$app->params['countOfPopularCategories'];
+
 
         $pagination = new Pagination([
-            'defaultPageSize' => $paginationlimit,
+            'defaultPageSize' => $paginationLimit,
             'totalCount' => $productsCount,
         ]);
 
@@ -40,6 +41,6 @@ class ProductViewer
             ->limit($pagination->limit)
             ->all();
 
-        return array($allProducts, $pagination);
+        return [$allProducts, $pagination];
     }
 }

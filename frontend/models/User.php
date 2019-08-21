@@ -6,9 +6,12 @@ use common\models\Order;
 use Yii;
 use yii\base\Exception;
 use yii\base\NotSupportedException;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
+use yii\web\NotFoundHttpException;
 
 /**
  * User model
@@ -47,11 +50,34 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_time',
+                'updatedAtAttribute' => 'updated_time',
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
-            ['status_id', 'default', 'value' => self::STATUS_INACTIVE],
-            ['status_id', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['id', 'username', 'first_name', 'last_name', 'auth_key', 'password_hash', 'email', 'created_time', 'updated_time'], 'required'],
+            [['id'], 'string'],
+            [['mobile', 'status_id', 'created_time', 'updated_time'], 'default', 'value' => null],
+            [['mobile', 'status_id', 'created_time', 'updated_time'], 'integer'],
+            [['username', 'first_name', 'last_name', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['email'], 'unique'],
+            [['mobile'], 'unique'],
+            [['password_reset_token'], 'unique'],
+            [['username'], 'unique'],
+            [['id'], 'unique'],
         ];
     }
 

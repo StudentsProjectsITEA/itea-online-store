@@ -1,7 +1,7 @@
 <?php
 
 use backend\models\Admin;
-use frontend\models\User;
+use devanych\cart\Cart;
 use yii\BaseYii;
 
 /**
@@ -30,7 +30,8 @@ abstract class BaseApplication extends yii\base\Application
  * Class WebApplication
  * Include only Web application related components here.
  *
- * @property \devanych\cart\Cart $cart
+ * @property Admin $admin
+ * @property Cart $cart
  */
 class WebApplication extends yii\web\Application
 {
