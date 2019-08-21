@@ -17,7 +17,7 @@ use yii\widgets\ListView;
                 'dataProvider' => $dataProvider,
                 'itemOptions' => ['class' => 'product-item'],
                 'itemView' => 'listing-product',
-                'layout' => "{items}\n{pager}",
+                'layout' => "{items}\n</div><div class=\"container\">{pager}</div>",
                 'pager' => [
                     'maxButtonCount' => Yii::$app->params['maxButtonPaginationCount'],
                     'options' => [

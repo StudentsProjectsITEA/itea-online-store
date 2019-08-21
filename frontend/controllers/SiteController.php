@@ -127,7 +127,7 @@ class SiteController extends Controller
             'popularProducts' => $this->productRepository->findPopularProducts(),
             'popularCategories' => $this->categoryRepository->findPopularCategories(),
             'categoriesFind' => $this->categoryRepository,
-            'dataProvider' => $this->productSearchModel->search(4, Yii::$app->request->queryParams),
+            'dataProvider' => $this->productSearchModel->search(3, Yii::$app->request->queryParams),
         ]);
     }
 
