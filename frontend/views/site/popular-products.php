@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $productsFind ProductRepository */
 ?>
 
-<h2 class="category-title">Popular products</h2>
+<h2 class="category-title">Популярные товары:</h2>
 <div class="category-list">
     <?php foreach ($popularProducts as $popularProduct) : ?>
         <a href="<?php echo Url::to([

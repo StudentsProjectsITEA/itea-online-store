@@ -3,6 +3,9 @@
 namespace frontend\controllers;
 
 use common\components\ProductParamsFinder;
+use common\components\ProductViewer;
+use common\repositories\BrandRepository;
+use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -10,6 +13,8 @@ use Throwable;
 use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 use yii\db\StaleObjectException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -20,13 +25,16 @@ use yii\filters\VerbFilter;
  */
 class ProductController extends Controller
 {
-    private $repository;
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
     
-    public function __construct($id, $module, $config = [])
+    public function __construct($id, $module, ProductRepository $productRepository, $config = [])
     {
-        parent::__construct($id, $module, $config);
         $this->layout = 'main-layout';
-        $this->repository = new ProductRepository();
+        $this->productRepository = $productRepository;
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -50,12 +58,29 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = 'index-layout';
+
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $allProducts = ProductViewer::getAllProducts();
+        $allCategories = (new CategoryRepository())->getMainCategories();
+        $allBrands = (new BrandRepository())->findBrands();
+
+//        $paginationLimit = Yii::$app->params['countOfPopularCategories'];
+//        $pagination = new Pagination([
+//            'defaultPageSize' => $paginationLimit,
+//            'totalCount' => Product::find()->count(),
+//        ]);
+
         return $this->render('index', [
-            'searchModel' => $searchModel,
+//            'searchModel' => $searchModel,
+//            'allProducts' => $allProducts,
+            'allCategories' => $allCategories,
+            'allBrands' => $allBrands,
+            'productsFind' => new ProductRepository(),
             'dataProvider' => $dataProvider,
+//            'pagination' => $pagination,
         ]);
     }
 
@@ -67,10 +92,10 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->repository->findProductById($id);
-        $parentCategory = $this->repository->findProductParentCategoryName($model->category->parent_id);
+        $model = $this->productRepository->findProductById($id);
+        $parentCategory = $this->productRepository->findProductParentCategoryName($model->category->parent_id);
         $productParams = new ProductParamsFinder();
-        $productParams->recordProductParams($this->repository->findAllProductParamValuesById($model->id));
+        $productParams->recordProductParams($this->productRepository->findAllProductParamValuesById($model->id));
 
         return $this->render('view', [
             'model' => $model,
@@ -115,7 +140,7 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findProductById($id);
+        $model = $this->productRepository->findProductById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -137,7 +162,7 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findProductById($id)->delete();
+        $this->productRepository->findProductById($id)->delete();
 
         return $this->redirect(['index']);
     }

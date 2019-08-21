@@ -5,6 +5,7 @@ namespace frontend\repositories;
 use common\models\Category;
 use common\models\Product;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * Class PopularRepository
@@ -13,9 +14,9 @@ use Yii;
 class PopularRepository
 {
     /**
-     * @return array|Product[]|\yii\db\ActiveRecord[]
+     * @return array|Product[]|ActiveRecord[]
      */
-    public static function findPopularProducts()
+    public function findPopularProducts()
     {
         $limit = Yii::$app->params['countOfPopularProducts'];
 
@@ -28,9 +29,9 @@ class PopularRepository
     }
 
     /**
-     * @return array|Category[]|\yii\db\ActiveRecord[]
+     * @return array|Category[]|ActiveRecord[]
      */
-    public static function findPopularCategories()
+    public function findPopularCategories()
     {
         $limit = Yii::$app->params['countOfPopularCategories'];
 
@@ -49,17 +50,17 @@ class PopularRepository
 
         foreach ($categories as $category => $count) {
             $popularCategories[$category]['count'] = $count;
-            $popularCategories[$category]['end'] = self::getEndings($count);
+            $popularCategories[$category]['end'] = $this->getEndings($count);
         }
 
         return $popularCategories;
     }
 
     /**
-     * @param array $category
-     * @return array $category
+     * @param string $category
+     * @return string $category
      */
-    public static function getEndings($category)
+    public function getEndings($category)
     {
         $n = substr($category, - 1);
         if (1 == $n) {
@@ -74,9 +75,9 @@ class PopularRepository
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public static function findAllCategories()
+    public function findAllCategories()
     {
         // Based on Product table
         // In case base on Category table use $allCategories = Category::find()->all()
@@ -84,7 +85,7 @@ class PopularRepository
 
         $category = [];
         foreach ($allProducts as $item) {
-            $cat = self::getCategoryById($item['category_id']);
+            $cat = $this->getCategoryById($item['category_id']);
             if (! array_key_exists($cat , $category)) {
                 $category[$cat]['count'] = 1;
             } else {
@@ -92,7 +93,7 @@ class PopularRepository
             }
         }
 
-        $category = self::getEndings($category);
+        $category = $this->getEndings($category);
 
         return $category;
     }
@@ -101,7 +102,7 @@ class PopularRepository
      * @param $id
      * @return string
      */
-    public static function getCategoryById($id)
+    public function getCategoryById($id)
     {
         return Category::findOne($id)->name;
     }

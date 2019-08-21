@@ -1,32 +1,38 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ListView;
 
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\ProductSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/**
+ * @var $this yii\web\View
+ * @var $searchModel common\models\ProductSearch
+ * @var $dataProvider yii\data\ActiveDataProvider
+ *
+ * @var $allProducts
+ * @var $allBrands
+ * @var $allCategories
+ * @var $pagination
+ * @var $productsFind
+ * @var $dataProvider
+ */
 
 $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
+
+var_dump($dataProvider);
+
 ?>
-<div class="product-index">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+<section class="category-block container">
 
-    <p>
-        <?php echo Html::a('Create Product', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+<?php echo $this->render('filters', [
+    'allCategories' => $allCategories,
+    'allBrands' => $allBrands,
+]) ?>
 
-    <?php echo $this->render('search', ['model' => $searchModel]); ?>
-
-    <?php echo ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model->title), ['view', 'id' => $model->id]);
-        },
-    ]) ?>
-
-
-</div>
+<?php echo $this->render('listing-products', [
+    'allProducts' => $allProducts,
+    'pagination' => $pagination,
+    'productsFind' => $productsFind,
+]) ?>

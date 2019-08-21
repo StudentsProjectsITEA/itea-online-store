@@ -44,16 +44,21 @@ AppAsset::register($this);
             <div class="header-icons">
                 <button class="header-login-btn" id="logInBtn">Log in</button>
                 <div class="user-info">
-
-                    <div class="user-avatar"><a href="<?php echo Url::to([
-                            'user/view', 'id' => (new UserRepository())->findUserByName('Vasya')->id,
-                        ]) ?>"><img alt="user-avatar"
-                                                  src="<?php echo Url::to('@web/img/featured.png'); ?>"></div>
-                    Vasya Pupkin</a>
+                    <div class="user-avatar">
+                        <a href="<?php echo Url::to([
+                                'user/view',
+                                'id' => (new UserRepository())->findUserByName('Vasya')->id,
+                            ]) ?>" >
+                            <img alt="user-avatar"src="<?php echo Url::to('@web/img/featured.png'); ?>" >
+                            Vasya Pupkin
+                        </a>
+                    </div>
                 </div>
             </div>
-            <a href="<?php echo Url::toRoute('cart', true); ?>" class="header-icon"><i class="fas fa-shopping-cart"></i><span
-                        class="header-cart-amount">0</span></a>
+            <a href="<?php echo Url::toRoute('cart', true); ?>" class="header-icon" >
+                <i class="fas fa-shopping-cart"></i>
+                <span class="header-cart-amount">0</span>
+            </a>
         </div>
     </div>
 </header>
