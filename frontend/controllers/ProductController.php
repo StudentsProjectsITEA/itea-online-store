@@ -67,20 +67,20 @@ class ProductController extends Controller
         $allCategories = (new CategoryRepository())->getMainCategories();
         $allBrands = (new BrandRepository())->findBrands();
 
-        $paginationLimit = Yii::$app->params['countOfPopularCategories'];
-        $pagination = new Pagination([
-            'defaultPageSize' => $paginationLimit,
-            'totalCount' => Product::find()->count(),
-        ]);
+//        $paginationLimit = Yii::$app->params['countOfPopularCategories'];
+//        $pagination = new Pagination([
+//            'defaultPageSize' => $paginationLimit,
+//            'totalCount' => Product::find()->count(),
+//        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'allProducts' => $allProducts,
+//            'searchModel' => $searchModel,
+//            'allProducts' => $allProducts,
             'allCategories' => $allCategories,
             'allBrands' => $allBrands,
             'productsFind' => new ProductRepository(),
             'dataProvider' => $dataProvider,
-            'pagination' => $pagination,
+//            'pagination' => $pagination,
         ]);
     }
 

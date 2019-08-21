@@ -65,11 +65,13 @@ class ProductSearch extends Product
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'category' => $this->category,
-            'brand' => $this->brand,
+        $query->andFilterWhere([ilike
+            'category' => $params['minPrice'],
+            'brand' => $params['minPrice'],
         ]);
 
+        $query->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
+        $query->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
         $query->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
 
         return $dataProvider;

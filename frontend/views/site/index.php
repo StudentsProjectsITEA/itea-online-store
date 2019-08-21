@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Product;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use yii\data\Pagination;
@@ -13,6 +14,7 @@ use yii\data\Pagination;
  * @var $popularProducts
  * @var $popularCategories
  * @var $pagination Pagination
+ * @var $dataProvider Product[]
  */
 
 $this->title = 'Online Store | ITEA';
@@ -27,19 +29,20 @@ $this->title = 'Online Store | ITEA';
     'allProducts' => $allProducts,
     'pagination' => $pagination,
     'productsFind' => $productsFind,
+    'dataProvider' => $dataProvider,
 ]) ?>
 
 <section class="shop-category">
     <div class="container">
 
         <?php echo $this->render('popular-products', [
-            'popularProducts' => $popularProducts,
-            'productsFind' => $productsFind,
+        'popularProducts' => $popularProducts,
+        'productsFind' => $productsFind,
         ]) ?>
 
         <?php echo $this->render('popular-categories', [
-            'popularCategories' => $popularCategories,
-            'categoriesFind' => $categoriesFind,
+        'popularCategories' => $popularCategories,
+        'categoriesFind' => $categoriesFind,
         ]) ?>
 
     </div>

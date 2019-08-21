@@ -119,6 +119,11 @@ class SiteController extends Controller
         $popularProducts = $this->popularRepository->findPopularProducts();
         $popularCategories = $this->popularRepository->findPopularCategories();
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find(),
+
+        ]);
+
         return $this->render('index', [
             'allCategories' => $allCategories,
             'allProducts' => $allProducts,
@@ -127,6 +132,7 @@ class SiteController extends Controller
             'pagination' => $pagination,
             'categoriesFind' => new CategoryRepository(),
             'productsFind' => new ProductRepository(),
+            'dataProvider' => $dataProvider,
         ]);
     }
 
