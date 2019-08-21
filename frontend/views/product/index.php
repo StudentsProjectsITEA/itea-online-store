@@ -1,20 +1,12 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\ListView;
+use common\models\ProductSearch;
 
 /**
  * @var $this yii\web\View
- * @var $searchModel common\models\ProductSearch
- * @var $dataProvider yii\data\ActiveDataProvider
- *
- * @var $allProducts
- * @var $allBrands
- * @var $allCategories
- * @var $pagination
- * @var $productsFind
- * @var $dataProvider
+ * @var $allCategories array
+ * @var $allBrands array
+ * @var $dataProvider ProductSearch
  */
 
 $this->title = 'Products';
@@ -32,7 +24,5 @@ var_dump($dataProvider);
 ]) ?>
 
 <?php echo $this->render('listing-products', [
-    'allProducts' => $allProducts,
-    'pagination' => $pagination,
-    'productsFind' => $productsFind,
+    'dataProvider' => $dataProvider,
 ]) ?>

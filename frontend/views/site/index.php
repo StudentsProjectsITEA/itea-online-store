@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Product;
+use common\models\ProductSearch;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use yii\data\Pagination;
@@ -10,11 +11,9 @@ use yii\data\Pagination;
  * @var $allCategories array
  * @var $categoriesFind CategoryRepository
  * @var $productsFind ProductRepository
- * @var $allProducts
- * @var $popularProducts
- * @var $popularCategories
- * @var $pagination Pagination
- * @var $dataProvider Product[]
+ * @var $popularProducts[] Product
+ * @var $popularCategories array
+ * @var $dataProvider ProductSearch
  */
 
 $this->title = 'Online Store | ITEA';

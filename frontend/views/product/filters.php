@@ -1,9 +1,13 @@
 <?php
 
+use common\models\Brand;
+use common\models\Category;
+
 /**
- * @var $allProducts array
  * @var $allCategories array
+ * @var $category Category
  * @var $allBrands array
+ * @var $brand Brand
  */
 
 ?>

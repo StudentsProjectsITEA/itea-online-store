@@ -40,7 +40,7 @@ class SiteController extends Controller
      */
     private $categoryViewer;
     /**
-     * @var CategoryViewer
+     * @var ProductSearch
      */
     private $productSearchModel;
 
@@ -127,7 +127,7 @@ class SiteController extends Controller
             'popularProducts' => $this->productRepository->findPopularProducts(),
             'popularCategories' => $this->categoryRepository->findPopularCategories(),
             'categoriesFind' => $this->categoryRepository,
-            'dataProvider' => $this->productSearchModel->search(Yii::$app->request->queryParams),
+            'dataProvider' => $this->productSearchModel->search(4, Yii::$app->request->queryParams),
         ]);
     }
 

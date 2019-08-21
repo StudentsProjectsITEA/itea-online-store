@@ -39,6 +39,14 @@ class ProductController extends Controller
      * @var BrandRepository
      */
     private $brandRepository;
+    /**
+     * @var ProductViewer
+     */
+    private $productViewer;
+    /**
+     * @var ProductSearch
+     */
+    private $productSearchModel;
 
     /**
      * SiteController constructor.
@@ -52,6 +60,8 @@ class ProductController extends Controller
         $this->productRepository = Yii::$container->get(ProductRepository::class);
         $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
         $this->brandRepository = Yii::$container->get(BrandRepository::class);
+        $this->productViewer = Yii::$container->get(ProductViewer::class);
+        $this->productSearchModel = Yii::$container->get(ProductSearch::class);
         parent::__construct($id, $module, $config);
     }
 
@@ -76,29 +86,10 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
-        $this->layout = 'index-layout';
-
-        $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        $allProducts = (new ProductViewer)->getAllProducts();
-        $allCategories = $this->categoryRepository->getMainCategories();
-        $allBrands = $this->brandRepository->findBrands();
-
-//        $paginationLimit = Yii::$app->params['countOfPopularCategories'];
-//        $pagination = new Pagination([
-//            'defaultPageSize' => $paginationLimit,
-//            'totalCount' => Product::find()->count(),
-//        ]);
-
         return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'allProducts' => $allProducts,
-            'allCategories' => $allCategories,
-            'allBrands' => $allBrands,
-            'productsFind' => new ProductRepository(),
-            'dataProvider' => $dataProvider,
-//            'pagination' => $pagination,
+            'allCategories' => $this->categoryRepository->getMainCategories(),
+            'allBrands' => $this->brandRepository->findBrands(),
+            'dataProvider' => $this->productSearchModel->search(6, Yii::$app->request->queryParams),
         ]);
     }
 
@@ -111,13 +102,12 @@ class ProductController extends Controller
     public function actionView($id)
     {
         $model = $this->productRepository->findProductById($id);
-        $parentCategory = $this->productRepository->findProductParentCategoryName($model->category->parent_id);
         $productParams = new ProductParamsFinder();
         $productParams->recordProductParams($this->productRepository->findAllProductParamValuesById($model->id));
 
         return $this->render('view', [
             'model' => $model,
-            'parentCategory' => $parentCategory,
+            'parentCategory' => $this->productRepository->findProductParentCategoryName($model->category->parent_id),
             'params' => $productParams->getParams(),
             'colorValues' => $productParams->getColorValues(),
             'sizeValues' => $productParams->getSizeValues(),
