@@ -1,27 +1,45 @@
 <?php
 
-namespace app\controllers;
+namespace frontend\controllers;
 
+use common\repositories\ProductRepository;
 use devanych\cart\Cart;
 use DomainException;
 use frontend\repositories\CartRepository;
-use Yii;
+use yii\base\InvalidConfigException;
+use yii\di\NotInstantiableException;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\Response;
+use Yii;
 
 class CartController extends Controller
 {
-    private $repository;
+    /** @var CartRepository */
+    private $cartRepository;
+    /** @var ProductRepository */
+    private $productRepository;
     /** @var Cart $cart */
     private $cart;
 
+    /**
+     * CartController constructor.
+     * {@inheritdoc}
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
+     */
     public function __construct($id, $module, $config = [])
     {
-        parent::__construct($id, $module, $config);
         $this->layout = 'main-layout';
-        $this->repository = new CartRepository();
+        $this->cartRepository = Yii::$container->get(CartRepository::class);
+        $this->productRepository = Yii::$container->get(ProductRepository::class);
         $this->cart = Yii::$app->cart;
+        parent::__construct($id, $module, $config);
     }
 
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
         $cartItems = $this->cart->getItems();
@@ -32,11 +50,19 @@ class CartController extends Controller
         ]);
     }
 
-    public function actionAdd($id, $qty = 1)
+    /**
+     * @param string $id
+     * @param int $qty
+     *
+     * @return Response
+     *
+     * @throws NotFoundHttpException
+     */
+    public function actionAdd(string $id, $qty = 1)
     {
         try {
-            $product = $this->repository->getProduct($id);
-            $quantity = $this->repository->getQuantity($qty, $product->quantity);
+            $product = $this->productRepository->findProductById($id);
+            $quantity = $this->cartRepository->getQuantity($qty, $product->quantity);
             if ($item = $this->cart->getItem($product->id)) {
                 $this->cart->plus($item->getId(), $quantity);
             } else {
@@ -50,11 +76,19 @@ class CartController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * @param $id
+     * @param int $qty
+     *
+     * @return Response
+     *
+     * @throws NotFoundHttpException
+     */
     public function actionChange($id, $qty = 1)
     {
         try {
-            $product = $this->repository->getProduct($id);
-            $quantity = $this->repository->getQuantity($qty, $product->quantity);
+            $product = $this->productRepository->findProductById($id);
+            $quantity = $this->cartRepository->getQuantity($qty, $product->quantity);
             if ($item = $this->cart->getItem($product->id)) {
                 $this->cart->change($item->getId(), $quantity);
             }
@@ -66,10 +100,17 @@ class CartController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * @param $id
+     *
+     * @return Response
+     *
+     * @throws NotFoundHttpException
+     */
     public function actionRemove($id)
     {
         try {
-            $product = $this->repository->getProduct($id);
+            $product = $this->productRepository->findProductById($id);
             $this->cart->remove($product->id);
         } catch (DomainException $e) {
             Yii::$app->errorHandler->logException($e);

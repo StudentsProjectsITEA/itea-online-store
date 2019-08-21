@@ -55,8 +55,8 @@ AppAsset::register($this);
                         </a>
                 </div>
             </div>
-            <a href="<?php echo Url::toRoute('cart', true); ?>" class="header-icon"><i class="fas fa-shopping-cart"></i><span
-                        class="header-cart-amount">0</span></a>
+            <a href="<?php echo Url::to('/cart/index'); ?>" class="header-icon"><i class="fas fa-shopping-cart"></i><span
+                        class="header-cart-amount"><?php echo (int)(Yii::$app->cart->getTotalCount()) ?></span></a>
         </div>
     </div>
 </header>

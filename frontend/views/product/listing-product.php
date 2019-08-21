@@ -15,4 +15,6 @@ use yii\helpers\Url;
     <p class="product-name"><?php echo $model->title; ?></p>
     <p class="product-price"><?php echo $model->price . ' UAH'; ?></p>
 </a>
-<button class="product-add-to-cart-btn">Add to cart</button>
+<?php echo Html::beginForm(['/cart/add', 'id' => $model->id], 'post', ['data-target' => 'logout']) ?>
+<?php echo Html::submitButton('Add to cart', ['class' => 'product-add-to-cart-btn']) ?>
+<?php echo Html::endForm(); ?>

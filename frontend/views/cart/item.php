@@ -12,22 +12,34 @@ use yii\helpers\Url;
 <ul>
     <?php foreach ($cartItems as $item): ?>
         <li class="basket-item">
-            <span class="basket-item-delete" href="<?php Url::to(['cart/remove', 'id' => $item->getId()]) ?>">
-                <i class="fas fa-times"></i>
-            </span>
-            <?php echo Html::img('@web/img/' . $item->getProduct()->main_photo, ['class' => 'basket-item-img']) ?>
+            <div>
+                <?php echo Html::beginForm(['/cart/remove', 'id' => $item->getId()], 'post') ?>
+                <?php echo Html::submitButton('X') ?>
+                <?php echo Html::endForm(); ?>
+            </div>
+            <a href="<?php echo Url::to(['product/view', 'id' => $item->getId()]) ?>">
+                <?php echo Html::img('@web/img/' . $item->getProduct()->main_photo, [
+                    'class' => 'basket-item-img',
+                    'href' => Url::to(['product/view', 'id' => $item->getId()]),
+                ]) ?>
+            </a>
             <div class="basket-item-info">
-                <p class="basket-item-title"><?php echo Html::encode($item->getProduct()->title) ?></p>
+                <a href="<?php echo Url::to(['product/view', 'id' => $item->getId()]) ?>">
+                    <p class="basket-item-title"><?php echo Html::encode($item->getProduct()->title) ?></p>
+                </a>
                 <p><?php echo Html::encode('Color: ' . $item->getProduct()->quantity) ?></p>
                 <p><?php echo Html::encode('Size: ' . $item->getProduct()->quantity) ?></p>
             </div>
             <div class="product-counter">
+                <?php echo Html::beginForm([
+                    '/cart/change',
+                    'id' => $item->getId(),
+                    'qty' => Yii::$app->request->get('qty'),
+                ], 'get') ?>
                 <?php echo Html::button('-', ['class' => 'product-counter-btn']) ?>
-                <?php echo Html::input('number', null, null, [
-                    'class' => 'product-counter-value',
-                    'value' => $item->getQuantity(),
-                ]) ?>
-                <?php echo Html::button('+' . ['class' => 'product-counter-btn increase']) ?>
+                <?php echo Html::input('number', 'qty', $item->getQuantity(), ['class' => 'product-counter-value']) ?>
+                <?php echo Html::button('+', ['class' => 'product-counter-btn increase']) ?>
+                <?php echo Html::endForm(); ?>
             </div>
             <p class="basket-item-title"><?php echo Html::encode($item->getCost() . ' ₴') ?></p>
         </li>

@@ -2,28 +2,11 @@
 
 namespace frontend\repositories;
 
-use common\models\Product;
 use DomainException;
 use yii\helpers\Html;
 
 class CartRepository
 {
-    /**
-     * @param integer $id
-     *
-     * @return Product the loaded model
-     *
-     * @throws DomainException if the product cannot be found
-     */
-    public function getProduct($id)
-    {
-        if (($product = Product::findOne((int)$id)) !== null) {
-            return $product;
-        }
-
-        throw new DomainException('Товар не найден');
-    }
-
     /**
      * @param integer $qty
      * @param integer $maxQty

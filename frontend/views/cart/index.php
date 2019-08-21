@@ -28,7 +28,8 @@ $this->params['breadcrumbs'][] = 'Cart';
     </section>
 
 <?php else: ?>
-
-    <h3><?php echo Html::encode('Cart is empty!') ?></h3>
-
+<div class="container cart center">
+    <h3 class="sub-page__sub-title"><?php echo Html::encode('Cart is empty!') ?></h3>
+    <?php echo Html::img('@web/img/empty_cart.jpg') ?>
+</div>
 <?php endif; ?>
