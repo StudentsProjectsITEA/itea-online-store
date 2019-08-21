@@ -22,4 +22,10 @@ class BrandRepository
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function findBrands()
+    {
+        return Brand::find()
+            ->all();
+    }
 }

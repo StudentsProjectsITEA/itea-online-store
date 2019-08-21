@@ -13,13 +13,10 @@ use Yii;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use frontend\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
@@ -31,9 +28,26 @@ use common\components\ProductViewer;
  */
 class SiteController extends Controller
 {
-    public function __construct($id, $module, $config = [])
+    /**
+     * @var PopularRepository
+     */
+    private $popularRepository;
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    public function __construct(
+        $id,
+        $module,
+        PopularRepository $popularRepository,
+        ProductRepository $productRepository,
+        $config = []
+    )
     {
         $this->layout = 'main-layout';
+        $this->popularRepository = $popularRepository;
+        $this->productRepository = $productRepository;
         parent::__construct($id, $module, $config);
     }
 
@@ -99,19 +113,16 @@ class SiteController extends Controller
         $allSubCategories = CategoryViewer::getSubCategories();
         $allCategories = CategoryViewer::getCategories($allSubCategories);
 
-        // $allProducts = ProductViewer::getAllProducts();
-        list($allProducts, $pagination) = ProductViewer::getProductsWithPagination();
+//        $allProducts = ProductViewer::getAllProducts();
+        list($allProducts, $pagination) = (new ProductViewer())->getProductsWithPagination();
 
-        $popularProducts = PopularRepository::findPopularProducts();
-        $popularCategories = PopularRepository::findPopularCategories();
+        $popularProducts = $this->popularRepository->findPopularProducts();
+        $popularCategories = $this->popularRepository->findPopularCategories();
 
         $dataProvider = new ActiveDataProvider([
             'query' => Product::find(),
-            'pagination' => [
-                'pageSize' => 4,
-            ],
-        ]);
 
+        ]);
 
         return $this->render('index', [
             'allCategories' => $allCategories,

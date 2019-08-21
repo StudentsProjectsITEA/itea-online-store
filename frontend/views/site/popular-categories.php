@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $categoriesFind CategoryRepository */
 ?>
 
-<h2 class="category-title">Popular categories</h2>
+<h2 class="category-title">Популярные категории:</h2>
 <div class="category-list">
     <?php foreach ($popularCategories as $popularCategory => $name) : ?>
         <a href="<?php echo Url::to([
