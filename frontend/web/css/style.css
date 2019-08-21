@@ -274,7 +274,8 @@ body {
   text-align: center;
   color: #33333a;
   margin-bottom: 40px; }
-
+.section-listing-products {
+  min-width: 900px; }
 .listing-products {
   display: flex;
   flex-wrap: wrap; }
@@ -289,6 +290,7 @@ body {
   width: 100%;
   text-align: center;
   margin: 0 auto 30px; }
+
 .listing-products .product-item:hover {
   box-shadow: 0px 0px 10px 10px #ccc;
   background-color: #ffffff; }

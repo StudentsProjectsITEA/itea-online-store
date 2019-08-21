@@ -12,7 +12,7 @@ use common\models\ProductSearch;
 $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
 
-var_dump($dataProvider);
+//var_dump($dataProvider);
 
 ?>
 

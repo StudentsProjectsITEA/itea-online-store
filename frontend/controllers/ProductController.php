@@ -89,7 +89,7 @@ class ProductController extends Controller
         return $this->render('index', [
             'allCategories' => $this->categoryRepository->getMainCategories(),
             'allBrands' => $this->brandRepository->findBrands(),
-            'dataProvider' => $this->productSearchModel->search(6, Yii::$app->request->queryParams),
+            'dataProvider' => $this->productSearchModel->search(5, Yii::$app->request->queryParams),
         ]);
     }
 

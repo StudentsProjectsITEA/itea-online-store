@@ -24,7 +24,7 @@ $this->title = 'Online Store | ITEA';
     'categoriesFind' => $categoriesFind,
 ]) ?>
 
-<?php echo $this->render('listing-products', [
+<?php echo $this->render('/product/listing-products', [
     'dataProvider' => $dataProvider,
 ]) ?>
 
