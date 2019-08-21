@@ -1,13 +1,16 @@
 <?php
 
+use frontend\models\ChangePasswordForm;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model frontend\models\User */
+/* @var $changePasswordModel ChangePasswordForm */
 ?>
 
 <?php $form = ActiveForm::begin([
+    'action' => ['change-password', 'id' => $model->id],
     'options' => [
         'class' => 'section-profile-content-item',
         'data-target' => 'change-password',
@@ -15,7 +18,7 @@ use yii\widgets\ActiveForm;
 ]); ?>
 
 <?php echo $form
-    ->field($model, 'password_hash')
+    ->field($changePasswordModel, 'password')
     ->passwordInput([
         'class' => 'section-profile-content-input',
         'placeholder' => 'Your current password...',
@@ -26,7 +29,7 @@ use yii\widgets\ActiveForm;
     ]) ?>
 
 <?php echo $form
-    ->field($model, 'password_hash')
+    ->field($changePasswordModel, 'new_password')
     ->passwordInput([
         'class' => 'section-profile-content-input',
         'placeholder' => 'Your new password...',
@@ -37,7 +40,7 @@ use yii\widgets\ActiveForm;
     ]) ?>
 
 <?php echo $form
-    ->field($model, 'password_hash')
+    ->field($changePasswordModel, 'confirm_new_password')
     ->passwordInput([
         'class' => 'section-profile-content-input',
         'placeholder' => 'Confirm new password...',

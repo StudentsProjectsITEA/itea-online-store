@@ -1526,6 +1526,15 @@ body {
   background-color: #333333;
   color: #fff;
   border: none; }
+.delete-btn.reset {
+  background-color: #fff;
+  color: #333333;
+  border: 2px solid #333333;
+  line-height: 34px; }
+.delete-btn.reset:active, .delete-btn.reset:hover {
+  background-color: #333333;
+  color: #fff;
+  border: none; }
 .filter-btn:active, .filter-btn:hover {
   background-color: #fff;
   color: #333333;
@@ -1970,6 +1979,8 @@ body {
   font-weight: bold;
   padding-left: 35px;
   box-sizing: border-box; }
+a.logout:hover {
+  text-decoration: none; }
 .section-profile-navmenu-item.logout::before {
   display: block;
   content: '';

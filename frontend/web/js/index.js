@@ -63,15 +63,15 @@ if(productCounterBtn){
 };
 
 
-(function addNewAdreesInput(){
-	const addNewBtnInputBtn =  document.getElementById('addNewAdress');
+(function addNewAddressInput(){
+	const addNewBtnInputBtn =  document.getElementById('addNewAddress');
 	if(addNewBtnInputBtn){
 		addNewBtnInputBtn.addEventListener('click', () => {
 			let newInput = document.createElement('label');
 			newInput.className = 'section-profile-content-label';
-			newInput.innerHTML = 'Your adress <input type="text" placeholder="Your adress" class="section-profile-content-input" value=""/>'
+			newInput.innerHTML = 'Your address <input type="text" placeholder="Your address" class="section-profile-content-input" value=""/>'
 
-			document.getElementById('formAdresses').insertBefore(newInput, addNewBtnInputBtn);
+			document.getElementById('formAddresses').insertBefore(newInput, addNewBtnInputBtn);
 		})
 	}
 })();

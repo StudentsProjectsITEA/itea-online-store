@@ -11,4 +11,7 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
+    'bootstrap' => [
+        'common\bootstrap\SetUp',
+    ],
 ];
