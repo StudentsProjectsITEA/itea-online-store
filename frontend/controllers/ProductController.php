@@ -13,9 +13,11 @@ use Throwable;
 use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
+use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use yii\db\StaleObjectException;
+use yii\di\NotInstantiableException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -29,11 +31,27 @@ class ProductController extends Controller
      * @var ProductRepository
      */
     private $productRepository;
-    
-    public function __construct($id, $module, ProductRepository $productRepository, $config = [])
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+    /**
+     * @var BrandRepository
+     */
+    private $brandRepository;
+
+    /**
+     * SiteController constructor.
+     * {@inheritdoc}
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
+     */
+    public function __construct($id, $module, $config = [])
     {
         $this->layout = 'main-layout';
-        $this->productRepository = $productRepository;
+        $this->productRepository = Yii::$container->get(ProductRepository::class);
+        $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
+        $this->brandRepository = Yii::$container->get(BrandRepository::class);
         parent::__construct($id, $module, $config);
     }
 
@@ -63,9 +81,9 @@ class ProductController extends Controller
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $allProducts = ProductViewer::getAllProducts();
-        $allCategories = (new CategoryRepository())->getMainCategories();
-        $allBrands = (new BrandRepository())->findBrands();
+        $allProducts = (new ProductViewer)->getAllProducts();
+        $allCategories = $this->categoryRepository->getMainCategories();
+        $allBrands = $this->brandRepository->findBrands();
 
 //        $paginationLimit = Yii::$app->params['countOfPopularCategories'];
 //        $pagination = new Pagination([

@@ -26,9 +26,6 @@ $this->title = 'Online Store | ITEA';
 ]) ?>
 
 <?php echo $this->render('listing-products', [
-    'allProducts' => $allProducts,
-    'pagination' => $pagination,
-    'productsFind' => $productsFind,
     'dataProvider' => $dataProvider,
 ]) ?>
 
@@ -37,7 +34,6 @@ $this->title = 'Online Store | ITEA';
 
         <?php echo $this->render('popular-products', [
         'popularProducts' => $popularProducts,
-        'productsFind' => $productsFind,
         ]) ?>
 
         <?php echo $this->render('popular-categories', [

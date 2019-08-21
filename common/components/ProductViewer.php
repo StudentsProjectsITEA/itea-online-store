@@ -14,7 +14,7 @@ use yii\data\Pagination;
  */
 class ProductViewer
 {
-    public static function getAllProducts()
+    public function getAllProducts()
     {
         $products = (new ProductRepository)->findAllProducts();
 

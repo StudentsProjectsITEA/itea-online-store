@@ -288,8 +288,7 @@ body {
   max-width: 263px;
   width: 100%;
   text-align: center;
-  margin-bottom: 25px;
-  margin-right: 25px; }
+  margin: 0 auto; }
 .listing-products .product-item:hover {
   box-shadow: 0px 0px 10px 10px #ccc;
   background-color: #ffffff; }
@@ -822,7 +821,8 @@ body {
 .store-pagination {
   display: flex;
   justify-content: center;
-  padding: 15px 0; }
+  padding: 15px 0;
+  margin: 0 auto; }
 .store-pagination .nav-links {
   color: #333333;
   font-size: 17px;

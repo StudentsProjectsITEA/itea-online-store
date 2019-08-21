@@ -4,6 +4,7 @@ namespace common\repositories;
 
 use common\models\Category;
 use common\models\Product;
+use Yii;
 use yii\db\ActiveRecord;
 use common\models\ProductParamValue;
 use yii\web\NotFoundHttpException;
@@ -64,5 +65,20 @@ class ProductRepository
     public function findProductByName(string $name)
     {
         return Product::findOne(['title' => $name]);
+    }
+
+    /**
+     * @return array|Product[]|ActiveRecord[]
+     */
+    public function findPopularProducts()
+    {
+        $limit = Yii::$app->params['countOfPopularProducts'];
+
+        $popularProducts = Product::find()
+            ->orderBy(['quantity' => SORT_DESC])
+            ->limit($limit)
+            ->all();
+
+        return $popularProducts;
     }
 }
