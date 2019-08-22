@@ -14,13 +14,12 @@ use yii\helpers\Url;
             <div class="footer-menu">
                 <div class="footer-menu-column">
                     <h3 class="footer-menu-column-title">
-                        <?php echo Html::encode('Account') ?>
+                        <?php echo Html::encode('Store') ?>
                     </h3>
                     <ul class="footer-column-list">
                         <li class="footer-column-item">
-                            <a href="<?php echo Url::to('/account/' . Yii::$app->user->id); ?>"
-                               class="footer-column-link">
-                                <?php echo Html::encode('Dashboard') ?>
+                            <a href="<?php echo Url::to('/products'); ?>" class="footer-column-link">
+                                <?php echo Html::encode('All products') ?>
                             </a>
                         </li>
                         <li class="footer-column-item">
@@ -36,7 +35,9 @@ use yii\helpers\Url;
                     </ul>
                 </div>
                 <div class="footer-menu-column">
-                    <h3 class="footer-menu-column-title">Customer service</h3>
+                    <h3 class="footer-menu-column-title">
+                        <?php echo Html::encode('Information') ?>
+                    </h3>
                     <ul class="footer-column-list">
                         <li class="footer-column-item">
                             <a href="<?php echo Url::to('/about'); ?>" class="footer-column-link">
@@ -45,12 +46,7 @@ use yii\helpers\Url;
                         </li>
                         <li class="footer-column-item">
                             <a href="<?php echo Url::to('/contact'); ?>" class="footer-column-link">
-                                <?php echo Html::encode('Contact us') ?>
-                            </a>
-                        </li>
-                        <li class="footer-column-item">
-                            <a href="<?php echo Url::to('/products'); ?>" class="footer-column-link">
-                                <?php echo Html::encode('All products') ?>
+                                <?php echo Html::encode('Contacts') ?>
                             </a>
                         </li>
                     </ul>

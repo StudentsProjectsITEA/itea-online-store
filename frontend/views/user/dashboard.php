@@ -12,8 +12,10 @@ use yii\helpers\Html;
     <p class="dashboard-text"><?php echo Html::encode($model->last_name) ?></p>
     <h1 class="dashboard-title"><b>Username:</b></h1>
     <p class="dashboard-text"><?php echo Html::encode($model->username) ?></p>
+    <?php if (isset($model->mobile)): ?>
     <h1 class="dashboard-title"><b>Mobile number:</b></h1>
     <p class="dashboard-text"><?php echo '+' . Html::encode($model->mobile) ?></p>
+    <?php endif; ?>
     <h1 class="dashboard-title"><b>Email address:</b></h1>
     <p class="dashboard-text"><?php echo Html::encode($model->email) ?></p>
     <h1 class="dashboard-title"><b>Created time:</b></h1>

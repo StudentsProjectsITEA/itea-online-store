@@ -19,9 +19,8 @@ class ChangePasswordForm extends Model
     public function rules()
     {
         return [
-            // username и password обязательны для заполнения
             [['password', 'new_password', 'confirm_new_password'], 'required'],
-            // проверке пароля с помощью validatePassword()
+
             ['password', 'validatePassword'],
         ];
     }

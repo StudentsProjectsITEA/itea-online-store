@@ -10,7 +10,6 @@ use yii\web\YiiAsset;
 /* @var $userOrders array */
 
 $this->title = 'My Account';
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>

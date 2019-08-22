@@ -40,6 +40,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'login' => 'site/login',
                 'about' => 'site/about',
                 'contact' => 'site/contact',
                 'cart' => 'cart/index',

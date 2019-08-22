@@ -1,10 +1,8 @@
 <?php
 
-use common\models\Product;
 use common\models\ProductSearch;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
-use yii\data\Pagination;
 
 /**
  * @var $this yii\web\View
@@ -32,12 +30,12 @@ $this->title = 'Online Store | ITEA';
     <div class="container">
 
         <?php echo $this->render('popular-products', [
-        'popularProducts' => $popularProducts,
+            'popularProducts' => $popularProducts,
         ]) ?>
 
         <?php echo $this->render('popular-categories', [
-        'popularCategories' => $popularCategories,
-        'categoriesFind' => $categoriesFind,
+            'popularCategories' => $popularCategories,
+            'categoriesFind' => $categoriesFind,
         ]) ?>
 
     </div>
