@@ -3,7 +3,8 @@
 namespace common\bootstrap;
 
 use frontend\components\CartViewer;
-use Yii;
+use frontend\models\LoginForm;
+use frontend\models\SignupForm;
 use common\models\ProductSearch;
 use common\repositories\CategoryRepository;
 use frontend\models\ChangePasswordForm;
@@ -13,6 +14,7 @@ use common\components\ProductViewer;
 use common\repositories\ProductRepository;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
+use Yii;
 
 /**
  * Class SetUp
@@ -43,6 +45,8 @@ class SetUp implements BootstrapInterface
         $this->container->setSingleton(ProductViewer::class);
         $this->container->setSingleton(CartViewer::class);
 
+        $this->container->setSingleton(SignupForm::class);
+        $this->container->setSingleton(LoginForm::class);
         $this->container->setSingleton(ChangePasswordForm::class);
         $this->container->setSingleton(ProductSearch::class);
     }

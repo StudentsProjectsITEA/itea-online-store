@@ -1,12 +1,10 @@
 <?php
 
-/* @var $this \yii\web\View */
-
+/* @var $this View */
 /* @var $content string */
 
-use frontend\repositories\UserRepository;
 use yii\helpers\Html;
-use yii\helpers\Url;
+use yii\web\View;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
@@ -29,19 +27,15 @@ AppAsset::register($this);
 
 <?php echo $this->render('header') ?>
 
-<?php echo $this->render('modal-login') ?>
-
-<?php echo $this->render('modal-registration') ?>
-
 <?php if (isset($this->params['breadcrumbs'])): ?>
     <section class="breadcrumbs-section">
         <div class="container">
             <?php echo Breadcrumbs::widget([
-                    'links' => $this->params['breadcrumbs'],
-                    'options' => [
-                        'class' => 'breadcrumbs-list',
-                    ],
-                ]) ?>
+                'links' => $this->params['breadcrumbs'],
+                'options' => [
+                    'class' => 'breadcrumbs-list',
+                ],
+            ]) ?>
         </div>
     </section>
 <?php endif; ?>

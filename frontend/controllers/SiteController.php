@@ -3,7 +3,6 @@
 namespace frontend\controllers;
 
 use common\models\ProductSearch;
-use Yii;
 use common\components\CategoryViewer;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
@@ -21,6 +20,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use yii\web\Response;
+use Yii;
 
 /**
  * Site controller
@@ -29,22 +29,18 @@ class SiteController extends Controller
 {
     const PRODUCT_PAGE_SIZE = 3;
 
-    /**
-     * @var ProductRepository
-     */
+    /* @var ProductRepository */
     private $productRepository;
-    /**
-     * @var CategoryRepository
-     */
+    /* @var CategoryRepository */
     private $categoryRepository;
-    /**
-     * @var CategoryViewer
-     */
+    /* @var CategoryViewer */
     private $categoryViewer;
-    /**
-     * @var ProductSearch
-     */
+    /* @var ProductSearch */
     private $productSearchModel;
+    /* @var SignupForm */
+    private $signupForm;
+    /* @var LoginForm */
+    private $loginForm;
 
     /**
      * SiteController constructor.
@@ -59,6 +55,8 @@ class SiteController extends Controller
         $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
         $this->categoryViewer = Yii::$container->get(CategoryViewer::class);
         $this->productSearchModel = Yii::$container->get(ProductSearch::class);
+        $this->signupForm = Yii::$container->get(SignupForm::class);
+        $this->loginForm = Yii::$container->get(LoginForm::class);
         parent::__construct($id, $module, $config);
     }
 
@@ -70,7 +68,7 @@ class SiteController extends Controller
         return [
             /*
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
@@ -137,77 +135,24 @@ class SiteController extends Controller
      * Logs in a user.
      *
      * @return mixed
-     * @throws InvalidConfigException
-     * @throws NotInstantiableException
      */
     public function actionLogin()
     {
-        $allSubCategories = $this->categoryViewer->getSubCategories();
-
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
 
-        $loginModel = new LoginForm();
-        if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
-            return $this->goBack();
+        $model = $this->loginForm;
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->redirect(['/account/' . Yii::$app->user->id]);
         } else {
-            $loginModel->password = '';
+            $model->password = '';
 
-            return $this->render('index', [
-                'loginModel' => $loginModel,
-                'allCategories' => $this->categoryViewer->getCategories($allSubCategories),
-                'popularProducts' => $this->productRepository->findPopularProducts(),
-                'popularCategories' => $this->categoryRepository->findPopularCategories(),
-                'categoriesFind' => $this->categoryRepository,
-                'dataProvider' => $this->productSearchModel->search(self::PRODUCT_PAGE_SIZE, Yii::$app->request->queryParams),
+            return $this->render('login', [
+                'loginModel' => $model,
+                'registrationModel' => $this->signupForm,
             ]);
         }
-    }
-
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return mixed
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
-            }
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return mixed
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 
     /**
@@ -217,23 +162,18 @@ class SiteController extends Controller
      *
      * @throws \Exception
      */
-    public function actionSignup()
+    public function actionRegistration()
     {
-        $allSubCategories = $this->categoryViewer->getSubCategories();
-
-        $signupModel = new SignupForm();
-        if ($signupModel->load(Yii::$app->request->post()) && $signupModel->signup()) {
+        $model = $this->signupForm;
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+            $this->loginForm->login();
+            return $this->redirect(['/account/' . Yii::$app->user->id]);
         }
 
-        return $this->render('index', [
-            'signupModel' => $signupModel,
-            'allCategories' => $this->categoryViewer->getCategories($allSubCategories),
-            'popularProducts' => $this->productRepository->findPopularProducts(),
-            'popularCategories' => $this->categoryRepository->findPopularCategories(),
-            'categoriesFind' => $this->categoryRepository,
-            'dataProvider' => $this->productSearchModel->search(self::PRODUCT_PAGE_SIZE, Yii::$app->request->queryParams),
+        return $this->render('login', [
+            'registrationModel' => $model,
+            'loginModel' => $this->loginForm,
         ]);
     }
 
@@ -311,12 +251,35 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays Checkout page.
+     * Displays contact page.
      *
      * @return mixed
      */
-    public function actionCheckout()
+    public function actionContact()
     {
-        return $this->render('checkout');
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+            } else {
+                Yii::$app->session->setFlash('error', 'There was an error sending your message.');
+            }
+
+            return $this->refresh();
+        } else {
+            return $this->render('contact', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * Displays about page.
+     *
+     * @return mixed
+     */
+    public function actionAbout()
+    {
+        return $this->render('about');
     }
 }

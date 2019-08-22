@@ -804,10 +804,12 @@ body {
   border: 1px solid #333333;
   border-radius: 6px;
   padding: 3px 15px;
-  margin-right: 16px; }
+  margin-right: 16px;
+  color: #000000; }
 .header-login-btn:active, .header-login-btn:hover {
   color: #ff6008;
-  border: 1px solid #ff6008; }
+  border: 1px solid #ff6008;
+  text-decoration: unset; }
 .header-cart-amount {
   position: absolute;
   display: flex;
@@ -2171,3 +2173,9 @@ body {
 
 .order-history-item-dark {
   border: 2px solid #000; }
+
+.login-form, .registration-form {
+  padding: 25px;
+  width: 50%;
+  float: left;
+  min-height: 360px; }

@@ -31,7 +31,6 @@ use yii\widgets\ActiveForm;
     ->field($model, 'last_name')
     ->textInput([
         'class' => 'section-profile-content-input',
-        'type' => 'text',
         'placeholder' => 'Your last name...',
         'value' => $model->last_name,
     ])
@@ -43,7 +42,6 @@ use yii\widgets\ActiveForm;
     ->field($model, 'mobile')
     ->textInput([
         'class' => 'section-profile-content-input',
-        'type' => 'text',
         'placeholder' => 'Your mobile number...',
         'value' => $model->mobile,
     ])
@@ -53,9 +51,8 @@ use yii\widgets\ActiveForm;
 
 <?php echo $form
     ->field($model, 'email')
-    ->textInput([
+    ->input('email', [
         'class' => 'section-profile-content-input',
-        'type' => 'email',
         'placeholder' => 'Your email...',
         'value' => $model->email,
     ])

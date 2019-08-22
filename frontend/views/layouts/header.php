@@ -1,6 +1,6 @@
 <?php
 
-use frontend\repositories\UserRepository;
+use frontend\models\User;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -29,20 +29,22 @@ use yii\helpers\Url;
             <?php echo Html::submitButton('Search', ['class' => 'main-search-btn']) ?>
             <?php echo Html::endForm(); ?>
             <div class="header-icons">
-                <button class="header-login-btn" id="logInBtn">
-                    <?php echo Html::encode('Log in') ?>
-                </button>
-                <a href="<?php echo Url::to([
-                    'user/view',
-                    'id' => (new UserRepository())->findUserByName('Vasya')->id,
-                ]) ?>">
-                    <div class="user-info">
-                        <div class="user-avatar">
-                            <img alt="user-avatar" src="<?php echo Url::to('@web/img/featured.png'); ?>">
+                <?php if (Yii::$app->user->isGuest): ?>
+                    <?php echo Html::a('Log in', '/login', ['class' => 'header-login-btn']) ?>
+                <?php else: ?>
+                    <a href="<?php echo Url::to([
+                        'user/view',
+                        'id' => Yii::$app->user->id,
+                    ]) ?>">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <img alt="user-avatar" src="<?php echo Url::to('@web/img/featured.png'); ?>">
+                            </div>
+                            <?php echo Html::encode(User::findOne(Yii::$app->user->id)->first_name) ?>
+                            <?php echo Html::encode(User::findOne(Yii::$app->user->id)->last_name) ?>
                         </div>
-                        <?php echo Html::encode('Vasya Pupkin') ?>
-                    </div>
-                </a>
+                    </a>
+                <?php endif; ?>
             </div>
             <a href="<?php echo Url::to('/cart'); ?>" class="header-icon">
                 <i class="fas fa-shopping-cart"></i>

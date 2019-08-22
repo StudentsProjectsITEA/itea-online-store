@@ -17,7 +17,7 @@ class SignupForm extends Model
     public $last_name;
     public $email;
     public $password;
-
+    public $confirm_password;
 
     /**
      * {@inheritdoc}
@@ -36,8 +36,8 @@ class SignupForm extends Model
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => '\frontend\models\User', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            [['password', 'confirm_password'], 'required'],
+            [['password', 'confirm_password'], 'string', 'min' => 6],
         ];
     }
 
@@ -60,6 +60,13 @@ class SignupForm extends Model
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
         $user->email = $this->email;
+        if ($this->password !== $this->confirm_password) {
+            $message = 'Your new password is not the same as your confirmation password.';
+            Yii::$app->session->setFlash('error', $message);
+            $this->addError('password', $message);
+
+            return null;
+        }
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
