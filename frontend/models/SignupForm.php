@@ -60,6 +60,9 @@ class SignupForm extends Model
         $user->first_name = $this->first_name;
         $user->last_name = $this->last_name;
         $user->email = $this->email;
+        $user->status_id = 10;
+        $user->created_time = time();
+        $user->updated_time = time();
         if ($this->password !== $this->confirm_password) {
             $message = 'Your new password is not the same as your confirmation password.';
             Yii::$app->session->setFlash('error', $message);

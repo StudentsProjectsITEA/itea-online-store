@@ -166,7 +166,9 @@ class SiteController extends Controller
     {
         $model = $this->signupForm;
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Welcome to your account.');
+            $this->loginForm->username = $model->username;
+            $this->loginForm->password = $model->password;
             $this->loginForm->login();
             return $this->redirect(['/account/' . Yii::$app->user->id]);
         }

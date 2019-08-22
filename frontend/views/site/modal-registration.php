@@ -13,6 +13,7 @@ use yii\helpers\Html;
     <?php echo Html::encode('Registration') ?>
 </h2>
 <?php $form = ActiveForm::begin([
+    'action' => '/site/registration',
     'options' => [
         'class' => 'login-menu_form',
     ]
