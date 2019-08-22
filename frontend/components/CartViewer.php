@@ -1,11 +1,11 @@
 <?php
 
-namespace frontend\repositories;
+namespace frontend\components;
 
 use DomainException;
 use yii\helpers\Html;
 
-class CartRepository
+class CartViewer
 {
     /**
      * @param integer $qty
@@ -15,11 +15,11 @@ class CartRepository
      *
      * @throws DomainException if the product cannot be found
      */
-    public function getQuantity($qty, $maxQty)
+    public function getQuantity(int $qty, int $maxQty)
     {
         $quantity = (int)$qty > 0 ? (int)$qty : 1;
         if ($quantity > $maxQty) {
-            throw new DomainException('Товара в наличии всего ' . Html::encode($maxQty) . ' шт.');
+            throw new DomainException('Only ' . Html::encode($maxQty) . ' item(s) available in stock.');
         }
 
         return $quantity;

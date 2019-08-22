@@ -10,10 +10,15 @@ use yii\helpers\Url;
 ?>
 
 <ul>
+    <li class="basket-item">
+        <br><p class="basket-item-title"><?php echo Html::encode('Item:') ?></p><br>
+        <p class="basket-item-title"><?php echo Html::encode('Quantity:') ?></p>
+        <p class="basket-item-title"><?php echo Html::encode('Total:') ?></p>
+    </li>
     <?php foreach ($cartItems as $item): ?>
         <li class="basket-item">
             <div>
-                <?php echo Html::beginForm(['/cart/remove', 'id' => $item->getId()], 'post') ?>
+                <?php echo Html::beginForm(['/cart/remove', 'id' => $item->getId()]) ?>
                 <?php echo Html::submitButton('X') ?>
                 <?php echo Html::endForm(); ?>
             </div>
@@ -27,6 +32,7 @@ use yii\helpers\Url;
                 <a href="<?php echo Url::to(['product/view', 'id' => $item->getId()]) ?>">
                     <p class="basket-item-title"><?php echo Html::encode($item->getProduct()->title) ?></p>
                 </a>
+                <p><?php echo Html::encode('Price: ' . $item->getProduct()->price . ' ₴') ?></p>
                 <p><?php echo Html::encode('Color: ' . $item->getProduct()->quantity) ?></p>
                 <p><?php echo Html::encode('Size: ' . $item->getProduct()->quantity) ?></p>
             </div>

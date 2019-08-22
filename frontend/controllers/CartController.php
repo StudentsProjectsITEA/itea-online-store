@@ -5,7 +5,7 @@ namespace frontend\controllers;
 use common\repositories\ProductRepository;
 use devanych\cart\Cart;
 use DomainException;
-use frontend\repositories\CartRepository;
+use frontend\components\CartViewer;
 use yii\base\InvalidConfigException;
 use yii\di\NotInstantiableException;
 use yii\web\Controller;
@@ -15,10 +15,10 @@ use Yii;
 
 class CartController extends Controller
 {
-    /** @var CartRepository */
-    private $cartRepository;
     /** @var ProductRepository */
     private $productRepository;
+    /** @var CartViewer */
+    private $cartViewer;
     /** @var Cart $cart */
     private $cart;
 
@@ -31,7 +31,7 @@ class CartController extends Controller
     public function __construct($id, $module, $config = [])
     {
         $this->layout = 'main-layout';
-        $this->cartRepository = Yii::$container->get(CartRepository::class);
+        $this->cartViewer = Yii::$container->get(CartViewer::class);
         $this->productRepository = Yii::$container->get(ProductRepository::class);
         $this->cart = Yii::$app->cart;
         parent::__construct($id, $module, $config);
@@ -62,7 +62,7 @@ class CartController extends Controller
     {
         try {
             $product = $this->productRepository->findProductById($id);
-            $quantity = $this->cartRepository->getQuantity($qty, $product->quantity);
+            $quantity = $this->cartViewer->getQuantity($qty, $product->quantity);
             if ($item = $this->cart->getItem($product->id)) {
                 $this->cart->plus($item->getId(), $quantity);
             } else {
@@ -88,7 +88,7 @@ class CartController extends Controller
     {
         try {
             $product = $this->productRepository->findProductById($id);
-            $quantity = $this->cartRepository->getQuantity($qty, $product->quantity);
+            $quantity = $this->cartViewer->getQuantity($qty, $product->quantity);
             if ($item = $this->cart->getItem($product->id)) {
                 $this->cart->change($item->getId(), $quantity);
             }
