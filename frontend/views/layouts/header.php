@@ -22,7 +22,10 @@ use yii\helpers\Url;
                 </a>
             </div>
             <?php echo Html::beginForm(['/product/index'], 'get', ['class' => 'main-search']) ?>
-            <?php echo Html::textInput('search', '', ['class' => 'main-search-input', 'placeholder' => 'Search']) ?>
+            <?php echo Html::textInput('search', Yii::$app->request->queryParams['search'] ?? '', [
+                'class' => 'main-search-input',
+                'placeholder' => 'Search',
+            ]) ?>
             <?php echo Html::submitButton('Search', ['class' => 'main-search-btn']) ?>
             <?php echo Html::endForm(); ?>
             <div class="header-icons">
