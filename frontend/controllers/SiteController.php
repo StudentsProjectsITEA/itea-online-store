@@ -27,6 +27,8 @@ use yii\web\Response;
  */
 class SiteController extends Controller
 {
+    const PRODUCT_PAGE_SIZE = 3;
+
     /**
      * @var ProductRepository
      */
@@ -127,7 +129,7 @@ class SiteController extends Controller
             'popularProducts' => $this->productRepository->findPopularProducts(),
             'popularCategories' => $this->categoryRepository->findPopularCategories(),
             'categoriesFind' => $this->categoryRepository,
-            'dataProvider' => $this->productSearchModel->search(3, Yii::$app->request->queryParams),
+            'dataProvider' => $this->productSearchModel->search(self::PRODUCT_PAGE_SIZE, Yii::$app->request->queryParams),
         ]);
     }
 
@@ -158,7 +160,7 @@ class SiteController extends Controller
                 'popularProducts' => $this->productRepository->findPopularProducts(),
                 'popularCategories' => $this->categoryRepository->findPopularCategories(),
                 'categoriesFind' => $this->categoryRepository,
-                'dataProvider' => $this->productSearchModel->search(Yii::$app->request->queryParams),
+                'dataProvider' => $this->productSearchModel->search(self::PRODUCT_PAGE_SIZE, Yii::$app->request->queryParams),
             ]);
         }
     }
@@ -231,7 +233,7 @@ class SiteController extends Controller
             'popularProducts' => $this->productRepository->findPopularProducts(),
             'popularCategories' => $this->categoryRepository->findPopularCategories(),
             'categoriesFind' => $this->categoryRepository,
-            'dataProvider' => $this->productSearchModel->search(Yii::$app->request->queryParams),
+            'dataProvider' => $this->productSearchModel->search(self::PRODUCT_PAGE_SIZE, Yii::$app->request->queryParams),
         ]);
     }
 
@@ -309,26 +311,6 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays User Account page.
-     *
-     * @return mixed
-     */
-    public function actionAccount()
-    {
-        return $this->render('account');
-    }
-
-    /**
-     * Displays Cart page.
-     *
-     * @return mixed
-     */
-    public function actionCart()
-    {
-        return $this->render('cart');
-    }
-
-    /**
      * Displays Checkout page.
      *
      * @return mixed
@@ -336,27 +318,5 @@ class SiteController extends Controller
     public function actionCheckout()
     {
         return $this->render('checkout');
-    }
-
-    /**
-     * Displays Product detail view page.
-     *
-     * @return mixed
-     */
-    public function actionProduct()
-    {
-        $this->layout = 'product-layout';
-
-        return $this->render('product');
-    }
-
-    /**
-     * Displays Products page.
-     *
-     * @return mixed
-     */
-    public function actionProducts()
-    {
-        return $this->render('products');
     }
 }

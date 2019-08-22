@@ -1544,6 +1544,15 @@ body {
   background-color: #333333;
   color: #fff;
   border: none; }
+.cart-delete-btn {
+  background-color: #fff;
+  color: #333333;
+  border: 2px solid #333333;
+  line-height: 34px; }
+.cart-delete-btn:active, .cart-delete-btn:hover {
+  background-color: #333333;
+  color: #fff;
+  border: 2px solid #ffffff; }
 .filter-btn:active, .filter-btn:hover {
   background-color: #fff;
   color: #333333;

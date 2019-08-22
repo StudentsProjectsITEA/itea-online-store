@@ -17,7 +17,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <section class="category-block container">
-
 <?php echo $this->render('filters', [
     'allCategories' => $allCategories,
     'allBrands' => $allBrands,
@@ -26,3 +25,4 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php echo $this->render('listing-products', [
     'dataProvider' => $dataProvider,
 ]) ?>
+</section>

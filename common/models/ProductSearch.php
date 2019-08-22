@@ -73,8 +73,15 @@ class ProductSearch extends Product
         ]);
         */
 
+        if (isset($params['search'])) {
+            $query
+                ->andFilterWhere(['ilike', 'title', $params['search']])
+                ->orFilterWhere(['ilike', 'description', $params['search']]);
+        }
+
         if (isset($params['minPrice']) && isset($params['maxPrice'])) {
-            $query->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
+            $query
+                ->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
         }
 
         return $dataProvider;

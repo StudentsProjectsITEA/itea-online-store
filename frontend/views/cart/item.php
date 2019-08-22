@@ -19,7 +19,7 @@ use yii\helpers\Url;
         <li class="basket-item">
             <div>
                 <?php echo Html::beginForm(['/cart/remove', 'id' => $item->getId()]) ?>
-                <?php echo Html::submitButton('X') ?>
+                <?php echo Html::submitButton('X', ['class' => 'cart-delete-btn']) ?>
                 <?php echo Html::endForm(); ?>
             </div>
             <a href="<?php echo Url::to(['product/view', 'id' => $item->getId()]) ?>">
