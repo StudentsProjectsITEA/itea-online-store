@@ -1,66 +1,108 @@
 <?php
 
-use devanych\cart\CartItem;
+use frontend\models\CheckoutForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
-/* @var $cartItems array */
-/* @var $item CartItem */
+/* @var $model CheckoutForm */
+/* @var $form ActiveForm */
 
 ?>
 
 <div class="checkout-delivery-method">
     <p class="checkout-delivery-details-title">
-        Choose one of delivery method
+        <?php echo Html::encode('Choose one of shipping method') ?>
     </p>
     <ul class="checkout-delivery-list">
         <li>
-            <input
-                    class="delivery-input"
-                    type="radio"
-                    name="deliveryFilter"
-                    id="economical"
-                    value="economical"
-            /><label
-                    class="delivery-link"
-                    title="economical"
-                    for="economical"
-            >
+
+            <?php echo $form
+                ->field($model, 'shipping_id', [
+                    'options' => [
+                        'tag' => false
+                    ],
+                    'enableLabel' => false,
+                    'radioTemplate' => "{input}"
+                ])
+                ->radio([
+                    'id' => 'pickup',
+                    'class' => 'delivery-input active',
+                    'value' => 1,
+                    'checked' => '',
+                    'uncheckValue' => null,
+                    'onChange'=>' if($(this).prop("checked")){ var radioValue = 1;$(this).val(radioValue); var radioName = "CheckoutForm[shipping_id]"; RadioSelected(radioName,radioValue);}else{$(this).val("")};',
+                ]) ?>
+
+            <label class="delivery-link" title="Pickup Shipping" for="pickup">
                 <div class="delivery-link-block">
-                    <p>Delivery - economical</p>
-                    <p>Estimated delivery - 14 days</p>
-                    <p>Price - $0</p>
+                    <p>
+                        <?php echo Html::encode('Pickup Shipping') ?>
+                    </p>
+                    <p>
+                        <?php echo Html::encode('Price: 0 ₴') ?>
+                    </p>
                 </div>
             </label>
         </li>
         <li>
-            <input
-                    class="delivery-input"
-                    type="radio"
-                    name="deliveryFilter"
-                    id="standart"
-                    value="standart"
-                    checked=""
-            /><label class="delivery-link" title="standart" for="standart">
+
+            <?php echo $form
+                ->field($model, 'shipping_id', [
+                    'options' => [
+                        'tag' => false
+                    ],
+                    'enableLabel' => false,
+                    'radioTemplate' => "{input}"
+                ])
+                ->radio([
+                    'id' => 'courier',
+                    'class' => 'delivery-input',
+                    'value' => 2,
+                    'uncheckValue' => null,
+                ]) ?>
+
+            <label class="delivery-link" title="Courier Shipping" for="courier">
                 <div class="delivery-link-block">
-                    <p>Delivery - standart</p>
-                    <p>Estimated delivery - 7 days</p>
-                    <p>Price - $5</p>
+                    <p>
+                        <?php echo Html::encode('Courier Shipping') ?>
+                    </p>
+                    <p>
+                        <?php echo Html::encode('Shipping time: 1-2 days') ?>
+                    </p>
+                    <p>
+                        <?php echo Html::encode('Price: 100 ₴') ?>
+                    </p>
                 </div>
             </label>
         </li>
         <li>
-            <input
-                    class="delivery-input"
-                    type="radio"
-                    name="deliveryFilter"
-                    id="express"
-                    value="express"
-            /><label class="delivery-link" title="express" for="express">
+
+            <?php echo $form
+                ->field($model, 'shipping_id', [
+                    'options' => [
+                        'tag' => false
+                    ],
+                    'enableLabel' => false,
+                    'radioTemplate' => "{input}"
+                ])
+                ->radio([
+                    'id' => 'post-office',
+                    'class' => 'delivery-input',
+                    'value' => 3,
+                    'uncheckValue' => null,
+                ]) ?>
+
+            <label class="delivery-link" title="Post Office Shipping" for="post-office">
                 <div class="delivery-link-block">
-                    <p>Delivery - express</p>
-                    <p>Estimated delivery - 3 days</p>
-                    <p>Price - $10</p>
+                    <p>
+                        <?php echo Html::encode('Post Office Shipping') ?>
+                    </p>
+                    <p>
+                        <?php echo Html::encode('Shipping time: 3-5 days') ?>
+                    </p>
+                    <p>
+                        <?php echo Html::encode('Price: 80 ₴') ?>
+                    </p>
                 </div>
             </label>
         </li>
