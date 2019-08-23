@@ -17,7 +17,7 @@ use yii\helpers\Html;
                 </p>
 
                 <p class="order-history-date">
-                    <?php echo Html::encode('Date of order - ' . date('d.m.Y H:i:s', $order->created_time)) ?>
+                    <?php echo Html::encode('Date of order - ' . date('d.m.Y H:i:s', $order->created_time + (3 * 60 * 60))) ?>
                 </p>
 
                 <p class="order-history-shipping">

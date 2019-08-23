@@ -337,7 +337,7 @@ class TestDataController extends Controller
      */
     public function actionAdd()
     {
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $rand = rand(1, 99);
             if (!in_array($rand, $this->randomNumbers)) {
                 $this->randomNumbers[] = $rand;
@@ -359,8 +359,8 @@ class TestDataController extends Controller
             'email' => 'user@example.com',
             'verification_token' => 'qiwohfu32ug2iu',
             'status_id' => 10,
-            'created_time' => time() + (3 * 60 * 60),
-            'updated_time' => time() + (3 * 60 * 60),
+            'created_time' => time(),
+            'updated_time' => time(),
         ])->execute();
 
         //Insert test data to category table
@@ -415,8 +415,8 @@ class TestDataController extends Controller
                     'price' => $product['price'],
                     'main_photo' => $product['main_photo'],
                     'is_deleted' => false,
-                    'created_time' => time() + (3 * 60 * 60),
-                    'updated_time' => time() + (3 * 60 * 60),
+                    'created_time' => time(),
+                    'updated_time' => time(),
                     'category_id' => $this->categoryId[$product['category']],
                     'brand_id' => $this->brandId[$product['brand']],
                 ])->execute();
@@ -482,7 +482,7 @@ class TestDataController extends Controller
                     'id' => Uuid::uuid4()->toString(),
                     'name' => $title,
                     'is_main' => $photos['is_main'],
-                    'created_time' => time() + (3 * 60 * 60),
+                    'created_time' => time(),
                     'product_id' => $this->productId[$photos['product']],
                 ])->execute();
             }
@@ -499,8 +499,8 @@ class TestDataController extends Controller
                 'price' => $product['price'],
                 'main_photo' => $product['main_photo'],
                 'is_deleted' => false,
-                'created_time' => time() + (3 * 60 * 60),
-                'updated_time' => time() + (3 * 60 * 60),
+                'created_time' => time(),
+                'updated_time' => time(),
                 'category_id' => $this->categoryId[$product['category']],
                 'brand_id' => $this->brandId[$product['brand']],
             ])->execute();
@@ -564,7 +564,7 @@ class TestDataController extends Controller
                 'id' => Uuid::uuid4()->toString(),
                 'name' => $title,
                 'is_main' => $photos['is_main'],
-                'created_time' => time() + (3 * 60 * 60),
+                'created_time' => time(),
                 'product_id' => $this->productId[$photos['product']],
             ])->execute();
         }
@@ -607,8 +607,8 @@ class TestDataController extends Controller
                 'payment_id' => $orders['payment_id'],
                 'shipping_id' => $orders['shipping_id'],
                 'shipping_address' => $orders['shipping_address'],
-                'created_time' => time() + (3 * 60 * 60),
-                'updated_time' => time() + (3 * 60 * 60),
+                'created_time' => time(),
+                'updated_time' => time(),
                 'user_id' => $uuidUser,
             ])->execute();
         }
@@ -636,8 +636,8 @@ class TestDataController extends Controller
             'email' => 'admin@example.com',
             'verification_token' => '2nSuijnqA-zwVCB1A7nim3y3xocqYVjz_1565102166',
             'status_id' => 10,
-            'created_time' => time() + (3 * 60 * 60),
-            'updated_time' => time() + (3 * 60 * 60),
+            'created_time' => time(),
+            'updated_time' => time(),
         ])->execute();
     }
 

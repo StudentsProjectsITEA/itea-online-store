@@ -23,6 +23,18 @@ use yii\db\ActiveRecord;
  */
 class Order extends ActiveRecord
 {
+    const STATUS_NEW = 1;
+    const STATUS_IN_PROGRESS = 2;
+    const STATUS_DONE = 3;
+
+    const PAYMENT_BANK_TRANSFER = 1;
+    const PAYMENT_CASH_RECEIPT = 2;
+    const PAYMENT_CARD_ONLINE = 3;
+
+    const SHIPPING_PICKUP = 1;
+    const SHIPPING_COURIER = 2;
+    const SHIPPING_POST_OFFICE = 3;
+
     /**
      * {@inheritdoc}
      */
@@ -37,13 +49,12 @@ class Order extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'status_id', 'payment_id', 'shipping_id', 'shipping_address', 'created_time', 'updated_time', 'user_id'], 'required'],
+            [['id', 'status_id', 'payment_id', 'shipping_id', 'shipping_address', 'created_time', 'updated_time'], 'required'],
             [['id', 'user_id'], 'string'],
-            [['status_id', 'payment_id', 'shipping_id', 'created_time', 'updated_time'], 'default', 'value' => null],
+            [['status_id', 'payment_id', 'shipping_id', 'created_time', 'updated_time', 'user_id'], 'default', 'value' => null],
             [['status_id', 'payment_id', 'shipping_id', 'created_time', 'updated_time'], 'integer'],
             [['shipping_address'], 'string', 'max' => 255],
             [['id'], 'unique'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 

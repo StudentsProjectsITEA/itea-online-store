@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?php echo Html::encode($this->title) ?></h1>
 
-    <?php echo $this->render('settings-form.php', [
+    <?php echo $this->render('settings-form', [
         'model' => $model,
     ]) ?>
 
