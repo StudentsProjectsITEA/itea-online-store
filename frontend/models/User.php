@@ -9,9 +9,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\web\IdentityInterface;
-use yii\web\NotFoundHttpException;
 
 /**
  * User model

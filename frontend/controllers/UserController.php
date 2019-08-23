@@ -3,19 +3,15 @@
 namespace frontend\controllers;
 
 use common\repositories\OrderRepository;
-use Exception;
 use frontend\models\ChangePasswordForm;
 use frontend\repositories\UserRepository;
-use Throwable;
-use Yii;
-use frontend\models\User;
-use common\models\UserSearch;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\db\StaleObjectException;
 use yii\di\NotInstantiableException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -90,7 +86,7 @@ class UserController extends Controller
      * @return mixed
      *
      * @throws NotFoundHttpException if the model cannot be found
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function actionUpdate($id)
     {
@@ -115,7 +111,7 @@ class UserController extends Controller
      *
      * @return mixed
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function actionChangePassword($id)
     {
