@@ -26,10 +26,7 @@ use common\models\Category;
                         <li>
                             <?php echo $category->name; ?>
                             <div class="checkbox">
-                                <input type="checkbox"
-                                       "<?php echo (array_key_exists($category->name, $param) &&
-                                       ($param[$category->name] == 'on')) ? 'checked' : null; ?>"
-                                       name="<?php echo $category->name; ?>" >
+                                <input type="checkbox" name="<?php echo $category->name; ?>" >
                                 <span></span>
                             </div>
                         </li>
