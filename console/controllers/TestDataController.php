@@ -23,6 +23,7 @@ use common\models\Category;
  */
 class TestDataController extends Controller
 {
+    private $randomNumbers = [];
     private $categoryId = [];
     private $categories = [
         'electronics' => ['notebooks', 'laptops', 'monitors', 'mobile'],
@@ -336,6 +337,12 @@ class TestDataController extends Controller
      */
     public function actionAdd()
     {
+        for ($i = 1; $i <= 50; $i++) {
+            $rand = rand(1, 99);
+            if (!in_array($rand, $this->randomNumbers)) {
+                $this->randomNumbers[] = $rand;
+            }
+        }
         $connection = Yii::$app->db;
 
         //Insert test data to user table
@@ -396,13 +403,99 @@ class TestDataController extends Controller
         }
 
         //Insert test data to product table
+        foreach ($this->randomNumbers as $randomNumber) {
+            foreach ($this->products as $title => $product) {
+                $title = $title . ' ' . $randomNumber;
+                $this->productId[$title] = Uuid::uuid4()->toString();
+                $connection->createCommand()->insert('product', [
+                    'id' => $this->productId[$title],
+                    'title' => $title,
+                    'description' => $product['description'],
+                    'quantity' => $rand = rand(1, 99),
+                    'price' => $product['price'],
+                    'main_photo' => $product['main_photo'],
+                    'is_deleted' => false,
+                    'created_time' => time() + (3 * 60 * 60),
+                    'updated_time' => time() + (3 * 60 * 60),
+                    'category_id' => $this->categoryId[$product['category']],
+                    'brand_id' => $this->brandId[$product['brand']],
+                ])->execute();
+            }
+
+            //Insert test data to product_param_value and param tables
+            foreach ($this->productParams as $product => $paramList) {
+                $product = $product . ' ' . $randomNumber;
+                foreach ($paramList as $param => $value) {
+                    if (!in_array($param, $this->params)) {
+                        $this->paramId[$param] = Uuid::uuid4()->toString();
+                        $this->params[] = $param;
+
+                        $connection->createCommand()->insert('param', [
+                            'id' => $this->paramId[$param],
+                            'is_required' => false,
+                            'name' => $param,
+                            'type_id' => 1,
+                        ])->execute();
+                        if (!is_array($value)) {
+                            $connection->createCommand()->insert('product_param_value', [
+                                'id' => Uuid::uuid4()->toString(),
+                                'product_id' => $this->productId[$product],
+                                'param_id' => $this->paramId[$param],
+                                'value' => $value,
+                            ])->execute();
+                        } else {
+                            foreach ($value as $paramValue) {
+                                $connection->createCommand()->insert('product_param_value', [
+                                    'id' => Uuid::uuid4()->toString(),
+                                    'product_id' => $this->productId[$product],
+                                    'param_id' => $this->paramId[$param],
+                                    'value' => $paramValue,
+                                ])->execute();
+                            }
+                        }
+                    } else {
+                        if (!is_array($value)) {
+                            $connection->createCommand()->insert('product_param_value', [
+                                'id' => Uuid::uuid4()->toString(),
+                                'product_id' => $this->productId[$product],
+                                'param_id' => $this->paramId[$param],
+                                'value' => $value,
+                            ])->execute();
+                        } else {
+                            foreach ($value as $paramValue) {
+                                $connection->createCommand()->insert('product_param_value', [
+                                    'id' => Uuid::uuid4()->toString(),
+                                    'product_id' => $this->productId[$product],
+                                    'param_id' => $this->paramId[$param],
+                                    'value' => $paramValue,
+                                ])->execute();
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Insert test data to photo table
+            foreach ($this->photos as $title => $photos) {
+                $photos['product'] = $photos['product'] . ' ' . $randomNumber;
+                $connection->createCommand()->insert('photo', [
+                    'id' => Uuid::uuid4()->toString(),
+                    'name' => $title,
+                    'is_main' => $photos['is_main'],
+                    'created_time' => time() + (3 * 60 * 60),
+                    'product_id' => $this->productId[$photos['product']],
+                ])->execute();
+            }
+        }
+
+        //Insert test data to product table
         foreach ($this->products as $title => $product) {
             $this->productId[$title] = Uuid::uuid4()->toString();
             $connection->createCommand()->insert('product', [
                 'id' => $this->productId[$title],
                 'title' => $title,
                 'description' => $product['description'],
-                'quantity' => $product['quantity'],
+                'quantity' => $rand = rand(1, 99),
                 'price' => $product['price'],
                 'main_photo' => $product['main_photo'],
                 'is_deleted' => false,
@@ -465,6 +558,17 @@ class TestDataController extends Controller
             }
         }
 
+        //Insert test data to photo table
+        foreach ($this->photos as $title => $photos) {
+            $connection->createCommand()->insert('photo', [
+                'id' => Uuid::uuid4()->toString(),
+                'name' => $title,
+                'is_main' => $photos['is_main'],
+                'created_time' => time() + (3 * 60 * 60),
+                'product_id' => $this->productId[$photos['product']],
+            ])->execute();
+        }
+
         //Insert test data to category_param and param tables
         foreach ($this->categoryParams as $category => $paramList) {
             foreach ($paramList as $param) {
@@ -519,17 +623,6 @@ class TestDataController extends Controller
                 'order_id' => $this->orderId[$orderProducts['order']],
                 'color_value' => $orderProducts['color_value'],
                 'size_value' => $orderProducts['size_value'],
-            ])->execute();
-        }
-
-        //Insert test data to photo table
-        foreach ($this->photos as $title => $photos) {
-            $connection->createCommand()->insert('photo', [
-                'id' => Uuid::uuid4()->toString(),
-                'name' => $title,
-                'is_main' => $photos['is_main'],
-                'created_time' => time() + (3 * 60 * 60),
-                'product_id' => $this->productId[$photos['product']],
             ])->execute();
         }
 
