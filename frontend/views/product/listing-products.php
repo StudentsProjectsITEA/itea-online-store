@@ -24,13 +24,11 @@ use yii\widgets\ListView;
                         'tag' => 'ul',
                         'class' => 'store-pagination',
                     ],
-                    'linkOptions' => [
-                        'tag' => 'li',
-                    ],
                     'activePageCssClass' => 'active',
                     'prevPageLabel' =>  '<li class="nav-links"><i class="fas fa-arrow-left"></i></li>',
                     'nextPageLabel' =>  '<li class="nav-links"><i class="fas fa-arrow-right"></i></li>',
                     'nextPageCssClass' => 'hide',
+                    'prevPageCssClass' => 'hide',
                 ],
             ]) ?>
         </div>
