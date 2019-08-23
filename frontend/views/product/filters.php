@@ -8,6 +8,7 @@ use common\models\Category;
  * @var $category Category
  * @var $allBrands array
  * @var $brand Brand
+ * @var $param array
  */
 
 ?>
@@ -24,7 +25,11 @@ use common\models\Category;
                     <?php foreach ($allCategories as $category) : ?>
                         <li>
                             <?php echo $category->name; ?>
-                            <div class="checkbox"><input type="checkbox" name="<?php echo $category->name; ?>" >
+                            <div class="checkbox">
+                                <input type="checkbox"
+                                       "<?php echo (array_key_exists($category->name, $param) &&
+                                       ($param[$category->name] == 'on')) ? 'checked' : null; ?>"
+                                       name="<?php echo $category->name; ?>" >
                                 <span></span>
                             </div>
                         </li>

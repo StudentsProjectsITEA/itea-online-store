@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\components\ProductParamsFinder;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -41,6 +42,9 @@ class ProductSearch extends Product
      */
     public function search(int $pageSize, array $params)
     {
+        $categoriesIdFromRequest = (new ProductParamsFinder())->getCategoriesIdFromParams($params);
+        $brandsIdFromRequest = (new ProductParamsFinder())->getBrandsIdFromParams($params);
+
         $query = Product::find();
 
         // add conditions that should always apply here
@@ -82,6 +86,16 @@ class ProductSearch extends Product
         if (isset($params['minPrice']) && isset($params['maxPrice'])) {
             $query
                 ->andFilterWhere(['between', 'price', $params['minPrice'], $params['maxPrice']]);
+        }
+
+        if (! empty($categoriesIdFromRequest)) {
+            $query
+                ->andFilterWhere(['category_id' => $categoriesIdFromRequest]);
+        }
+
+        if (! empty($brandsIdFromRequest)) {
+            $query
+                ->andFilterWhere(['id' => $brandsIdFromRequest]);
         }
 
         return $dataProvider;
