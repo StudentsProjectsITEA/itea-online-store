@@ -35,6 +35,17 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    private $message = [
+        'uniqueEmail' => 'This email address has already been taken.',
+        'name' => 'You can use letters, apostrophe and space.',
+        'email' => 'Email must be correct.',
+        'mobile' => 'Your mobile number must be in format: 380123456789',
+    ];
+    private $regularWord = [
+        'name' => '/^([a-zA-Zа-яА-Я\' ]+)$/ui',
+        'email' => '/[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,8})$/',
+        'mobile' => '/^[0-9]{12}+$/',
+    ];
     public $address = ['Old address', 'New address'];
 
     /**
@@ -66,16 +77,22 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             [['id', 'username', 'first_name', 'last_name', 'auth_key', 'password_hash', 'email', 'created_time', 'updated_time'], 'required'],
+            [['username', 'first_name', 'last_name', 'email', 'mobile'], 'trim'],
             [['id'], 'string'],
+            [['first_name', 'last_name'], 'match', 'pattern' => $this->regularWord['name'], 'message' => $this->message['name']],
             [['mobile', 'status_id', 'created_time', 'updated_time'], 'default', 'value' => null],
             [['mobile', 'status_id', 'created_time', 'updated_time'], 'integer'],
             [['username', 'first_name', 'last_name', 'password_hash', 'password_reset_token', 'email', 'verification_token'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
-            [['email'], 'unique'],
+            ['email', 'unique', 'targetClass' => '\frontend\models\User', 'message' => $this->message['uniqueEmail']],
+            ['email', 'match', 'pattern' => $this->regularWord['email'], 'message' => $this->message['email']],
             [['mobile'], 'unique'],
+            ['mobile', 'match', 'pattern' => $this->regularWord['mobile'], 'message' => $this->message['mobile']],
             [['password_reset_token'], 'unique'],
             [['username'], 'unique'],
             [['id'], 'unique'],
+            ['status_id', 'default', 'value' => self::STATUS_ACTIVE],
+            ['status_id', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }
 

@@ -94,6 +94,8 @@ class UserController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        Yii::$app->session->setFlash('error', 'You make a mistake, please return to the settings menu.');
+
         return $this->render('view', [
             'model' => $model,
             'userOrders' => $this->orderRepository->findOrdersByUserId($model->id),
@@ -117,6 +119,8 @@ class UserController extends Controller
             Yii::$app->session->setFlash('success', 'Your password was successfully changed.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
+
+        Yii::$app->session->setFlash('error', 'You make a mistake, please return to the change password menu.');
 
         return $this->render('view', [
             'model' => $model,

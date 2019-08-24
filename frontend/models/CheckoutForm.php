@@ -27,13 +27,6 @@ use yii\base\Model;
  */
 class CheckoutForm extends Model
 {
-    const TITLE_BANK_TRANSFER = '';
-    const DESCRIPTION_BANK_TRANSFER = '';
-    const TITLE_CASH_RECEIPT = '';
-    const DESCRIPTION_CASH_RECEIPT = '';
-    const TITLE_CARD_ONLINE = '';
-    const DESCRIPTION_CARD_ONLINE = '';
-
     public $first_name;
     public $last_name;
     public $mobile;
@@ -49,13 +42,50 @@ class CheckoutForm extends Model
     public $expiryYear;
     public $cvcCode;
 
+    private $message = [
+        'name' => 'You can use letters, apostrophe and space.',
+        'email' => 'Email must be correct.',
+        'mobile' => 'Your mobile number must be in format: 380123456789.',
+        'card' => 'Your card number must be in format: 1234567812345678.',
+        'expiry_month' => 'Month must be correct.',
+        'expiry_year' => 'Year must be correct.',
+        'cvc' => 'CVC-code must be correct.',
+    ];
+    private $regularWord = [
+        'name' => '/^([a-zA-Zа-яА-Я\' ]+)$/ui',
+        'email' => '/[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,8})$/',
+        'mobile' => '/^[0-9]{12}+$/',
+        'card' => '/^[0-9]{16}+$/',
+        'expiry_month' => '/^[0-9]{2}+$/',
+        'expiry_year' => '/^[0-9]{4}+$/',
+        'cvc' => '/^[0-9]{3}+$/',
+    ];
+
     public function rules()
     {
         return [
             [['first_name', 'last_name', 'mobile', 'email', 'payment_id', 'shipping_id', 'country', 'city', 'street'], 'required'],
-            [['payment_id', 'shipping_id', 'country', 'city', 'street'], 'default', 'value' => null],
             [['payment_id', 'shipping_id'], 'integer'],
             [['country', 'city', 'street'], 'string', 'max' => 255],
+            [['first_name', 'last_name', 'country', 'city', 'street', 'nameOnCard'], 'match', 'pattern' => $this->regularWord['name'], 'message' => $this->message['name']],
+
+            ['email', 'match', 'pattern' => $this->regularWord['email'], 'message' => $this->message['email']],
+            ['mobile', 'match', 'pattern' => $this->regularWord['mobile'], 'message' => $this->message['mobile']],
+            ['cardNumber', 'match', 'pattern' => $this->regularWord['card'], 'message' => $this->message['card']],
+            ['expiryMonth', 'match', 'pattern' => $this->regularWord['expiry_month'], 'message' => $this->message['expiry_month']],
+            ['expiryYear', 'match', 'pattern' => $this->regularWord['expiry_year'], 'message' => $this->message['expiry_year']],
+            ['cvcCode', 'match', 'pattern' => $this->regularWord['cvc'], 'message' => $this->message['cvc']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'payment_id' => 'Payment Method ',
+            'shipping_id' => 'Shipping Method',
         ];
     }
 
@@ -68,7 +98,6 @@ class CheckoutForm extends Model
     {
         $cart = Yii::$app->cart;
         $order = new Order();
-        $order->status_id = $order::STATUS_NEW;
 
         if (!$this->validate()) {
             return null;
@@ -77,6 +106,7 @@ class CheckoutForm extends Model
         $transaction = $order->getDb()->beginTransaction();
 
         $order->id = Uuid::uuid4()->toString();
+        $order->status_id = $order::STATUS_NEW;
         $order->payment_id = $this->payment_id;
         $order->shipping_id = $this->shipping_id;
         $order->shipping_address = $this->country . ', ' . $this->city . ', ' . $this->street;

@@ -22,7 +22,6 @@ use yii\widgets\ActiveForm;
     ->passwordInput([
         'class' => 'section-profile-content-input',
         'placeholder' => 'Your current password...',
-        'value' => '',
     ])
     ->label('Current Password', [
         'class' => 'section-profile-content-label',
@@ -33,7 +32,6 @@ use yii\widgets\ActiveForm;
     ->passwordInput([
         'class' => 'section-profile-content-input',
         'placeholder' => 'Your new password...',
-        'value' => '',
     ])
     ->label('New Password', [
         'class' => 'section-profile-content-label',
@@ -44,7 +42,6 @@ use yii\widgets\ActiveForm;
     ->passwordInput([
         'class' => 'section-profile-content-input',
         'placeholder' => 'Confirm new password...',
-        'value' => '',
     ])
     ->label('Confirm New Password', [
         'class' => 'section-profile-content-label',

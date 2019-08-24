@@ -8,9 +8,12 @@ use yii\base\Model;
 
 class ChangePasswordForm extends Model
 {
-    private $messages = [
-        'validate-fail-1' => 'Your password is wrong.',
-        'validate-fail-2' => 'Your new password is not the same as your confirmation password.',
+    private $message = [
+        'wrong' => 'Your password is wrong.',
+        'password' => 'Password must contain at least one lowercase letter, one uppercase letter and one number.',
+    ];
+    private $regularWord = [
+        'password' => '/^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/',
     ];
     public $password;
     public $new_password;
@@ -20,8 +23,9 @@ class ChangePasswordForm extends Model
     {
         return [
             [['password', 'new_password', 'confirm_new_password'], 'required'],
-
-            ['password', 'validatePassword'],
+            [['password', 'new_password', 'confirm_new_password'], 'string', 'min' => 8],
+            ['new_password', 'compare', 'compareAttribute' => 'confirm_new_password'],
+            ['new_password', 'match', 'pattern' => $this->regularWord['password'], 'message' => $this->message['password']],
         ];
     }
 
@@ -33,11 +37,11 @@ class ChangePasswordForm extends Model
      */
     public function changePassword()
     {
-        if (!$this->validatePassword()) {
+        if (!$this->validate()) {
             return null;
         }
 
-        $user = User::findIdentity(Yii::$app->request->queryParams['id']);
+        $user = User::findOne(Yii::$app->request->queryParams['id']);
         $user->setPassword($this->new_password);
 
         return $user->save();
@@ -51,15 +55,8 @@ class ChangePasswordForm extends Model
         $user = User::findIdentity(Yii::$app->request->queryParams['id']);
 
         if (!$user || !$user->validatePassword($this->password)) {
-            Yii::$app->session->setFlash('error', $this->messages['validate-fail-1']);
-            $this->addError('password', $this->messages['validate-fail-1']);
-
-            return false;
-        }
-
-        if ($this->new_password !== $this->confirm_new_password) {
-            Yii::$app->session->setFlash('error', $this->messages['validate-fail-2']);
-            $this->addError('password', $this->messages['validate-fail-2']);
+            Yii::$app->session->setFlash('error', $this->message['wrong']);
+            $this->addError('password', $this->message['wrong']);
 
             return false;
         }

@@ -20,6 +20,8 @@ use yii\helpers\Html;
                     <?php echo Html::encode('Your order id: ' . $order->id) ?>
                 </p>
 
+                <hr>
+
                 <p class="order-history-subtitle">
                     <?php echo Html::encode('Date of order: ') ?>
                 </p>
@@ -46,6 +48,12 @@ use yii\helpers\Html;
                 </p>
                 <p class="order-history-row">
                     <?php echo Html::encode($orderDetailsViewer->getPaymentTitle() . ' - ' . $orderDetailsViewer->getPaymentDescription()) ?>
+                </p>
+
+                <hr>
+
+                <p class="order-history-subtitle">
+                    <?php echo Html::encode('Products: ') ?>
                 </p>
 
                 <ul class="order-history-list"><?php $total = [];

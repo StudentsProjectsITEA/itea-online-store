@@ -12,7 +12,7 @@ use yii\helpers\Html;
 
 ?>
 
-<?php $form = ActiveForm::begin(['action' => 'checkout/create']); ?>
+<?php $form = ActiveForm::begin(['action' => '/checkout/create']); ?>
 
 <p class="checkout-delivery-details-title">
     <?php echo Html::encode('Please enter your shipping information') ?>
