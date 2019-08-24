@@ -1538,6 +1538,8 @@ body {
   background-color: #333333;
   color: #fff;
   border: none; }
+a .filter-btn.reset:hover {
+  text-decoration-line: inherit; }
 .delete-btn.reset {
   background-color: #fff;
   color: #333333;

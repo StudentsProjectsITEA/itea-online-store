@@ -12,14 +12,12 @@ use common\models\ProductSearch;
 $param = Yii::$app->request->queryParams;
 $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
-isset($param['search'])
+! empty($param['search'])
     ? $this->params['breadcrumbs'][] = 'Search for: ' . $param['search']
     : null;
-isset($param['minPrice']) && isset($param['maxPrice'])
+! empty($param['minPrice']) && ! empty($param['maxPrice'])
     ? $this->params['breadcrumbs'][] = 'Search for price: from ' . $param['minPrice'] . ' UAH to ' . $param['maxPrice'] . ' UAH'
     : null;
-
-//var_dump($dataProvider);
 
 ?>
 
@@ -27,7 +25,6 @@ isset($param['minPrice']) && isset($param['maxPrice'])
     <?php echo $this->render('filters', [
         'allCategories' => $allCategories,
         'allBrands' => $allBrands,
-        'param' => $param,
     ]) ?>
 
     <?php echo $this->render('listing-products', [

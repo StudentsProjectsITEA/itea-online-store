@@ -60,7 +60,7 @@ class ProductParamsFinder
 
     public function getCategoriesIdFromParams($params)
     {
-        $categories = Category::find('name')->asArray()->all();
+        $categories = Category::find()->asArray()->all();
 
         $findProductsByCategory = [];
 
@@ -74,15 +74,12 @@ class ProductParamsFinder
             }
         }
 
-        // $findProductsByCategory = Product::findAll()...........69-73
-
-
         return $findProductsByCategory;
     }
 
     public function getBrandsIdFromParams($params)
     {
-        $brands = Brand::find('name')->asArray()->all();
+        $brands = Brand::find()->asArray()->all();
 
         $findBrands = [];
 

@@ -7,20 +7,18 @@ use common\components\ProductViewer;
 use common\repositories\BrandRepository;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
-use Exception;
 use Ramsey\Uuid\Uuid;
-use Throwable;
-use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
 use yii\base\InvalidConfigException;
-use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
 use yii\db\StaleObjectException;
 use yii\di\NotInstantiableException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
+use Throwable;
+use Yii;
 
 /**
  * ProductController implements the CRUD actions for Product model.

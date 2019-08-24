@@ -4,8 +4,8 @@ return [
 
     'countOfPopularProducts' => 4,
     'countOfPopularCategories' => 4,
-    'countOfProductsOnMainPage' => 3,
-    'countOfProductsOnProductsPage' => 5,
+    'countOfProductsOnMainPage' => 8,
+    'countOfProductsOnProductsPage' => 9,
 
     'productsOrderBy' => 'title',
     'maxButtonPaginationCount' => 5,
