@@ -13,9 +13,9 @@ use yii\web\YiiAsset;
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $parentCategory, 'url' => ['category/view', 'id' => $model->category->parent_id]];
-$this->params['breadcrumbs'][] = ['label' => $model->category->name, 'url' => ['category/view', 'id' => $model->category->id]];
-$this->params['breadcrumbs'][] = ['label' => $model->brand->name, 'url' => ['brand/view', 'id' => $model->brand->id]];
+$this->params['breadcrumbs'][] = ['label' => $parentCategory, 'url' => '/products?' . $parentCategory . '=on'];
+$this->params['breadcrumbs'][] = ['label' => $model->category->name, 'url' => '/products?' . $parentCategory . '=on'];
+$this->params['breadcrumbs'][] = ['label' => $model->brand->name, 'url' => '/products?' . $model->brand->name . '=on'];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>

@@ -7,17 +7,12 @@ use common\components\ProductViewer;
 use common\repositories\BrandRepository;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
-use Ramsey\Uuid\Uuid;
-use common\models\Product;
 use common\models\ProductSearch;
 use yii\base\InvalidConfigException;
-use yii\db\StaleObjectException;
 use yii\di\NotInstantiableException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use Exception;
-use Throwable;
 use Yii;
 
 /**
@@ -25,25 +20,15 @@ use Yii;
  */
 class ProductController extends Controller
 {
-    /**
-     * @var ProductRepository
-     */
+    /** @var ProductRepository */
     private $productRepository;
-    /**
-     * @var CategoryRepository
-     */
+    /** @var CategoryRepository */
     private $categoryRepository;
-    /**
-     * @var BrandRepository
-     */
+    /** @var BrandRepository */
     private $brandRepository;
-    /**
-     * @var ProductViewer
-     */
+    /** @var ProductViewer */
     private $productViewer;
-    /**
-     * @var ProductSearch
-     */
+    /** @var ProductSearch */
     private $productSearchModel;
 
     /**
@@ -112,66 +97,5 @@ class ProductController extends Controller
             'colorValues' => $productParams->getColorValues(),
             'sizeValues' => $productParams->getSizeValues(),
         ]);
-    }
-
-    /**
-     * Creates a new Product model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     * @throws Exception
-     */
-    public function actionCreate()
-    {
-        $model = new Product();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-            'productId' => Uuid::uuid4()->toString(),
-            'productMainPhoto' => 'main_photo.jpg',
-            'createdTime' => time(),
-            'updatedTime' => time(),
-            'categoryId' => Uuid::uuid4()->toString(),
-            'brandId' => Uuid::uuid4()->toString(),
-        ]);
-    }
-
-    /**
-     * Updates an existing Product model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->productRepository->findProductById($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Product model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     * @throws Throwable
-     * @throws StaleObjectException
-     */
-    public function actionDelete($id)
-    {
-        $this->productRepository->findProductById($id)->delete();
-
-        return $this->redirect(['index']);
     }
 }

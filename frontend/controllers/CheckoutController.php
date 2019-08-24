@@ -9,8 +9,8 @@ use yii\base\InvalidConfigException;
 use yii\db\Exception;
 use yii\di\NotInstantiableException;
 use yii\web\Controller;
-use Yii;
 use yii\web\Response;
+use Yii;
 
 class CheckoutController extends Controller
 {
@@ -48,7 +48,6 @@ class CheckoutController extends Controller
 
     /**
      * @return string|Response
-     *
      * @throws Exception
      */
     public function actionCreate()

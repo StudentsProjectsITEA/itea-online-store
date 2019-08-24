@@ -53,9 +53,7 @@ class CartController extends Controller
     /**
      * @param string $id
      * @param int $qty
-     *
      * @return Response
-     *
      * @throws NotFoundHttpException
      */
     public function actionAdd(string $id, $qty = 1)
@@ -79,9 +77,7 @@ class CartController extends Controller
     /**
      * @param $id
      * @param int $qty
-     *
      * @return Response
-     *
      * @throws NotFoundHttpException
      */
     public function actionChange($id, $qty = 1)
@@ -102,9 +98,7 @@ class CartController extends Controller
 
     /**
      * @param $id
-     *
      * @return Response
-     *
      * @throws NotFoundHttpException
      */
     public function actionRemove($id)
@@ -116,13 +110,6 @@ class CartController extends Controller
             Yii::$app->errorHandler->logException($e);
             Yii::$app->session->setFlash('error', $e->getMessage());
         }
-
-        return $this->redirect(['index']);
-    }
-
-    public function actionClear()
-    {
-        $this->cart->clear();
 
         return $this->redirect(['index']);
     }

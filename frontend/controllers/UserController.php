@@ -19,21 +19,13 @@ use Yii;
  */
 class UserController extends Controller
 {
-    /**
-     * @var $repository UserRepository
-     */
+    /** @var $repository UserRepository */
     private $repository;
-    /**
-     * @var $repository OrderRepository
-     */
+    /** @var $repository OrderRepository */
     private $orderRepository;
-    /**
-     * @var $repository ChangePasswordForm
-     */
+    /** @var $repository ChangePasswordForm */
     private $changePasswordModel;
-    /**
-     * @var $orderDetailsViewer OrderDetailsViewer
-     */
+    /** @var $orderDetailsViewer OrderDetailsViewer */
     private $orderDetailsViewer;
 
     /**
@@ -89,9 +81,7 @@ class UserController extends Controller
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
-     *
      * @return mixed
-     *
      * @throws NotFoundHttpException if the model cannot be found
      * @throws Exception
      */
@@ -108,6 +98,7 @@ class UserController extends Controller
             'model' => $model,
             'userOrders' => $this->orderRepository->findOrdersByUserId($model->id),
             'changePasswordModel' => $this->changePasswordModel,
+            'orderDetailsViewer' => $this->orderDetailsViewer,
         ]);
     }
 
@@ -115,9 +106,7 @@ class UserController extends Controller
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
-     *
      * @return mixed
-     *
      * @throws Exception
      */
     public function actionChangePassword($id)
@@ -133,12 +122,12 @@ class UserController extends Controller
             'model' => $model,
             'userOrders' => $this->orderRepository->findOrdersByUserId($model->id),
             'changePasswordModel' => $this->changePasswordModel,
+            'orderDetailsViewer' => $this->orderDetailsViewer,
         ]);
     }
 
     /**
      * Logs out the current user.
-     *
      * @return mixed
      */
     public function actionLogout()
