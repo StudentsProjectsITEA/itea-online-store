@@ -1,5 +1,6 @@
 <?php
 
+use common\components\OrderDetailsViewer;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\YiiAsset;
@@ -8,6 +9,7 @@ use yii\web\YiiAsset;
 /* @var $model frontend\models\User */
 /* @var $changePasswordModel frontend\models\ChangePasswordForm */
 /* @var $userOrders array */
+/* @var $orderDetailsViewer OrderDetailsViewer */
 
 $this->title = 'My Account';
 $this->params['breadcrumbs'][] = $this->title;
@@ -59,6 +61,7 @@ YiiAsset::register($this);
 
             <?php echo $this->render('orders', [
                 'userOrders' => $userOrders,
+                'orderDetailsViewer' => $orderDetailsViewer,
             ]) ?>
 
             <?php

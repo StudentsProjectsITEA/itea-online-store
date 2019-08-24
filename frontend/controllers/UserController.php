@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\components\OrderDetailsViewer;
 use common\repositories\OrderRepository;
 use frontend\models\ChangePasswordForm;
 use frontend\repositories\UserRepository;
@@ -30,6 +31,10 @@ class UserController extends Controller
      * @var $repository ChangePasswordForm
      */
     private $changePasswordModel;
+    /**
+     * @var $orderDetailsViewer OrderDetailsViewer
+     */
+    private $orderDetailsViewer;
 
     /**
      * UserController constructor.
@@ -43,6 +48,7 @@ class UserController extends Controller
         $this->repository = Yii::$container->get(UserRepository::class);
         $this->orderRepository = Yii::$container->get(OrderRepository::class);
         $this->changePasswordModel = Yii::$container->get(ChangePasswordForm::class);
+        $this->orderDetailsViewer = Yii::$container->get(OrderDetailsViewer::class);
         parent::__construct($id, $module, $config);
     }
 
@@ -75,6 +81,7 @@ class UserController extends Controller
             'model' => $model,
             'userOrders' => $this->orderRepository->findOrdersByUserId($model->id),
             'changePasswordModel' => $this->changePasswordModel,
+            'orderDetailsViewer' => $this->orderDetailsViewer,
         ]);
     }
 
