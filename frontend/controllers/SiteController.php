@@ -27,8 +27,6 @@ use Yii;
  */
 class SiteController extends Controller
 {
-    const PRODUCT_PAGE_SIZE = 3;
-
     /* @var ProductRepository */
     private $productRepository;
     /* @var CategoryRepository */
@@ -121,13 +119,14 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $allSubCategories = $this->categoryViewer->getSubCategories();
+        $count = Yii::$app->params['countOfProductsOnMainPage'];
 
         return $this->render('index', [
             'allCategories' => $this->categoryViewer->getCategories($allSubCategories),
             'popularProducts' => $this->productRepository->findPopularProducts(),
             'popularCategories' => $this->categoryRepository->findPopularCategories(),
             'categoriesFind' => $this->categoryRepository,
-            'dataProvider' => $this->productSearchModel->search(self::PRODUCT_PAGE_SIZE, Yii::$app->request->queryParams),
+            'dataProvider' => $this->productSearchModel->search($count, Yii::$app->request->queryParams),
         ]);
     }
 

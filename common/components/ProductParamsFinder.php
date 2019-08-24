@@ -2,6 +2,9 @@
 
 namespace common\components;
 
+use common\models\Brand;
+use common\models\Category;
+use common\models\Product;
 use common\models\ProductParamValue;
 
 /**
@@ -53,5 +56,44 @@ class ProductParamsFinder
     public function getSizeValues(): array
     {
         return $this->sizeValues;
+    }
+
+    public function getCategoriesIdFromParams($params)
+    {
+        $categories = Category::find('name')->asArray()->all();
+
+        $findProductsByCategory = [];
+
+        foreach ($categories as $subCategory) {
+            if(array_key_exists ( $subCategory['name'], $params )) {
+                foreach ($categories as $item) {
+                    if ($item['parent_id'] == $subCategory['id']) {
+                        $findProductsByCategory[] = $item['id'];
+                    }
+                }
+            }
+        }
+
+        // $findProductsByCategory = Product::findAll()...........69-73
+
+
+        return $findProductsByCategory;
+    }
+
+    public function getBrandsIdFromParams($params)
+    {
+        $brands = Brand::find('name')->asArray()->all();
+
+        $findBrands = [];
+
+        foreach ($brands as $brand) {
+            if(array_key_exists ( $brand['name'], $params )) {
+                $findBrands[] = $brand['id'];
+            }
+        }
+
+        $findProductsByBrand = Product::findAll(['brand_id' => $findBrands]);
+
+        return $findProductsByBrand;
     }
 }

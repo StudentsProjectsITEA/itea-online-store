@@ -86,10 +86,12 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
+        $count = Yii::$app->params['countOfProductsOnProductsPage'];
+
         return $this->render('index', [
             'allCategories' => $this->categoryRepository->getMainCategories(),
             'allBrands' => $this->brandRepository->findBrands(),
-            'dataProvider' => $this->productSearchModel->search(5, Yii::$app->request->queryParams),
+            'dataProvider' => $this->productSearchModel->search($count, Yii::$app->request->queryParams),
         ]);
     }
 

@@ -27,6 +27,7 @@ isset($param['minPrice']) && isset($param['maxPrice'])
     <?php echo $this->render('filters', [
         'allCategories' => $allCategories,
         'allBrands' => $allBrands,
+        'param' => $param,
     ]) ?>
 
     <?php echo $this->render('listing-products', [

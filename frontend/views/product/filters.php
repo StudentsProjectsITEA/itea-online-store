@@ -8,7 +8,9 @@ use common\models\Category;
  * @var $category Category
  * @var $allBrands array
  * @var $brand Brand
+ * @var $param array
  */
+$get = Yii::$app->request->queryParams;
 
 ?>
 
@@ -24,7 +26,10 @@ use common\models\Category;
                     <?php foreach ($allCategories as $category) : ?>
                         <li>
                             <?php echo $category->name; ?>
-                            <div class="checkbox"><input type="checkbox" name="<?php echo $category->name; ?>" >
+                            <div class="checkbox">
+                                <input type="checkbox"
+                                       <?php echo (Yii::$app->request->get($category->name) ? 'checked' : NULL); ?>
+                                       name="<?php echo $category->name; ?>" >
                                 <span></span>
                             </div>
                         </li>
@@ -37,7 +42,10 @@ use common\models\Category;
                     <?php foreach ($allBrands as $brand) : ?>
                         <li>
                             <?php echo $brand->name; ?>
-                            <div class="checkbox"><input type="checkbox" name="<?php echo $brand->name; ?>" >
+                            <div class="checkbox">
+                                <input type="checkbox"
+                                       <?php echo (Yii::$app->request->get($brand->name) ? 'checked' : NULL); ?>
+                                       name="<?php echo $brand->name; ?>" >
                                 <span></span>
                             </div>
                         </li>
@@ -48,8 +56,16 @@ use common\models\Category;
 
         <h3 class="filter-title filter-divider">Цена</h3>
         <div class="filter-btn-wrapper filter-divider">
-            <input type="number" placeholder="From" name="minPrice" class="filter-input">
-            <input type="number" placeholder="To" name="maxPrice" class="filter-input">
+            <input type="number"
+                   placeholder="From"
+                   name="minPrice"
+                   class="filter-input"
+                   value="<?php echo Yii::$app->request->get('minPrice'); ?>">
+            <input type="number"
+                   placeholder="To"
+                   name="maxPrice"
+                   class="filter-input"
+                   value="<?php echo Yii::$app->request->get('maxPrice'); ?>">
         </div>
         <div class="filter-btn-wrapper" class="filter-input">
 
