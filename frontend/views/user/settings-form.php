@@ -60,8 +60,6 @@ use yii\widgets\ActiveForm;
         'class' => 'section-profile-content-label',
     ]) ?>
 
-<?php $model->updated_time = time(); ?>
-
 <div class="form-group">
     <?php echo Html::submitButton('Save changes', ['class' => 'section-profile-content-btn']) ?>
 </div>

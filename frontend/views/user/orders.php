@@ -1,27 +1,51 @@
 <?php
 
+use common\components\OrderDetailsViewer;
 use common\models\Order;
 use yii\helpers\Html;
 
 /* @var $userOrders array */
 /* @var $order Order */
+/* @var $orderDetailsViewer OrderDetailsViewer */
 ?>
 
 <div class="section-profile-content-item" data-target="order-history">
     <ul class="section-order-history">
         <?php foreach ($userOrders as $order) : ?>
+            <?php $orderDetailsViewer->setPaymentInformation($order); ?>
+            <?php $orderDetailsViewer->setShippingInformation($order); ?>
             <li class="order-history-item order-history-item-dark">
 
                 <p class="order-history-title">
-                    <?php echo Html::encode('Your order id - ' . $order->id) ?>
+                    <?php echo Html::encode('Your order id: ' . $order->id) ?>
                 </p>
 
-                <p class="order-history-date">
-                    <?php echo Html::encode('Date of order - ' . date('d.m.Y H:i:s', $order->created_time)) ?>
+                <p class="order-history-subtitle">
+                    <?php echo Html::encode('Date of order: ') ?>
+                </p>
+                <p class="order-history-row">
+                    <?php echo Html::encode(date('d.m.Y H:i:s', $order->created_time + (3 * 60 * 60))) ?>
                 </p>
 
-                <p class="order-history-shipping">
-                    <?php echo Html::encode('Shipping address - ' . $order->shipping_address) ?>
+                <p class="order-history-subtitle">
+                    <?php echo Html::encode('Shipping method: ') ?>
+                </p>
+                <p class="order-history-row">
+                    <?php echo Html::encode($orderDetailsViewer->getShippingTitle() . ' - ' . $orderDetailsViewer->getShippingDescription()) ?>
+                </p>
+
+                <p class="order-history-subtitle">
+                    <?php echo Html::encode('Shipping address: ') ?>
+                </p>
+                <p class="order-history-row">
+                    <?php echo Html::encode($order->shipping_address) ?>
+                </p>
+
+                <p class="order-history-subtitle">
+                    <?php echo Html::encode('Payment method: ') ?>
+                </p>
+                <p class="order-history-row">
+                    <?php echo Html::encode($orderDetailsViewer->getPaymentTitle() . ' - ' . $orderDetailsViewer->getPaymentDescription()) ?>
                 </p>
 
                 <ul class="order-history-list"><?php $total = [];

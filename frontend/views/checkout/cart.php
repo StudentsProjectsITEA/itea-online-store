@@ -1,6 +1,5 @@
 <?php
 
-use devanych\cart\Cart;
 use devanych\cart\CartItem;
 use yii\helpers\Html;
 use yii\helpers\Url;
