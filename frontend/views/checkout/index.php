@@ -34,6 +34,5 @@ $this->params['breadcrumbs'][] = $this->title;
             'cart' => $cart,
         ]) ?>
 
-        <?php /* echo $this->render('modal-success') */ ?>
     </div>
 </section>

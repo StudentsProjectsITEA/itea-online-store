@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Order;
 use frontend\models\CheckoutForm;
 use frontend\models\User;
 use yii\bootstrap\ActiveForm;
@@ -98,17 +99,82 @@ use yii\helpers\Html;
 
 </div>
 
-<?php echo $this->render('shipping', [
-    'model' => $model,
-    'form' => $form,
-]) ?>
+<div class="checkout-delivery-method">
+    <p class="checkout-delivery-details-title">
+        <?php echo Html::encode('Choose one of shipping method') ?>
+    </p>
+    <ul class="checkout-delivery-list">
+        <?php echo $form
+            ->field($model, 'shipping_id', [
+                'options' => [
+                    'tag' => false
+                ],
+            ])
+            ->radioList(
+                [
+                    (new Order())::SHIPPING_PICKUP => 'pickup',
+                    (new Order())::SHIPPING_COURIER => 'courier',
+                    (new Order())::SHIPPING_POST_OFFICE => 'post-office'
+                ],
+                [
+                    'item' => function ($index, $label, $name, $checked, $value) {
 
-<?php echo $this->render('payment', [
+                        $item = '<li>';
+                        $item .= '<input id="' . $label . '" class="delivery-input" type="radio" name="' . $name . '" value="' . $value . '">';
+                        $item .= '<label class="delivery-link" title="' . (new Order())->shippingTitle[$label] . '" for="' . $label . '">';
+                        $item .= '<div class="delivery-link-block">';
+                        $item .= '<p>' . (new Order())->shippingDescription[$label] . '</p>';
+                        $item .= '</div></label></li>';
+
+                        return $item;
+                    }
+                ]
+            )
+            ->label(false); ?>
+    </ul>
+</div>
+
+<div class="checkout-delivery-method">
+    <p class="checkout-delivery-details-title">
+        <?php echo Html::encode('Choose one of payment method') ?>
+    </p>
+    <ul class="checkout-delivery-list">
+        <?php echo $form
+            ->field($model, 'payment_id', [
+                'options' => [
+                    'tag' => false
+                ],
+            ])
+            ->radioList(
+                [
+                    (new Order())::PAYMENT_BANK_TRANSFER => 'bank-transfer',
+                    (new Order())::PAYMENT_CASH_RECEIPT => 'cash-receipt',
+                    (new Order())::PAYMENT_CARD_ONLINE => 'card'
+                ],
+                [
+                    'item' => function ($index, $label, $name, $checked, $value) {
+
+                        $item = '<li>';
+                        $item .= '<input id="' . $label . '" class="delivery-input" type="radio" name="' . $name . '" value="' . $value . '">';
+                        $item .= '<label class="delivery-link" title="' . (new Order())->paymentTitle[$label] . '" for="' . $label . '">';
+                        $item .= '<div class="delivery-link-block">';
+                        $item .= '<p>' . (new Order())->paymentDescription[$label] . '</p>';
+                        $item .= '</div></label></li>';
+
+                        return $item;
+                    }
+                ]
+            )
+            ->label(false); ?>
+    </ul>
+</div>
+
+<?php echo $this->render('card-payment', [
     'model' => $model,
     'form' => $form,
+    'user' => $user,
 ]) ?>
 
 <?php echo Html::submitButton('Place order', ['class' => 'section-profile-content-btn']) ?>
 
 <?php ActiveForm::end(); ?>
-

@@ -27,6 +27,13 @@ use yii\base\Model;
  */
 class CheckoutForm extends Model
 {
+    const TITLE_BANK_TRANSFER = '';
+    const DESCRIPTION_BANK_TRANSFER = '';
+    const TITLE_CASH_RECEIPT = '';
+    const DESCRIPTION_CASH_RECEIPT = '';
+    const TITLE_CARD_ONLINE = '';
+    const DESCRIPTION_CARD_ONLINE = '';
+
     public $first_name;
     public $last_name;
     public $mobile;
@@ -36,6 +43,11 @@ class CheckoutForm extends Model
     public $country;
     public $city;
     public $street;
+    public $cardNumber;
+    public $nameOnCard;
+    public $expiryMonth;
+    public $expiryYear;
+    public $cvcCode;
 
     public function rules()
     {
