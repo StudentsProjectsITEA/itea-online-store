@@ -97,6 +97,18 @@ class CategoryRepository
     }
 
     /**
+     * @param string $name
+     *
+     * @return Category|null
+     */
+    public function findParentCategoryBySubCategoryName(string $name)
+    {
+        $category = Category::findOne(['name' => $name]);
+
+        return Category::findOne(['id' => $category->parent_id]);
+    }
+
+    /**
      * @return array|Category[]|ActiveRecord[]
      *
      * @throws InvalidConfigException

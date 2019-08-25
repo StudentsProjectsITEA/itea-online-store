@@ -23,10 +23,10 @@ use yii\helpers\Url;
                             <?php echo Html::encode($item->getProduct()->title) ?>
                         </p>
                         <p class="checkout-product-item-color">
-                            <?php echo Html::encode('Color: ' . $item->getProduct()->quantity) ?>
+                            <?php /* echo Html::encode('Color: ' . $item->getProduct()->quantity) */ ?>
                         </p>
                         <p class="checkout-product-item-size">
-                            <?php echo Html::encode('Size: ' . $item->getProduct()->quantity) ?>
+                            <?php /* echo Html::encode('Size: ' . $item->getProduct()->quantity) */ ?>
                         </p>
                     </div>
                 </div>

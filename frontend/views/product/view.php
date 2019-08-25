@@ -36,7 +36,7 @@ YiiAsset::register($this);
         <ul class="product-tabs-options">
             <li data-target="description" class="active">Description</li>
             <li data-target="parameters">Additional parameters</li>
-            <li data-target="comments">Comments</li>
+            <!--<li data-target="comments">Comments</li>-->
         </ul>
         <div class="product-tabs-content">
             <div class="product-tabs-item active" data-target="description">
@@ -50,7 +50,7 @@ YiiAsset::register($this);
                 'sizeValues' => $sizeValues,
             ]) ?>
 
-            <?php echo $this->render('comments') ?>
+            <?php /* echo $this->render('comments') */ ?>
         </div>
     </div>
 </section>

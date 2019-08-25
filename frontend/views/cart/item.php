@@ -33,8 +33,8 @@ use yii\helpers\Url;
                     <p class="basket-item-title"><?php echo Html::encode($item->getProduct()->title) ?></p>
                 </a>
                 <p><?php echo Html::encode('Price: ' . $item->getProduct()->price . ' ₴') ?></p>
-                <p><?php echo Html::encode('Color: ' . $item->getProduct()->quantity) ?></p>
-                <p><?php echo Html::encode('Size: ' . $item->getProduct()->quantity) ?></p>
+                <p><?php /* echo Html::encode('Color: ' . $item->getProduct()->quantity) */ ?></p>
+                <p><?php /* echo Html::encode('Size: ' . $item->getProduct()->quantity) */ ?></p>
             </div>
             <div class="product-counter">
                 <?php echo Html::beginForm([

@@ -19,7 +19,6 @@ $this->title = 'Online Store | ITEA';
 
 <?php echo $this->render('categories-menu', [
     'allCategories' => $allCategories,
-    'categoriesFind' => $categoriesFind,
 ]) ?>
 
 <?php echo $this->render('/product/listing-products', [

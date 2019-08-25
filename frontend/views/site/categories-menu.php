@@ -18,11 +18,14 @@ use yii\helpers\Html;
                         <ul class="sub-menu-category-list">
                             <?php foreach ($categories as $category) : ?>
                                 <li class="sub-menu-category-item">
-                                    <?php echo Html::a($category, [
-                                        'category/view', 'id' => $categoriesFind->findCategoryByName($category)->id,
-                                    ], [
-                                        'class' => 'sub-menu-category-link'
-                                    ]) ?>
+                                    <?php echo Html::a($category,
+                                        [
+                                            '/products?' . $subCategory . '=on',
+                                        ],
+                                        [
+                                            'class' => 'sub-menu-category-link'
+                                        ])
+                                    ?>
                                 </li>
                             <?php endforeach; ?>
                         </ul>

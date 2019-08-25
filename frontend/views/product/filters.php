@@ -19,7 +19,7 @@ $get = Yii::$app->request->queryParams;
 <div class="category-filter">
 
     <h2 class="filter-title">ФИЛЬТР :</h2>
-    <?php echo Html::beginForm('', 'get') ?>
+    <?php echo Html::beginForm('/products', 'get') ?>
     <ul class="category-tree">
         <li class="category-tree-item">
             Категории
