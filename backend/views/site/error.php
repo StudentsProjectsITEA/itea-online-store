@@ -5,11 +5,9 @@
 /* @var $message string */
 /* @var $exception Exception */
 
-use backend\assets\AppAsset;
 use yii\helpers\Html;
 
 $this->title = $name . ' | Admin Store | ITEA';
-AppAsset::register($this);
 ?>
 <div class="site-error">
 

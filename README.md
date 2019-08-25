@@ -94,7 +94,7 @@ sudo systemctl restart postgresql
 ```
 php yii migrate
 ```
-4. Configure the virtual host for Nginx and create empty log files like a `access_log` and `error_log` sections:
+6. Configure the virtual host for Nginx and create empty log files like a `access_log` and `error_log` sections:
 ```
 server {
     charset utf-8;
@@ -188,10 +188,19 @@ Thereafter your web server domens are:
 http://online-store.site/ - for frontend
 http://admin.online-store.site/ - for backend
 ```
-5. Change the hosts file to point the domain to your server.
+7. Change the hosts file to point the domain to your server.
 Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 ```
 127.0.0.1   online-store.site
 127.0.0.1   admin.online-store.site
+```
+8. If the system does not automatically create log files, run the command in terminal to create them:
+```
+./makefile
+```
+9. For development, you can create test data for working with the project:
+```
+php yii test-data/add - to add test data
+php yii test-data/delete - to delete test data
 ```
 To login into the project, you need to first sign up, with any of your email address, username and password. Then, you can login into the application with same email address and password at any time. Enjoy :)

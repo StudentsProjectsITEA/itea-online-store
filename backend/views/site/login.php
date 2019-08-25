@@ -4,13 +4,11 @@
 /* @var ActiveForm $form */
 /* @var LoginForm $model */
 
-use backend\assets\AppAsset;
-use common\models\LoginForm;
+use backend\models\LoginForm;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Login | Admin Store | ITEA';
-AppAsset::register($this);
 ?>
 <div class="login-box">
     <div class="login-logo">

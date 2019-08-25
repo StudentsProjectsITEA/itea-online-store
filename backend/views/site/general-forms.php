@@ -2,10 +2,7 @@
 
 /* @var $this yii\web\View */
 
-use backend\assets\AppAsset;
-
 $this->title = 'Admin Store | ITEA';
-AppAsset::register($this);
 ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

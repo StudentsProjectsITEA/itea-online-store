@@ -1,28 +1,60 @@
 <?php
+
 namespace frontend\controllers;
 
+use common\models\ProductSearch;
+use common\components\CategoryViewer;
+use common\repositories\CategoryRepository;
+use common\repositories\ProductRepository;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
-use Yii;
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
+use yii\di\NotInstantiableException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
+use frontend\models\LoginForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\Response;
+use Yii;
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
+    /* @var ProductRepository */
+    private $productRepository;
+    /* @var CategoryRepository */
+    private $categoryRepository;
+    /* @var CategoryViewer */
+    private $categoryViewer;
+    /* @var ProductSearch */
+    private $productSearchModel;
+    /* @var SignupForm */
+    private $signupForm;
+    /* @var LoginForm */
+    private $loginForm;
+
+    /**
+     * SiteController constructor.
+     * {@inheritdoc}
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
+     */
     public function __construct($id, $module, $config = [])
     {
         $this->layout = 'main-layout';
+        $this->productRepository = Yii::$container->get(ProductRepository::class);
+        $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
+        $this->categoryViewer = Yii::$container->get(CategoryViewer::class);
+        $this->productSearchModel = Yii::$container->get(ProductSearch::class);
+        $this->signupForm = Yii::$container->get(SignupForm::class);
+        $this->loginForm = Yii::$container->get(LoginForm::class);
         parent::__construct($id, $module, $config);
     }
 
@@ -34,7 +66,7 @@ class SiteController extends Controller
         return [
             /*
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
@@ -51,7 +83,7 @@ class SiteController extends Controller
             ],
             */
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -67,7 +99,7 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-                'layout' => 'main',
+                'layout' => 'main-layout',
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
@@ -80,20 +112,28 @@ class SiteController extends Controller
      * Displays homepage.
      *
      * @return mixed
+     *
+     * @throws InvalidConfigException
+     * @throws NotInstantiableException
      */
     public function actionIndex()
     {
-        $this->layout = 'index-layout';
+        $allSubCategories = $this->categoryViewer->getSubCategories();
+        $count = Yii::$app->params['countOfProductsOnMainPage'];
 
-        return $this->render('index');
+        return $this->render('index', [
+            'allCategories' => $this->categoryViewer->getCategories($allSubCategories),
+            'popularProducts' => $this->productRepository->findPopularProducts(),
+            'popularCategories' => $this->categoryRepository->findPopularCategories(),
+            'categoriesFind' => $this->categoryRepository,
+            'dataProvider' => $this->productSearchModel->search($count, Yii::$app->request->queryParams),
+        ]);
     }
 
     /**
      * Logs in a user.
      *
      * @return mixed
-     *
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionLogin()
     {
@@ -101,36 +141,120 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $loginModel = new LoginForm();
-        if ($loginModel->load(Yii::$app->request->post()) && $loginModel->login()) {
-            return $this->goBack();
+        $model = $this->loginForm;
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->redirect(['/account/' . Yii::$app->user->id]);
         } else {
-            $loginModel->password = '';
+            $model->password = '';
 
-            return $this->render('index', [
-                'loginModel' => $loginModel,
+            return $this->render('login', [
+                'loginModel' => $model,
+                'registrationModel' => $this->signupForm,
             ]);
         }
     }
 
     /**
-     * Logs out the current user.
+     * Signs user up.
      *
      * @return mixed
+     *
+     * @throws \Exception
      */
-    public function actionLogout()
+    public function actionRegistration()
     {
-        Yii::$app->user->logout();
+        $model = $this->signupForm;
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Welcome to your account.');
+            $this->loginForm->username = $model->username;
+            $this->loginForm->password = $model->password;
+            $this->loginForm->login();
+            return $this->redirect(['/account/' . Yii::$app->user->id]);
+        }
 
+        return $this->render('login', [
+            'registrationModel' => $model,
+            'loginModel' => $this->loginForm,
+        ]);
+    }
+
+    /**
+     * Resets password.
+     *
+     * @param string $token
+     *
+     * @return string|Response
+     *
+     * @throws BadRequestHttpException
+     * @throws Exception
+     */
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->session->setFlash('success', 'New password saved.');
+
+            return $this->goHome();
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Verify email address
+     *
+     * @param string $token
+     * @return Response
+     * @throws BadRequestHttpException
+     */
+    public function actionVerifyEmail($token)
+    {
+        try {
+            $model = new VerifyEmailForm($token);
+        } catch (InvalidArgumentException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+        if ($user = $model->verifyEmail()) {
+            if (Yii::$app->user->login($user)) {
+                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
+                return $this->goHome();
+            }
+        }
+
+        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         return $this->goHome();
+    }
+
+    /**
+     * Resend verification email
+     */
+    public function actionResendVerificationEmail()
+    {
+        $model = new ResendVerificationEmailForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                return $this->goHome();
+            }
+            Yii::$app->session->setFlash('error', 'Sorry, we are unable to resend verification email for the provided email address.');
+        }
+
+        return $this->render('resendVerificationEmail', [
+            'model' => $model
+        ]);
     }
 
     /**
      * Displays contact page.
      *
      * @return mixed
-     *
-     * @throws \yii\base\InvalidConfigException
      */
     public function actionContact()
     {
@@ -158,152 +282,5 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
-    }
-
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    public function actionSignup()
-    {
-        $signupModel = new SignupForm();
-        if ($signupModel->load(Yii::$app->request->post()) && $signupModel->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
-        }
-
-        return $this->render('index', [
-            'signupModel' => $signupModel,
-        ]);
-    }
-
-    /**
-     * Resets password.
-     *
-     * @param string $token
-     *
-     * @return string|\yii\web\Response
-     *
-     * @throws BadRequestHttpException
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function actionResetPassword($token)
-    {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
-
-            return $this->goHome();
-        }
-
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Verify email address
-     *
-     * @param string $token
-     * @throws BadRequestHttpException
-     * @return yii\web\Response
-     */
-    public function actionVerifyEmail($token)
-    {
-        try {
-            $model = new VerifyEmailForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-        if ($user = $model->verifyEmail()) {
-            if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
-                return $this->goHome();
-            }
-        }
-
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
-        return $this->goHome();
-    }
-
-    /**
-     * Resend verification email
-     *
-     * @throws \yii\base\InvalidConfigException
-     */
-    public function actionResendVerificationEmail()
-    {
-        $model = new ResendVerificationEmailForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-                return $this->goHome();
-            }
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to resend verification email for the provided email address.');
-        }
-
-        return $this->render('resendVerificationEmail', [
-            'model' => $model
-        ]);
-    }
-
-    /**
-     * Displays User Account page.
-     *
-     * @return mixed
-     */
-    public function actionAccount()
-    {
-        return $this->render('account');
-    }
-
-    /**
-     * Displays Cart page.
-     *
-     * @return mixed
-     */
-    public function actionCart()
-    {
-        return $this->render('cart');
-    }
-
-    /**
-     * Displays Checkout page.
-     *
-     * @return mixed
-     */
-    public function actionCheckout()
-    {
-        return $this->render('checkout');
-    }
-
-    /**
-     * Displays Product detail view page.
-     *
-     * @return mixed
-     */
-    public function actionProduct()
-    {
-        $this->layout = 'product-layout';
-
-        return $this->render('product');
-    }
-
-    /**
-     * Displays Products page.
-     *
-     * @return mixed
-     */
-    public function actionProducts()
-    {
-        return $this->render('products');
     }
 }

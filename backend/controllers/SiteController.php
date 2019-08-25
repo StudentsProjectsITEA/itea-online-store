@@ -4,8 +4,7 @@ namespace backend\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
+use backend\models\LoginForm;
 
 /**
  * Site controller
@@ -41,7 +40,7 @@ class SiteController extends Controller
             ],
             */
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
