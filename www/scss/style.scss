@@ -1,0 +1,95 @@
+@import "reset";
+@import "variables";
+@import "base";
+@import "mixin";
+@import "btn-add-to-cart";
+@import "breadcrumbs";
+@import "mainPage";
+@import "productPage";
+@import "main-search";
+@import "product-card";
+@import "product-page-slider";
+@import "header";
+@import "pagination";
+@import "product-counter";
+@import "basket";
+@import "pageCategory";
+@import "careers";
+@import "about-us";
+@import "our-policy";
+@import "user-avatar";
+@import "login-form";
+@import "footer";
+@import "filters";
+@import "checkout";
+@import "profile";
+
+body {
+  padding-bottom: 200px;
+}
+
+.shop-category {
+  .category-item {
+    box-shadow: 0 0 10px 5px #ababab;
+  }
+}
+
+.listing-products {
+  .product-item {
+    box-shadow: 0 0 5px 5px #ababab;
+
+    &:hover {
+      box-shadow: 0 0 5px 2px #ff6008;
+      background-color: #fff;
+    }
+  }
+}
+
+.breadcrumbs-section{
+  background-color: #cfcfcf;
+  box-shadow: 0 2px 2px 1px #ababab;
+}
+
+.subscribe-email,
+.header-dropdown-login-details,
+.login-form-input,
+.checkout-delivery-content-input,
+.checkout-delivery-details,
+.checkout-product-item,
+.checkout-payment-exp-input{
+  border: 1px solid #000;
+}
+
+.size-item {
+  border: 2px solid #000;
+}
+
+.header-dropdown-login-details{
+  border-bottom: 0;
+}
+
+.size-item.active, .product-counter-btn, .basket-item-delete, .login-cancel-btn{
+  border-color: #000;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #FFF;
+  font-weight: 700;
+  opacity: 1;
+}
+
+.header-dropdown-login-details-item,
+.basket-item {
+  border-bottom: 1px solid #000;
+}
+
+.sub-page-sub-title,
+.main-menu-link {
+  color: #000;
+}
+
+.main-menu-link {
+  font-size: 16px;
+}
+
+.order-history-item-dark {
+  border: 2px solid #000;
+}
