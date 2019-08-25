@@ -11,9 +11,13 @@ use backend\models\LoginForm;
  */
 class SiteController extends Controller
 {
+    /** @var LoginForm $model */
+    private $model;
+
     public function __construct($id, $module, $config = [])
     {
         $this->layout = 'main-layout';
+        $this->model = new LoginForm();
         parent::__construct($id, $module, $config);
     }
 
@@ -68,6 +72,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->render('login', [
+                'model' => $this->model,
+            ]);
+        }
+
         return $this->render('index');
     }
 
@@ -84,14 +94,13 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($this->model->load(Yii::$app->request->post()) && $this->model->login()) {
             return $this->goBack();
         } else {
-            $model->password = '';
+            $this->model->password = '';
 
             return $this->render('login', [
-                'model' => $model,
+                'model' => $this->model,
             ]);
         }
     }
@@ -146,5 +155,15 @@ class SiteController extends Controller
     public function actionSimpleTables()
     {
         return $this->render('simple-tables');
+    }
+
+    /**
+     * Displays admin account.
+     *
+     * @return string
+     */
+    public function actionAccount()
+    {
+        return $this->render('account');
     }
 }

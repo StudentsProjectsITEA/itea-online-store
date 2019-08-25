@@ -20,12 +20,14 @@ use yii\filters\VerbFilter;
 class AdminController extends Controller
 {
     private $repository;
+    private $searchModel;
 
     public function __construct($id, $module, $config = [])
     {
-        parent::__construct($id, $module, $config);
         $this->layout = 'main';
         $this->repository = new AdminRepository();
+        $this->searchModel = new AdminSearch();
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -49,11 +51,10 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AdminSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel' => $this->searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
