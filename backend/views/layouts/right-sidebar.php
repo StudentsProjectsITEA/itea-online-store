@@ -20,7 +20,7 @@ use yii\widgets\Menu;
             </div>
             <div class="pull-left info">
                 <p>
-                    <?php echo Html::encode('Alexander Pierce') ?>
+                    <?php echo Html::encode($this->params['identityUsername']) ?>
                 </p>
                 <a href="#">
                     <i class="fa fa-circle text-success"></i>
@@ -37,7 +37,7 @@ use yii\widgets\Menu;
                     'options' => ['class' => 'header'],
                 ],
                 ['label' => 'Account',
-                    'url' => ['site/account'],
+                    'url' => ['/admin/view', 'id' => $this->params['identityId']],
                     'template' => '<a href="' . "{url}" . '"><i class="fa fa-user"></i><span>{label}</span></a>',
                 ],
                 ['label' => 'Forms',
@@ -46,12 +46,12 @@ use yii\widgets\Menu;
                     'items' => [
                         [
                             'label' => 'General Elements',
-                            'url' => ['site/general-forms'],
+                            'url' => ['/site/general-forms'],
                             'template' => '<a href="' . "{url}" . '"><i class="fa fa-circle-o"></i>{label}</a>',
                         ],
                         [
                             'label' => 'Advanced Elements',
-                            'url' => ['site/advanced-forms'],
+                            'url' => ['/site/advanced-forms'],
                             'template' => '<a href="' . "{url}" . '"><i class="fa fa-circle-o"></i>{label}</a>',
                         ],
                     ],

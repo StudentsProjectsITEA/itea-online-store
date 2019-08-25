@@ -2,8 +2,8 @@
 
 namespace common\bootstrap;
 
+use backend\repositories\AdminRepository;
 use common\components\OrderDetailsViewer;
-use common\models\Order;
 use frontend\components\CartViewer;
 use frontend\models\LoginForm;
 use frontend\models\SignupForm;
@@ -42,6 +42,7 @@ class SetUp implements BootstrapInterface
         $this->container->setSingleton(UserRepository::class);
         $this->container->setSingleton(CategoryRepository::class);
         $this->container->setSingleton(ProductRepository::class);
+        $this->container->setSingleton(AdminRepository::class);
 
         $this->container->setSingleton(CategoryViewer::class);
         $this->container->setSingleton(ProductViewer::class);
