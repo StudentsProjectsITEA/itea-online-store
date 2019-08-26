@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Photo */
@@ -12,14 +13,18 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="photo-update">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'photoId' => null,
-        'photoName' => null,
-        'createdTime' => null,
-        'productId' => null,
-    ]) ?>
+    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'is_main')->checkbox() ?>
+
+    <?php echo $form->field($model, 'product_id')->textInput() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

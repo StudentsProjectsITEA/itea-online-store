@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Order */
@@ -13,22 +14,27 @@ use yii\helpers\Html;
 /* @var $userId string */
 
 $this->title = 'Create Order';
-$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'All orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="order-create">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+<br>
+<div class="container">
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'orderId' => $orderId,
-        'statusId' => $statusId,
-        'paymentId' => $paymentId,
-        'shippingId' => $shippingId,
-        'createdTime' => $createdTime,
-        'updatedTime' => $updatedTime,
-        'userId' => $userId,
-    ]) ?>
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?php echo $form->field($model, 'payment_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'shipping_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'shipping_address')->textInput() ?>
+
+    <?php echo $form->field($model, 'user_id')->textInput() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

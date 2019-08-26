@@ -5,7 +5,6 @@ namespace backend\controllers;
 use backend\models\SettingsForm;
 use backend\repositories\AdminRepository;
 use Exception;
-use Ramsey\Uuid\Uuid;
 use Throwable;
 use Yii;
 use backend\models\Admin;
@@ -25,7 +24,7 @@ class AdminController extends BaseController
     private $settingsForm;
 
     /**
-     * SiteController constructor.
+     * AdminController constructor.
      * {@inheritdoc}
      * @param AdminSearch $adminSearch
      * @throws NotFoundHttpException
@@ -68,7 +67,6 @@ class AdminController extends BaseController
         $dataProvider = $this->adminSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $this->adminSearch,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -103,10 +101,6 @@ class AdminController extends BaseController
 
         return $this->render('create', [
             'model' => $model,
-            'adminId' => Uuid::uuid4()->toString(),
-            'email' => 'email@example.com',
-            'createdTime' => time(),
-            'updatedTime' => time(),
         ]);
     }
 
@@ -149,5 +143,19 @@ class AdminController extends BaseController
         $this->adminRepository->findAdminById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Admin models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->adminSearch->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->adminSearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

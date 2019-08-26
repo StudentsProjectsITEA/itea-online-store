@@ -1,22 +1,31 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Param */
-/* @var $paramId string */
 
 $this->title = 'Create Param';
 $this->params['breadcrumbs'][] = ['label' => 'Params', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="param-create">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+<br>
+<div class="container">
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'paramId' => $paramId,
-    ]) ?>
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'type_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'is_required')->checkbox() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

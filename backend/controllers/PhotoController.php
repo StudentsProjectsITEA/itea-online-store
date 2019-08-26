@@ -2,30 +2,46 @@
 
 namespace backend\controllers;
 
+use backend\repositories\AdminRepository;
 use common\repositories\PhotoRepository;
-use Exception;
-use Ramsey\Uuid\Uuid;
-use Throwable;
-use Yii;
 use common\models\Photo;
 use common\models\PhotoSearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
+use Throwable;
+use Yii;
 
 /**
  * PhotoController implements the CRUD actions for Photo model.
  */
-class PhotoController extends Controller
+class PhotoController extends BaseController
 {
-    private $repository;
+    /* @var PhotoRepository $photoRepository */
+    private $photoRepository;
+    /* @var PhotoSearch $photoSearch */
+    private $photoSearch;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * ParamController constructor.
+     * {@inheritdoc}
+     * @param PhotoSearch $photoSearch
+     * @param PhotoRepository $photoRepository
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        PhotoSearch $photoSearch,
+        PhotoRepository $photoRepository,
+        $config = []
+    )
     {
-        parent::__construct($id, $module, $config);
-        $this->layout = 'main';
-        $this->repository = new PhotoRepository();
+        $this->photoRepository = $photoRepository;
+        $this->photoSearch = $photoSearch;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -49,11 +65,9 @@ class PhotoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PhotoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->photoSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -67,7 +81,7 @@ class PhotoController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->repository->findPhotoById($id),
+            'model' => $this->photoRepository->findPhotoById($id),
         ]);
     }
 
@@ -87,10 +101,6 @@ class PhotoController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'photoId' => Uuid::uuid4()->toString(),
-            'photoName' => 'main_photo.jpg',
-            'createdTime' => time(),
-            'productId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -103,7 +113,7 @@ class PhotoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findPhotoById($id);
+        $model = $this->photoRepository->findPhotoById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -125,8 +135,22 @@ class PhotoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findPhotoById($id)->delete();
+        $this->photoRepository->findPhotoById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Photo models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->photoSearch->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->photoSearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

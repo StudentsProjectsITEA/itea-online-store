@@ -36,7 +36,7 @@ AppAsset::register($this);
     <?php echo $this->render('right-sidebar') ?>
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="overflow-x: auto;">
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>

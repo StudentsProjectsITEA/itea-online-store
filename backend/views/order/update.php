@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Order */
@@ -12,17 +13,20 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="order-update">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'orderId' => null,
-        'statusId' => null,
-        'paymentId' => null,
-        'shippingId' => null,
-        'createdTime' => null,
-        'updatedTime' => null,
-        'userId' => null,
-    ]) ?>
+    <?php echo $form->field($model, 'payment_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'shipping_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'shipping_address')->textInput() ?>
+
+    <?php echo $form->field($model, 'user_id')->textInput() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

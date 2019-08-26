@@ -2,30 +2,46 @@
 
 namespace backend\controllers;
 
+use backend\repositories\AdminRepository;
 use common\repositories\CategoryRepository;
-use Exception;
-use Ramsey\Uuid\Uuid;
-use Throwable;
-use Yii;
 use common\models\Category;
 use common\models\CategorySearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
+use Throwable;
+use Yii;
 
 /**
  * CategoryController implements the CRUD actions for Category model.
  */
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
-    private $repository;
+    /* @var CategoryRepository $categoryRepository */
+    private $categoryRepository;
+    /* @var CategorySearch $categorySearch */
+    private $categorySearch;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * CategoryController constructor.
+     * {@inheritdoc}
+     * @param CategorySearch $categorySearch
+     * @param CategoryRepository $categoryRepository
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        CategorySearch $categorySearch,
+        CategoryRepository $categoryRepository,
+        $config = []
+    )
     {
-        parent::__construct($id, $module, $config);
-        $this->layout = 'main';
-        $this->repository = new CategoryRepository();
+        $this->categoryRepository = $categoryRepository;
+        $this->categorySearch = $categorySearch;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -49,11 +65,9 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new CategorySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->categorySearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -67,7 +81,7 @@ class CategoryController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->repository->findCategoryById($id),
+            'model' => $this->categoryRepository->findCategoryById($id),
         ]);
     }
 
@@ -87,8 +101,6 @@ class CategoryController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'categoryId' => Uuid::uuid4()->toString(),
-            'categoryParentId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -101,7 +113,7 @@ class CategoryController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findCategoryById($id);
+        $model = $this->categoryRepository->findCategoryById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -123,8 +135,22 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findCategoryById($id)->delete();
+        $this->categoryRepository->findCategoryById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Category models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->categorySearch->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->categorySearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }
