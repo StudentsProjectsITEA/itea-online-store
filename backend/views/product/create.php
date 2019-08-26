@@ -1,32 +1,39 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Product */
-/* @var $productId string */
-/* @var $productMainPhoto string */
-/* @var $createdTime int */
-/* @var $updatedTime int */
-/* @var $categoryId string */
-/* @var $brandId string */
 
 $this->title = 'Create Product';
 $this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-create">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+<br>
+<div class="container">
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'productId' => $productId,
-        'productMainPhoto' => $productMainPhoto,
-        'createdTime' => $createdTime,
-        'updatedTime' => $updatedTime,
-        'categoryId' => $categoryId,
-        'brandId' => $brandId,
-    ]) ?>
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?php echo $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+    <?php echo $form->field($model, 'quantity')->textInput() ?>
+
+    <?php echo $form->field($model, 'price')->textInput() ?>
+
+    <?php echo $form->field($model, 'main_photo')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'category_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'brand_id')->textInput() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

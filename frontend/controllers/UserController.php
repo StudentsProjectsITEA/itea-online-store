@@ -7,9 +7,6 @@ use common\repositories\OrderRepository;
 use frontend\models\ChangePasswordForm;
 use frontend\repositories\UserRepository;
 use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\di\NotInstantiableException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -17,10 +14,8 @@ use Yii;
 /**
  * UserController implements the CRUD actions for User model.
  */
-class UserController extends Controller
+class UserController extends BaseController
 {
-    /** @var $repository UserRepository */
-    private $repository;
     /** @var $repository OrderRepository */
     private $orderRepository;
     /** @var $repository ChangePasswordForm */
@@ -31,17 +26,25 @@ class UserController extends Controller
     /**
      * UserController constructor.
      * {@inheritdoc}
-     * @throws InvalidConfigException
-     * @throws NotInstantiableException
+     * @param OrderRepository $orderRepository
+     * @param ChangePasswordForm $changePasswordForm
+     * @param OrderDetailsViewer $orderDetailsViewer
+     * @throws NotFoundHttpException
      */
-    public function __construct($id, $module, $config = [])
+    public function __construct(
+        $id,
+        $module,
+        UserRepository $userRepository,
+        OrderRepository $orderRepository,
+        ChangePasswordForm $changePasswordForm,
+        OrderDetailsViewer $orderDetailsViewer,
+        $config = []
+    )
     {
-        $this->layout = 'main-layout';
-        $this->repository = Yii::$container->get(UserRepository::class);
-        $this->orderRepository = Yii::$container->get(OrderRepository::class);
-        $this->changePasswordModel = Yii::$container->get(ChangePasswordForm::class);
-        $this->orderDetailsViewer = Yii::$container->get(OrderDetailsViewer::class);
-        parent::__construct($id, $module, $config);
+        $this->orderRepository = $orderRepository;
+        $this->changePasswordModel = $changePasswordForm;
+        $this->orderDetailsViewer = $orderDetailsViewer;
+        parent::__construct($id, $module, $userRepository, $config);
     }
 
     /**
@@ -67,7 +70,7 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->repository->findUserById($id);
+        $model = $this->userRepository->findUserById($id);
 
         return $this->render('view', [
             'model' => $model,
@@ -87,7 +90,7 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findUserById($id);
+        $model = $this->userRepository->findUserById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Your information was successfully changed.');
@@ -113,7 +116,7 @@ class UserController extends Controller
      */
     public function actionChangePassword($id)
     {
-        $model = $this->repository->findUserById($id);
+        $model = $this->userRepository->findUserById($id);
 
         if ($this->changePasswordModel->load(Yii::$app->request->post()) && $this->changePasswordModel->changePassword()) {
             Yii::$app->session->setFlash('success', 'Your password was successfully changed.');

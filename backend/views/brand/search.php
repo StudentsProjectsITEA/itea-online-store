@@ -1,31 +1,28 @@
 <?php
 
+use common\models\Brand;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\BrandSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $searchModel yii\data\ActiveDataProvider */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Brands';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="brand-search">
+<div class="container">
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
+    <?php echo $this->render('search-form', ['model' => $searchModel]); ?>
 
-    <?php echo $form->field($model, 'id') ?>
-
-    <?php echo $form->field($model, 'name') ?>
-
-    <?php echo $form->field($model, 'description') ?>
-
-    <div class="form-group">
-        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    <?php echo ListView::widget([
+        'dataProvider' => $dataProvider,
+        'itemOptions' => ['class' => 'item'],
+        'itemView' => function ($model, $key, $index, $widget) {
+            /* @var $model Brand */
+            return Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
+        },
+    ]) ?>
 
 </div>

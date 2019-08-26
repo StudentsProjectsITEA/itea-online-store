@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use frontend\repositories\UserRepository;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
@@ -18,6 +19,14 @@ class ChangePasswordForm extends Model
     public $password;
     public $new_password;
     public $confirm_new_password;
+    /* @var UserRepository */
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository, $config = [])
+    {
+        $this->userRepository = $userRepository;
+        parent::__construct($config);
+    }
 
     public function rules()
     {
@@ -41,26 +50,9 @@ class ChangePasswordForm extends Model
             return null;
         }
 
-        $user = User::findOne(Yii::$app->request->queryParams['id']);
+        $user = $this->userRepository->findUserById(Yii::$app->request->queryParams['id']);
         $user->setPassword($this->new_password);
 
         return $user->save();
-    }
-
-    /**
-     * @return bool
-     */
-    public function validatePassword()
-    {
-        $user = User::findIdentity(Yii::$app->request->queryParams['id']);
-
-        if (!$user || !$user->validatePassword($this->password)) {
-            Yii::$app->session->setFlash('error', $this->message['wrong']);
-            $this->addError('password', $this->message['wrong']);
-
-            return false;
-        }
-
-        return true;
     }
 }

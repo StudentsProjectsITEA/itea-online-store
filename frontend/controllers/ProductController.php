@@ -8,9 +8,7 @@ use common\repositories\BrandRepository;
 use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use common\models\ProductSearch;
-use yii\base\InvalidConfigException;
-use yii\di\NotInstantiableException;
-use yii\web\Controller;
+use frontend\repositories\UserRepository;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -18,7 +16,7 @@ use Yii;
 /**
  * ProductController implements the CRUD actions for Product model.
  */
-class ProductController extends Controller
+class ProductController extends BaseController
 {
     /** @var ProductRepository */
     private $productRepository;
@@ -34,18 +32,31 @@ class ProductController extends Controller
     /**
      * SiteController constructor.
      * {@inheritdoc}
-     * @throws InvalidConfigException
-     * @throws NotInstantiableException
+     * @param ProductRepository $productRepository
+     * @param CategoryRepository $categoryRepository
+     * @param BrandRepository $brandRepository
+     * @param ProductViewer $productViewer
+     * @param ProductSearch $productSearch
+     * @throws NotFoundHttpException
      */
-    public function __construct($id, $module, $config = [])
+    public function __construct(
+        $id,
+        $module,
+        UserRepository $userRepository,
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        BrandRepository $brandRepository,
+        ProductViewer $productViewer,
+        ProductSearch $productSearch,
+        $config = []
+    )
     {
-        $this->layout = 'main-layout';
-        $this->productRepository = Yii::$container->get(ProductRepository::class);
-        $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
-        $this->brandRepository = Yii::$container->get(BrandRepository::class);
-        $this->productViewer = Yii::$container->get(ProductViewer::class);
-        $this->productSearchModel = Yii::$container->get(ProductSearch::class);
-        parent::__construct($id, $module, $config);
+        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->brandRepository = $brandRepository;
+        $this->productViewer = $productViewer;
+        $this->productSearchModel = $productSearch;
+        parent::__construct($id, $module, $userRepository, $config);
     }
 
     /**

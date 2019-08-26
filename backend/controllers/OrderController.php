@@ -2,30 +2,46 @@
 
 namespace backend\controllers;
 
+use backend\repositories\AdminRepository;
 use common\repositories\OrderRepository;
-use Exception;
-use Ramsey\Uuid\Uuid;
-use Throwable;
-use Yii;
 use common\models\Order;
 use backend\models\OrderSearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
+use Throwable;
+use Yii;
 
 /**
  * OrderController implements the CRUD actions for Order model.
  */
-class OrderController extends Controller
+class OrderController extends BaseController
 {
-    private $repository;
+    /* @var OrderRepository $orderRepository */
+    private $orderRepository;
+    /* @var OrderSearch $orderSearch */
+    private $orderSearch;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * OrderController constructor.
+     * {@inheritdoc}
+     * @param OrderSearch $orderSearch
+     * @param OrderRepository $orderRepository
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        OrderSearch $orderSearch,
+        OrderRepository $orderRepository,
+        $config = []
+    )
     {
-        parent::__construct($id, $module, $config);
-        $this->layout = 'main';
-        $this->repository = new OrderRepository();
+        $this->orderRepository = $orderRepository;
+        $this->orderSearch = $orderSearch;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -49,11 +65,9 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new OrderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->orderSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -67,7 +81,7 @@ class OrderController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->repository->findOrderById($id),
+            'model' => $this->orderRepository->findOrderById($id),
         ]);
     }
 
@@ -87,13 +101,6 @@ class OrderController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'orderId' => Uuid::uuid4()->toString(),
-            'statusId' => 1,
-            'paymentId' => 1,
-            'shippingId' => 1,
-            'createdTime' => time(),
-            'updatedTime' => time(),
-            'userId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -106,7 +113,7 @@ class OrderController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findOrderById($id);
+        $model = $this->orderRepository->findOrderById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -128,8 +135,22 @@ class OrderController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findOrderById($id)->delete();
+        $this->orderRepository->findOrderById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Order models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->orderSearch->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->orderSearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

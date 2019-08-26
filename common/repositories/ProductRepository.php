@@ -5,6 +5,7 @@ namespace common\repositories;
 use common\models\Category;
 use common\models\Product;
 use Yii;
+use yii\data\Pagination;
 use yii\db\ActiveRecord;
 use common\models\ProductParamValue;
 use yii\web\NotFoundHttpException;
@@ -80,5 +81,18 @@ class ProductRepository
             ->all();
 
         return $popularProducts;
+    }
+
+    /**
+     * @param Pagination $pagination
+     * @param $orderBy
+     * @return array|Product[]|ActiveRecord[]
+     */
+    public function findAllProductsWithLimit(Pagination $pagination, $orderBy)
+    {
+        return Product::find()->orderBy($orderBy)
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
     }
 }

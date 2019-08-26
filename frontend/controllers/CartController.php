@@ -6,6 +6,7 @@ use common\repositories\ProductRepository;
 use devanych\cart\Cart;
 use DomainException;
 use frontend\components\CartViewer;
+use frontend\repositories\UserRepository;
 use yii\base\InvalidConfigException;
 use yii\di\NotInstantiableException;
 use yii\web\Controller;
@@ -13,7 +14,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use Yii;
 
-class CartController extends Controller
+class CartController extends BaseController
 {
     /** @var ProductRepository */
     private $productRepository;
@@ -25,16 +26,23 @@ class CartController extends Controller
     /**
      * CartController constructor.
      * {@inheritdoc}
-     * @throws InvalidConfigException
-     * @throws NotInstantiableException
+     * @param CartViewer $cartViewer
+     * @param ProductRepository $productRepository
+     * @throws NotFoundHttpException
      */
-    public function __construct($id, $module, $config = [])
+    public function __construct(
+        $id,
+        $module,
+        UserRepository $userRepository,
+        CartViewer $cartViewer,
+        ProductRepository $productRepository,
+        $config = []
+    )
     {
-        $this->layout = 'main-layout';
-        $this->cartViewer = Yii::$container->get(CartViewer::class);
-        $this->productRepository = Yii::$container->get(ProductRepository::class);
+        $this->cartViewer = $cartViewer;
+        $this->productRepository = $productRepository;
         $this->cart = Yii::$app->cart;
-        parent::__construct($id, $module, $config);
+        parent::__construct($id, $module, $userRepository, $config);
     }
 
     /**

@@ -13,6 +13,14 @@ class CategoryViewer
 {
     private static $categories;
     private static $count;
+    /* @var CategoryRepository */
+    private $categoryRepository;
+
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
 
     /**
      * @return array
@@ -20,7 +28,7 @@ class CategoryViewer
     public function getSubCategories()
     {
         $allSubCategories = [];
-        self::$categories = (new CategoryRepository())->findCategories();
+        self::$categories = $this->categoryRepository->findCategories();
         self::$count = count(self::$categories);
 
         for ($i = 0; $i < self::$count; $i++) {
@@ -58,11 +66,11 @@ class CategoryViewer
      */
     public function getEndings($category)
     {
-        $n = substr($category, - 1);
-        if (1 == $n) {
-            $end =  'товар';
-        } elseif ((2 == $n) || (3 == $n) || (4 == $n)) {
-            $end =  'товара';
+        $n = substr($category, -1);
+        if (1 === $n) {
+            $end = 'товар';
+        } elseif ((2 === $n) || (3 === $n) || (4 === $n)) {
+            $end = 'товара';
         } else {
             $end = 'товаров';
         }

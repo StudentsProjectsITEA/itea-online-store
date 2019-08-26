@@ -12,9 +12,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
-<div class="user-view">
-
-    <h1><?php echo Html::encode($this->title) ?></h1>
+<div class="container">
 
     <p>
         <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

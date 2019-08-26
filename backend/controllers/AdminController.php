@@ -2,30 +2,45 @@
 
 namespace backend\controllers;
 
+use backend\models\SettingsForm;
 use backend\repositories\AdminRepository;
 use Exception;
-use Ramsey\Uuid\Uuid;
 use Throwable;
 use Yii;
 use backend\models\Admin;
 use backend\models\AdminSearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * AdminController implements the CRUD actions for Admin model.
  */
-class AdminController extends Controller
+class AdminController extends BaseController
 {
-    private $repository;
+    /** @var AdminSearch $adminSearch */
+    private $adminSearch;
+    /** @var SettingsForm $settingsForm */
+    private $settingsForm;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * AdminController constructor.
+     * {@inheritdoc}
+     * @param AdminSearch $adminSearch
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        AdminSearch $adminSearch,
+        SettingsForm $settingsForm,
+        $config = []
+    )
     {
-        parent::__construct($id, $module, $config);
-        $this->layout = 'main';
-        $this->repository = new AdminRepository();
+        $this->adminSearch = $adminSearch;
+        $this->settingsForm = $settingsForm;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -49,11 +64,9 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AdminSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->adminSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -67,7 +80,8 @@ class AdminController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->repository->findAdminById($id),
+            'model' => $this->adminRepository->findAdminById($id),
+            'settingsForm' => $this->settingsForm,
         ]);
     }
 
@@ -87,10 +101,6 @@ class AdminController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'adminId' => Uuid::uuid4()->toString(),
-            'email' => 'email@example.com',
-            'createdTime' => time(),
-            'updatedTime' => time(),
         ]);
     }
 
@@ -100,17 +110,22 @@ class AdminController extends Controller
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \yii\base\Exception
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findAdminById($id);
+        $model = $this->adminRepository->findAdminById($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($this->settingsForm->load(Yii::$app->request->post()) && $this->settingsForm->changeInformation()) {
+            Yii::$app->session->setFlash('success', 'Your information was successfully changed.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        Yii::$app->session->setFlash('error', 'You make a mistake, please return to the settings menu.');
+
+        return $this->render('view', [
             'model' => $model,
+            'settingsForm' => $this->settingsForm,
         ]);
     }
 
@@ -125,8 +140,22 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findAdminById($id)->delete();
+        $this->adminRepository->findAdminById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Admin models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->adminSearch->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->adminSearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

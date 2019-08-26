@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Product */
@@ -12,16 +13,26 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="product-update">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'productId' => null,
-        'productMainPhoto' => null,
-        'createdTime' => null,
-        'updatedTime' => null,
-        'categoryId' => null,
-        'brandId' => null,
-    ]) ?>
+    <?php echo $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+    <?php echo $form->field($model, 'quantity')->textInput() ?>
+
+    <?php echo $form->field($model, 'price')->textInput() ?>
+
+    <?php echo $form->field($model, 'main_photo')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'category_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'brand_id')->textInput() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

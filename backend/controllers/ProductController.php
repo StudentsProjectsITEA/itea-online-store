@@ -2,30 +2,46 @@
 
 namespace backend\controllers;
 
+use backend\repositories\AdminRepository;
 use common\repositories\ProductRepository;
-use Exception;
-use Ramsey\Uuid\Uuid;
-use Throwable;
-use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
+use Throwable;
+use Yii;
 
 /**
  * ProductController implements the CRUD actions for Product model.
  */
-class ProductController extends Controller
+class ProductController extends BaseController
 {
-    private $repository;
+    /* @var ProductRepository $productRepository */
+    private $productRepository;
+    /* @var ProductSearch $productSearch */
+    private $productSearch;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * ParamController constructor.
+     * {@inheritdoc}
+     * @param ProductSearch $productSearch
+     * @param ProductRepository $productRepository
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        ProductSearch $productSearch,
+        ProductRepository $productRepository,
+        $config = []
+    )
     {
-        parent::__construct($id, $module, $config);
-        $this->layout = 'main';
-        $this->repository = new ProductRepository();
+        $this->productRepository = $productRepository;
+        $this->productSearch = $productSearch;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -49,11 +65,9 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->productSearch->search(20, Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -67,7 +81,7 @@ class ProductController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->repository->findProductById($id),
+            'model' => $this->productRepository->findProductById($id),
         ]);
     }
 
@@ -87,12 +101,6 @@ class ProductController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'productId' => Uuid::uuid4()->toString(),
-            'productMainPhoto' => 'main_photo.jpg',
-            'createdTime' => time(),
-            'updatedTime' => time(),
-            'categoryId' => Uuid::uuid4()->toString(),
-            'brandId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -105,7 +113,7 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findProductById($id);
+        $model = $this->productRepository->findProductById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -127,8 +135,22 @@ class ProductController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findProductById($id)->delete();
+        $this->productRepository->findProductById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Product models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->productSearch->search(20, Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->productSearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

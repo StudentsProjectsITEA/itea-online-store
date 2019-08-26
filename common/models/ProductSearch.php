@@ -11,6 +11,15 @@ use yii\data\ActiveDataProvider;
  */
 class ProductSearch extends Product
 {
+    /* @var ProductParamsFinder */
+    private $productParamsFinder;
+
+    public function __construct(ProductParamsFinder $productParamsFinder, $config = [])
+    {
+        $this->productParamsFinder = $productParamsFinder;
+        parent::__construct($config);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -42,8 +51,8 @@ class ProductSearch extends Product
      */
     public function search(int $pageSize, array $params)
     {
-        $categoriesIdFromRequest = (new ProductParamsFinder())->getCategoriesIdFromParams($params);
-        $brandsIdFromRequest = (new ProductParamsFinder())->getBrandsIdFromParams($params);
+        $categoriesIdFromRequest = $this->productParamsFinder->getCategoriesIdFromParams($params);
+        $brandsIdFromRequest = $this->productParamsFinder->getBrandsIdFromParams($params);
 
         $query = Product::find();
 
