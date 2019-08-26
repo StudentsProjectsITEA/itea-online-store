@@ -6,6 +6,7 @@ use backend\repositories\AdminRepository;
 use common\components\OrderDetailsViewer;
 use frontend\components\CartViewer;
 use frontend\models\LoginForm;
+use backend\models\LoginForm as AdminLogin;
 use frontend\models\SignupForm;
 use common\models\ProductSearch;
 use common\repositories\CategoryRepository;
@@ -51,6 +52,7 @@ class SetUp implements BootstrapInterface
 
         $this->container->setSingleton(SignupForm::class);
         $this->container->setSingleton(LoginForm::class);
+        $this->container->setSingleton('adminLogin', AdminLogin::class);
         $this->container->setSingleton(ChangePasswordForm::class);
         $this->container->setSingleton(ProductSearch::class);
     }
