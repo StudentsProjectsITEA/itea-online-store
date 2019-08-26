@@ -7,6 +7,7 @@ use common\repositories\BrandRepository;
 use common\models\Brand;
 use backend\models\BrandSearch;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Exception;
@@ -51,6 +52,22 @@ class BrandController extends BaseController
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index',
+                            'view',
+                            'create',
+                            'update',
+                            'search',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

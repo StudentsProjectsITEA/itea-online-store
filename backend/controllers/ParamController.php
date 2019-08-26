@@ -7,6 +7,7 @@ use common\repositories\ParamRepository;
 use common\models\Param;
 use backend\models\ParamSearch;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Exception;
@@ -50,6 +51,22 @@ class ParamController extends BaseController
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index',
+                            'view',
+                            'create',
+                            'update',
+                            'search',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

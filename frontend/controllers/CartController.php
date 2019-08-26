@@ -9,6 +9,8 @@ use frontend\components\CartViewer;
 use frontend\repositories\UserRepository;
 use yii\base\InvalidConfigException;
 use yii\di\NotInstantiableException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -43,6 +45,36 @@ class CartController extends BaseController
         $this->productRepository = $productRepository;
         $this->cart = Yii::$app->cart;
         parent::__construct($id, $module, $userRepository, $config);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index',
+                            'add',
+                            'change',
+                            'remove',
+                        ],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
     }
 
     /**

@@ -9,6 +9,7 @@ use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use common\models\ProductSearch;
 use frontend\repositories\UserRepository;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -65,6 +66,19 @@ class ProductController extends BaseController
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index',
+                            'view',
+                        ],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
