@@ -8,24 +8,25 @@ use common\repositories\CategoryRepository;
 use common\repositories\ProductRepository;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use frontend\repositories\UserRepository;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\di\NotInstantiableException;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use frontend\models\LoginForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use Yii;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     /* @var ProductRepository */
     private $productRepository;
@@ -43,19 +44,34 @@ class SiteController extends Controller
     /**
      * SiteController constructor.
      * {@inheritdoc}
-     * @throws InvalidConfigException
-     * @throws NotInstantiableException
+     * @param ProductRepository $productRepository
+     * @param CategoryRepository $categoryRepository
+     * @param CategoryViewer $categoryViewer
+     * @param ProductSearch $productSearch
+     * @param SignupForm $signupForm
+     * @param LoginForm $loginForm
+     * @throws NotFoundHttpException
      */
-    public function __construct($id, $module, $config = [])
+    public function __construct(
+        $id,
+        $module,
+        UserRepository $userRepository,
+        ProductRepository $productRepository,
+        CategoryRepository $categoryRepository,
+        CategoryViewer $categoryViewer,
+        ProductSearch $productSearch,
+        SignupForm $signupForm,
+        LoginForm $loginForm,
+        $config = []
+    )
     {
-        $this->layout = 'main-layout';
-        $this->productRepository = Yii::$container->get(ProductRepository::class);
-        $this->categoryRepository = Yii::$container->get(CategoryRepository::class);
-        $this->categoryViewer = Yii::$container->get(CategoryViewer::class);
-        $this->productSearchModel = Yii::$container->get(ProductSearch::class);
-        $this->signupForm = Yii::$container->get(SignupForm::class);
-        $this->loginForm = Yii::$container->get(LoginForm::class);
-        parent::__construct($id, $module, $config);
+        $this->productRepository = $productRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->categoryViewer = $categoryViewer;
+        $this->productSearchModel = $productSearch;
+        $this->signupForm = $signupForm;
+        $this->loginForm = $loginForm;
+        parent::__construct($id, $module, $userRepository, $config);
     }
 
     /**

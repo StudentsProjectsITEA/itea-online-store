@@ -14,9 +14,17 @@ use yii\data\Pagination;
  */
 class ProductViewer
 {
+    /* @var ProductRepository */
+    private $productRepository;
+
+    public function __construct(ProductRepository $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     public function getAllProducts()
     {
-        $products = (new ProductRepository)->findAllProducts();
+        $products = $this->productRepository->findAllProducts();
 
         return $products;
     }
@@ -36,10 +44,7 @@ class ProductViewer
             'totalCount' => $productsCount,
         ]);
 
-        $allProducts = Product::find()->orderBy($orderBy)
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
+        $allProducts = $this->productRepository->findAllProductsWithLimit($pagination, $orderBy);
 
         return [$allProducts, $pagination];
     }

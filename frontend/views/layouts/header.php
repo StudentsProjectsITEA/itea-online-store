@@ -33,15 +33,15 @@ use yii\helpers\Url;
                     <?php echo Html::a('Log in', '/login', ['class' => 'header-login-btn']) ?>
                 <?php else: ?>
                     <a href="<?php echo Url::to([
-                        'user/view',
-                        'id' => Yii::$app->user->id,
+                        '/user/view',
+                        'id' => $this->params['identityId'],
                     ]) ?>">
                         <div class="user-info">
                             <div class="user-avatar">
                                 <img alt="user-avatar" src="<?php echo Url::to('@web/img/featured.png'); ?>">
                             </div>
-                            <?php echo Html::encode(User::findOne(Yii::$app->user->id)->first_name) ?>
-                            <?php echo Html::encode(User::findOne(Yii::$app->user->id)->last_name) ?>
+                            <?php echo Html::encode($this->params['identityFirstName']) ?>
+                            <?php echo Html::encode($this->params['identityLastName']) ?>
                         </div>
                     </a>
                 <?php endif; ?>

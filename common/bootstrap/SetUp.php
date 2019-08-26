@@ -8,6 +8,7 @@ use backend\models\OrderSearch;
 use backend\models\ParamSearch;
 use backend\repositories\AdminRepository;
 use common\components\OrderDetailsViewer;
+use common\helpers\OrderDetails;
 use common\models\CategorySearch;
 use common\models\PhotoSearch;
 use common\repositories\BrandRepository;
@@ -76,6 +77,8 @@ class SetUp implements BootstrapInterface
         $this->container->setSingleton(OrderSearch::class);
         $this->container->setSingleton(ParamSearch::class);
         $this->container->setSingleton(PhotoSearch::class);
+
+        $this->container->setSingleton(OrderDetails::class);
 
     }
 }

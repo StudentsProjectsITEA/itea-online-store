@@ -1,5 +1,6 @@
 <?php
 
+use common\helpers\OrderDetails;
 use devanych\cart\Cart;
 use frontend\models\CheckoutForm;
 use frontend\models\User;
@@ -10,6 +11,7 @@ use yii\helpers\Html;
 /* @var $cartItems array */
 /* @var $model CheckoutForm */
 /* @var $user User */
+/* @var $orderDetails OrderDetails */
 
 $this->title = 'Checkout';
 $this->params['breadcrumbs'][] = ['label' => 'Cart', 'url' => ['/cart']];
@@ -28,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php echo $this->render('checkout-form', [
             'model' => $model,
             'user' => $user,
+            'orderDetails' => $orderDetails,
         ]) ?>
 
         <?php echo $this->render('total', [

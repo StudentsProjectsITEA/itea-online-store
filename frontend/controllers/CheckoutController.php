@@ -2,35 +2,46 @@
 
 namespace frontend\controllers;
 
+use common\helpers\OrderDetails;
 use devanych\cart\Cart;
 use frontend\models\CheckoutForm;
 use frontend\models\User;
-use yii\base\InvalidConfigException;
+use frontend\repositories\UserRepository;
 use yii\db\Exception;
-use yii\di\NotInstantiableException;
-use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use Yii;
 
-class CheckoutController extends Controller
+class CheckoutController extends BaseController
 {
     /** @var Cart $cart */
     private $cart;
-    /** @var CheckoutForm $cart */
+    /** @var CheckoutForm $checkoutForm */
     private $checkoutForm;
+    /* @var OrderDetails */
+    private $orderDetails;
 
     /**
      * CheckoutController constructor.
      * {@inheritdoc}
-     * @throws InvalidConfigException
-     * @throws NotInstantiableException
+     * @param CheckoutForm $checkoutForm
+     * @param OrderDetails $orderDetails
+     * @throws NotFoundHttpException
      */
-    public function __construct($id, $module, $config = [])
+    public function __construct(
+        $id,
+        $module,
+        UserRepository $userRepository,
+        CheckoutForm $checkoutForm,
+        OrderDetails $orderDetails,
+        $config = []
+    )
     {
         $this->layout = 'main-layout';
         $this->cart = Yii::$app->cart;
-        $this->checkoutForm = Yii::$container->get(CheckoutForm::class);
-        parent::__construct($id, $module, $config);
+        $this->checkoutForm = $checkoutForm;
+        $this->orderDetails = $orderDetails;
+        parent::__construct($id, $module, $userRepository, $config);
     }
 
     /**
@@ -43,6 +54,7 @@ class CheckoutController extends Controller
             'user' => User::findOne(Yii::$app->user->id),
             'cart' => $this->cart,
             'cartItems' => $this->cart->getItems(),
+            'orderDetails' => $this->orderDetails,
         ]);
     }
 
@@ -64,6 +76,7 @@ class CheckoutController extends Controller
             'user' => User::findOne(Yii::$app->user->id),
             'cart' => $this->cart,
             'cartItems' => $this->cart->getItems(),
+            'orderDetails' => $this->orderDetails,
         ]);
     }
 }
