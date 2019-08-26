@@ -2,30 +2,46 @@
 
 namespace backend\controllers;
 
+use backend\repositories\AdminRepository;
 use common\repositories\ParamRepository;
-use Exception;
-use Ramsey\Uuid\Uuid;
-use Throwable;
-use Yii;
 use common\models\Param;
 use backend\models\ParamSearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
+use Throwable;
+use Yii;
 
 /**
  * ParamController implements the CRUD actions for Param model.
  */
-class ParamController extends Controller
+class ParamController extends BaseController
 {
-    private $repository;
+    /* @var ParamRepository $paramRepository */
+    private $paramRepository;
+    /* @var ParamSearch $paramSearch */
+    private $paramSearch;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * ParamController constructor.
+     * {@inheritdoc}
+     * @param ParamSearch $paramSearch
+     * @param ParamRepository $paramRepository
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        ParamSearch $paramSearch,
+        ParamRepository $paramRepository,
+        $config = []
+    )
     {
-        parent::__construct($id, $module, $config);
-        $this->layout = 'main';
-        $this->repository = new ParamRepository();
+        $this->paramRepository = $paramRepository;
+        $this->paramSearch = $paramSearch;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -49,11 +65,9 @@ class ParamController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ParamSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->paramSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -67,7 +81,7 @@ class ParamController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->repository->findParamById($id),
+            'model' => $this->paramRepository->findParamById($id),
         ]);
     }
 
@@ -87,7 +101,6 @@ class ParamController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'paramId' => Uuid::uuid4()->toString(),
         ]);
     }
 
@@ -100,7 +113,7 @@ class ParamController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findParamById($id);
+        $model = $this->paramRepository->findParamById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -122,8 +135,22 @@ class ParamController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findParamById($id)->delete();
+        $this->paramRepository->findParamById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all Param models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->paramSearch->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->paramSearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

@@ -1,28 +1,31 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Photo */
-/* @var $photoId string */
-/* @var $photoName string */
-/* @var $createdTime int */
-/* @var $productId string */
 
 $this->title = 'Create Photo';
 $this->params['breadcrumbs'][] = ['label' => 'Photos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="photo-create">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+<br>
+<div class="container">
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'photoId' => $photoId,
-        'photoName' => $photoName,
-        'createdTime' => $createdTime,
-        'productId' => $productId,
-    ]) ?>
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'is_main')->checkbox() ?>
+
+    <?php echo $form->field($model, 'product_id')->textInput() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

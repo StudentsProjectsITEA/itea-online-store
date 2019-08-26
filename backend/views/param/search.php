@@ -1,33 +1,28 @@
 <?php
 
+use common\models\Param;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\ParamSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $searchModel backend\models\ParamSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Params';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="param-search">
+<div class="container">
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
+    <?php echo $this->render('search-form', ['model' => $searchModel]); ?>
 
-    <?php echo $form->field($model, 'id') ?>
-
-    <?php echo $form->field($model, 'name') ?>
-
-    <?php echo $form->field($model, 'type_id') ?>
-
-    <?php echo $form->field($model, 'is_required')->checkbox() ?>
-
-    <div class="form-group">
-        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    <?php echo ListView::widget([
+        'dataProvider' => $dataProvider,
+        'itemOptions' => ['class' => 'item'],
+        'itemView' => function ($model, $key, $index, $widget) {
+            /* @var $model Param */
+            return Html::a(Html::encode($model->name), ['view', 'id' => $model->id]);
+        },
+    ]) ?>
 
 </div>

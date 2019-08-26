@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Param */
@@ -12,11 +13,18 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="param-update">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $this->render('form', [
-        'model' => $model,
-        'paramId' => null,
-    ]) ?>
+    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+    <?php echo $form->field($model, 'type_id')->textInput() ?>
+
+    <?php echo $form->field($model, 'is_required')->checkbox() ?>
+
+    <div class="form-group">
+        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
 
 </div>

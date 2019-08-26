@@ -1,32 +1,69 @@
 <?php
 
+use yii\grid\GridView;
 use yii\helpers\Html;
-use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
 
-    <h1><?php echo Html::encode($this->title) ?></h1>
+<div class="container">
 
-    <p>
-        <?php echo Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <br>
+    <div class="col-sm-3">
+        <strong>
+            <?php echo Html::encode('You can create new user here:') ?>
+        </strong>
+    </div>
+    <div class="col-sm-9">
+        <p>
+            <?php echo Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
+    </div>
+    <br>
 
-    <?php echo $this->render('search', ['model' => $searchModel]); ?>
-
-    <?php echo ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model->id), ['view', 'id' => $model->id]);
-        },
-    ]) ?>
-
+    <section class="content" style="float: left;">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">
+                            <?php echo Html::encode('Users table list:') ?>
+                        </h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <?php echo GridView::widget([
+                            'dataProvider' => $dataProvider,
+                            'tableOptions' => [
+                                'class' => 'table table-bordered table-hover dataTable',
+                                'id' => 'example2',
+                                'role' => 'grid',
+                                'aria-describedby' => 'example2_info',
+                            ],
+                            'columns' => [
+                                'id',
+                                'username',
+                                'first_name',
+                                'last_name',
+                                'mobile',
+                                'auth_key',
+                                'password_hash',
+                                'password_reset_token',
+                                'email:email',
+                                'verification_token',
+                                'status_id',
+                                'created_time:datetime',
+                                'updated_time:datetime',
+                            ]
+                        ]) ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>

@@ -1,47 +1,28 @@
 <?php
 
+use common\models\Product;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\ProductSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $searchModel common\models\ProductSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Products';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="product-search">
+<div class="container">
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
+    <?php echo $this->render('search-form', ['model' => $searchModel]); ?>
 
-    <?php echo $form->field($model, 'id') ?>
-
-    <?php echo $form->field($model, 'title') ?>
-
-    <?php echo $form->field($model, 'description') ?>
-
-    <?php echo $form->field($model, 'quantity') ?>
-
-    <?php echo $form->field($model, 'price') ?>
-
-    <?php // echo $form->field($model, 'main_photo') ?>
-
-    <?php // echo $form->field($model, 'is_deleted')->checkbox() ?>
-
-    <?php // echo $form->field($model, 'created_time') ?>
-
-    <?php // echo $form->field($model, 'updated_time') ?>
-
-    <?php // echo $form->field($model, 'category_id') ?>
-
-    <?php // echo $form->field($model, 'brand_id') ?>
-
-    <div class="form-group">
-        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    <?php echo ListView::widget([
+        'dataProvider' => $dataProvider,
+        'itemOptions' => ['class' => 'item'],
+        'itemView' => function ($model, $key, $index, $widget) {
+            /* @var $model Product */
+            return Html::a(Html::encode($model->title), ['view', 'id' => $model->id]);
+        },
+    ]) ?>
 
 </div>

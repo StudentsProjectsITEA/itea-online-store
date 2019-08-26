@@ -1,45 +1,29 @@
 <?php
 
+use backend\models\Admin;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\widgets\ListView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\AdminSearch */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $searchModel backend\models\AdminSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Search admins';
+$this->params['breadcrumbs'][] = ['label' => 'All admins', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="admin-search">
+<div class="container">
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-    ]); ?>
+    <?php echo $this->render('search-form', ['model' => $searchModel]); ?>
 
-    <?php echo $form->field($model, 'id') ?>
-
-    <?php echo $form->field($model, 'username') ?>
-
-    <?php echo $form->field($model, 'auth_key') ?>
-
-    <?php echo $form->field($model, 'password_hash') ?>
-
-    <?php echo $form->field($model, 'password_reset_token') ?>
-
-    <?php // echo $form->field($model, 'email') ?>
-
-    <?php // echo $form->field($model, 'verification_token') ?>
-
-    <?php // echo $form->field($model, 'status_id') ?>
-
-    <?php // echo $form->field($model, 'created_time') ?>
-
-    <?php // echo $form->field($model, 'updated_time') ?>
-
-    <div class="form-group">
-        <?php echo Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?php echo Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+    <?php echo ListView::widget([
+        'dataProvider' => $dataProvider,
+        'itemOptions' => ['class' => 'item'],
+        'itemView' => function ($model, $key, $index, $widget) {
+            /* @var $model Admin */
+            return Html::a(Html::encode($model->username), ['view', 'id' => $model->id]);
+        },
+    ]) ?>
 
 </div>

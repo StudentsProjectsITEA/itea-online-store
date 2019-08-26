@@ -2,30 +2,46 @@
 
 namespace backend\controllers;
 
-use Exception;
+use backend\repositories\AdminRepository;
 use frontend\repositories\UserRepository;
-use Ramsey\Uuid\Uuid;
-use Throwable;
-use Yii;
 use frontend\models\User;
 use common\models\UserSearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
+use Throwable;
+use Yii;
 
 /**
  * UserController implements the CRUD actions for User model.
  */
-class UserController extends Controller
+class UserController extends BaseController
 {
-    private $repository;
+    /* @var UserRepository $userRepository */
+    private $userRepository;
+    /* @var UserSearch $userSearch */
+    private $userSearch;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * ParamController constructor.
+     * {@inheritdoc}
+     * @param UserSearch $userSearch
+     * @param UserRepository $userRepository
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        UserSearch $userSearch,
+        UserRepository $userRepository,
+        $config = []
+    )
     {
-        parent::__construct($id, $module, $config);
-        $this->layout = 'main';
-        $this->repository = new UserRepository();
+        $this->userRepository = $userRepository;
+        $this->userSearch = $userSearch;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -49,11 +65,9 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->userSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -67,7 +81,7 @@ class UserController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->repository->findUserById($id),
+            'model' => $this->userRepository->findUserById($id),
         ]);
     }
 
@@ -87,11 +101,6 @@ class UserController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'userId' => Uuid::uuid4()->toString(),
-            'mobile' => 380,
-            'email' => 'email@example.com',
-            'createdTime' => time(),
-            'updatedTime' => time(),
         ]);
     }
 
@@ -104,7 +113,7 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findUserById($id);
+        $model = $this->userRepository->findUserById($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -126,8 +135,22 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->repository->findUserById($id)->delete();
+        $this->userRepository->findUserById($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    /**
+     * Lists all User models.
+     * @return mixed
+     */
+    public function actionSearch()
+    {
+        $dataProvider = $this->userSearch->search(Yii::$app->request->queryParams);
+
+        return $this->render('search', [
+            'searchModel' => $this->userSearch,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }

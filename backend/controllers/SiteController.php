@@ -1,20 +1,38 @@
 <?php
+
 namespace backend\controllers;
 
-use Yii;
-use yii\web\Controller;
+use backend\repositories\AdminRepository;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use backend\models\LoginForm;
+use yii\web\NotFoundHttpException;
+use Yii;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class SiteController extends BaseController
 {
-    public function __construct($id, $module, $config = [])
+    /** @var LoginForm $model */
+    private $adminLogin;
+
+    /**
+     * SiteController constructor.
+     * {@inheritdoc}
+     * @param LoginForm $loginForm
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        LoginForm $adminLogin,
+        $config = []
+    )
     {
-        $this->layout = 'main-layout';
-        parent::__construct($id, $module, $config);
+        $this->adminLogin = $adminLogin;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -23,22 +41,20 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            /*
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'account'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
             ],
-            */
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -56,7 +72,7 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-                'layout' => 'main',
+                'layout' => 'main-layout',
             ],
         ];
     }
@@ -68,6 +84,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect('site/login');
+        }
+
         return $this->render('index');
     }
 
@@ -84,14 +104,13 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($this->adminLogin->load(Yii::$app->request->post()) && $this->adminLogin->login()) {
             return $this->goBack();
         } else {
-            $model->password = '';
+            $this->adminLogin->password = '';
 
             return $this->render('login', [
-                'model' => $model,
+                'model' => $this->adminLogin,
             ]);
         }
     }
@@ -146,5 +165,15 @@ class SiteController extends Controller
     public function actionSimpleTables()
     {
         return $this->render('simple-tables');
+    }
+
+    /**
+     * Displays admin account.
+     *
+     * @return string
+     */
+    public function actionAccount()
+    {
+        return $this->render('account');
     }
 }
