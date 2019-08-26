@@ -34,13 +34,13 @@ use yii\web\View;
         <li class="user-body">
             <div class="row">
                 <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                    <?php echo Html::a('Activity', Url::to(['/admin/view', 'id' => $this->params['identityId'], '#' => 'activity'])) ?>
                 </div>
                 <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
+                    <?php echo Html::a('Timeline', Url::to(['/admin/view', 'id' => $this->params['identityId'], '#' => 'timeline'])) ?>
                 </div>
                 <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                    <?php echo Html::a('Settings', Url::to(['/admin/view', 'id' => $this->params['identityId'], '#' => 'settings'])) ?>
                 </div>
             </div>
             <!-- /.row -->

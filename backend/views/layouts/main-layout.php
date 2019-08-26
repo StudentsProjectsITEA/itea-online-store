@@ -1,9 +1,9 @@
 <?php
 
 /* @var $this View */
-
 /* @var $content string */
 
+use common\widgets\Alert;
 use yii\helpers\Html;
 use backend\assets\AppAsset;
 use yii\web\View;
@@ -55,6 +55,7 @@ AppAsset::register($this);
             <?php endif; ?>
         </section>
 
+        <?php echo Alert::widget() ?>
         <?php echo $content ?>
 
     </div>

@@ -9,10 +9,8 @@ use yii\helpers\Html;
 
 $this->title = $name . ' | Admin Store | ITEA';
 ?>
-<div class="site-error">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+<div class="container">
+    <br>
     <div class="alert alert-danger">
         <?= nl2br(Html::encode($message)) ?>
     </div>

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\SettingsForm;
 use backend\repositories\AdminRepository;
 use Exception;
 use Ramsey\Uuid\Uuid;
@@ -18,15 +19,29 @@ use yii\filters\VerbFilter;
  */
 class AdminController extends BaseController
 {
-    private $repository;
-    private $searchModel;
+    /** @var AdminSearch $adminSearch */
+    private $adminSearch;
+    /** @var SettingsForm $settingsForm */
+    private $settingsForm;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * SiteController constructor.
+     * {@inheritdoc}
+     * @param AdminSearch $adminSearch
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        AdminSearch $adminSearch,
+        SettingsForm $settingsForm,
+        $config = []
+    )
     {
-        $this->layout = 'main';
-        $this->repository = new AdminRepository();
-        $this->searchModel = new AdminSearch();
-        parent::__construct($id, $module, $config);
+        $this->adminSearch = $adminSearch;
+        $this->settingsForm = $settingsForm;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -50,10 +65,10 @@ class AdminController extends BaseController
      */
     public function actionIndex()
     {
-        $dataProvider = $this->searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->adminSearch->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $this->searchModel,
+            'searchModel' => $this->adminSearch,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -66,10 +81,9 @@ class AdminController extends BaseController
      */
     public function actionView($id)
     {
-        $this->layout = 'main-layout';
-
         return $this->render('view', [
-            'model' => $this->repository->findAdminById($id),
+            'model' => $this->adminRepository->findAdminById($id),
+            'settingsForm' => $this->settingsForm,
         ]);
     }
 
@@ -102,17 +116,22 @@ class AdminController extends BaseController
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \yii\base\Exception
      */
     public function actionUpdate($id)
     {
-        $model = $this->repository->findAdminById($id);
+        $model = $this->adminRepository->findAdminById($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($this->settingsForm->load(Yii::$app->request->post()) && $this->settingsForm->changeInformation()) {
+            Yii::$app->session->setFlash('success', 'Your information was successfully changed.');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->render('update', [
+        Yii::$app->session->setFlash('error', 'You make a mistake, please return to the settings menu.');
+
+        return $this->render('view', [
             'model' => $model,
+            'settingsForm' => $this->settingsForm,
         ]);
     }
 
@@ -127,7 +146,7 @@ class AdminController extends BaseController
      */
     public function actionDelete($id)
     {
-        $this->repository->findAdminById($id)->delete();
+        $this->adminRepository->findAdminById($id)->delete();
 
         return $this->redirect(['index']);
     }

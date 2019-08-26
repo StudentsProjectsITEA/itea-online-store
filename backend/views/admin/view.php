@@ -1,12 +1,16 @@
 <?php
 
+use backend\models\Admin;
+use backend\models\SettingsForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\View;
 use yii\web\YiiAsset;
-use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\Admin */
+/* @var $this View */
+/* @var $model Admin */
+/* @var $settingsForm SettingsForm */
 
 $this->title = 'Account';
 $this->params['breadcrumbs'][] = $this->title;
@@ -34,19 +38,7 @@ YiiAsset::register($this);
                         <?php echo Html::encode($model->email) ?>
                     </p>
 
-                    <ul class="list-group list-group-unbordered">
-                        <li class="list-group-item">
-                            <b>Followers</b> <a class="pull-right">1,322</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Following</b> <a class="pull-right">543</a>
-                        </li>
-                        <li class="list-group-item">
-                            <b>Friends</b> <a class="pull-right">13,287</a>
-                        </li>
-                    </ul>
-
-                    <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                    <?php echo Html::a('<b>Update</b>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-block']) ?>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -55,21 +47,31 @@ YiiAsset::register($this);
             <!-- About Me Box -->
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">About Me</h3>
+                    <h3 class="box-title">
+                        <?php echo Html::encode('About Me') ?>
+                    </h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+                    <strong>
+                        <i class="fa fa-book margin-r-5"></i>
+                        <?php echo Html::encode('Activity') ?>
+                    </strong>
 
                     <p class="text-muted">
-                        B.S. in Computer Science from the University of Tennessee at Knoxville
+                        <?php echo 'Account created at: ' . '<br>' . Html::encode(date('d.m.Y H:i:s', $model->created_time)) ?>
                     </p>
 
                     <hr>
 
-                    <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                    <strong>
+                        <i class="fa fa-map-marker margin-r-5"></i>
+                        <?php echo Html::encode('Location') ?>
+                    </strong>
 
-                    <p class="text-muted">Malibu, California</p>
+                    <p class="text-muted">
+                        <?php echo Html::encode('Kyiv, Ukraine') ?>
+                    </p>
 
                     <hr>
 
@@ -82,12 +84,6 @@ YiiAsset::register($this);
                         <span class="label label-warning">PHP</span>
                         <span class="label label-primary">Node.js</span>
                     </p>
-
-                    <hr>
-
-                    <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -335,8 +331,75 @@ YiiAsset::register($this);
                     <!-- /.tab-pane -->
 
                     <div class="tab-pane" id="settings">
-                        <p>
-                            <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
+                        <?php $form = ActiveForm::begin([
+                            'action' => ['update', 'id' => $model->id],
+                            'options' => [
+                                'class' => 'form-horizontal',
+                            ],
+
+                        ]); ?>
+
+                        <?php echo $form
+                            ->field($settingsForm, 'username', [
+                                'template' => "{label}" . '<div class="col-sm-10">' . "\n{input}\n" . '</div>' . "{hint}\n" . '<div class="col-sm-2"></div><div class="col-sm-8">' . "{error}" . '</div>',
+                            ])
+                            ->textInput([
+                                'class' => 'form-control',
+                                'placeholder' => 'Your username...',
+                                'value' => $model->username,
+                            ])->label('Username', [
+                                'class' => 'col-sm-2 control-label',
+                            ]) ?>
+
+                        <?php echo $form
+                            ->field($settingsForm, 'email', [
+                                'template' => "{label}" . '<div class="col-sm-10">' . "\n{input}\n" . '</div>' . "{hint}\n" . '<div class="col-sm-2"></div><div class="col-sm-8">' . "{error}" . '</div>',
+                            ])
+                            ->input('email', [
+                                'class' => 'form-control',
+                                'placeholder' => 'Your email...',
+                                'value' => $model->email,
+                            ])->label('Email', [
+                                'class' => 'col-sm-2 control-label',
+                            ]) ?>
+
+                        <?php echo $form
+                            ->field($settingsForm, 'new_password', [
+                                'template' => "{label}" . '<div class="col-sm-10">' . "\n{input}\n" . '</div>' . "{hint}\n" . '<div class="col-sm-8">' . "{error}" . '</div>',
+                            ])
+                            ->passwordInput([
+                                'class' => 'form-control',
+                                'placeholder' => 'Your new password...',
+                            ])->label('New password', [
+                                'class' => 'col-sm-2 control-label',
+                            ]) ?>
+
+                        <?php echo $form
+                            ->field($settingsForm, 'confirm_new_password', [
+                                'template' => "{label}" . '<div class="col-sm-10">' . "\n{input}\n" . '</div>' . "{hint}\n" . '<div class="col-sm-8">' . "{error}" . '</div>',
+                            ])
+                            ->passwordInput([
+                                'class' => 'form-control',
+                                'placeholder' => 'Confirm new password...',
+                            ])->label('Confirm New password', [
+                                'class' => 'col-sm-2 control-label',
+                            ]) ?>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <?php echo Html::submitButton('Save changes', ['class' => 'btn btn-success']) ?>
+                            </div>
+                        </div>
+
+                        <?php ActiveForm::end(); ?>
+
+                        <br><hr><br>
+
+                        <div class="form-group">
+                            <strong>
+                                <?php echo Html::encode('You can delete your account here:') ?>
+                            </strong>
                             <?php echo Html::a('Delete', ['delete', 'id' => $model->id], [
                                 'class' => 'btn btn-danger',
                                 'data' => [
@@ -344,76 +407,8 @@ YiiAsset::register($this);
                                     'method' => 'post',
                                 ],
                             ]) ?>
-                        </p>
+                        </div>
 
-                        <?php echo DetailView::widget([
-                            'model' => $model,
-                            'attributes' => [
-                                'id',
-                                'username',
-                                'auth_key',
-                                'password_hash',
-                                'password_reset_token',
-                                'email:email',
-                                'verification_token',
-                                'status_id',
-                                'created_time:datetime',
-                                'updated_time:datetime',
-                            ],
-                        ]) ?>
-                        <form class="form-horizontal">
-                            <div class="form-group">
-                                <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputName" placeholder="Name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputName" placeholder="Name">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                                <div class="col-sm-10">
-                                        <textarea class="form-control" id="inputExperience"
-                                                  placeholder="Experience"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> I agree to the <a href="#">terms and
-                                                conditions</a>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <button type="submit" class="btn btn-danger">Submit</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                     <!-- /.tab-pane -->
                 </div>

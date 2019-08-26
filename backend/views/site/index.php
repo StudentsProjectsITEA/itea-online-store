@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'Admin Store | ITEA';
+$this->title = 'Home';
 ?>
 <!-- Main content -->
 <section class="content">

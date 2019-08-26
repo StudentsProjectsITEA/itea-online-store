@@ -1,9 +1,13 @@
 <?php
+
 namespace backend\controllers;
 
-use Yii;
+use backend\repositories\AdminRepository;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use backend\models\LoginForm;
+use yii\web\NotFoundHttpException;
+use Yii;
 
 /**
  * Site controller
@@ -11,13 +15,24 @@ use backend\models\LoginForm;
 class SiteController extends BaseController
 {
     /** @var LoginForm $model */
-    private $model;
+    private $adminLogin;
 
-    public function __construct($id, $module, $config = [])
+    /**
+     * SiteController constructor.
+     * {@inheritdoc}
+     * @param LoginForm $loginForm
+     * @throws NotFoundHttpException
+     */
+    public function __construct(
+        $id,
+        $module,
+        AdminRepository $adminRepository,
+        LoginForm $adminLogin,
+        $config = []
+    )
     {
-        $this->layout = 'main-layout';
-        $this->model = new LoginForm();
-        parent::__construct($id, $module, $config);
+        $this->adminLogin = $adminLogin;
+        parent::__construct($id, $module, $adminRepository, $config);
     }
 
     /**
@@ -26,22 +41,20 @@ class SiteController extends BaseController
     public function behaviors()
     {
         return [
-            /*
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'account'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
             ],
-            */
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
@@ -59,7 +72,7 @@ class SiteController extends BaseController
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-                'layout' => 'main',
+                'layout' => 'main-layout',
             ],
         ];
     }
@@ -72,9 +85,7 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
-            return $this->render('login', [
-                'model' => $this->model,
-            ]);
+            return $this->redirect('site/login');
         }
 
         return $this->render('index');
@@ -93,13 +104,13 @@ class SiteController extends BaseController
             return $this->goHome();
         }
 
-        if ($this->model->load(Yii::$app->request->post()) && $this->model->login()) {
+        if ($this->adminLogin->load(Yii::$app->request->post()) && $this->adminLogin->login()) {
             return $this->goBack();
         } else {
-            $this->model->password = '';
+            $this->adminLogin->password = '';
 
             return $this->render('login', [
-                'model' => $this->model,
+                'model' => $this->adminLogin,
             ]);
         }
     }

@@ -2,6 +2,7 @@
 
 /* @var yii\web\View $this */
 /* @var ActiveForm $form */
+
 /* @var LoginForm $model */
 
 use backend\models\LoginForm;
@@ -17,26 +18,45 @@ $this->title = 'Login | Admin Store | ITEA';
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
-        <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+        <?php $form = ActiveForm::begin(); ?>
         <div class="form-group has-feedback">
-            <?= $form->field($model, 'username', ['inputOptions' => ['class' => 'form-control']])->textInput(['autofocus' => true]) ?>
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <?php echo $form
+                ->field($model, 'username', [
+                    'options' => [
+                        'tag' => false,
+                    ],
+                    'inputOptions' => ['class' => 'form-control'],
+                ])
+                ->textInput(['autofocus' => true]) ?>
+            <span class="fa fa-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-            <?= $form->field($model, 'password', ['inputOptions' => ['class' => 'form-control']])->passwordInput() ?>
-            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <?php echo $form
+                ->field($model, 'password', [
+                    'options' => [
+                        'tag' => false
+                    ],
+                    'inputOptions' => ['class' => 'form-control'],
+                ])
+                ->passwordInput() ?>
+            <span class="fa fa-lock form-control-feedback"></span>
         </div>
         <div class="row">
             <div class="col-xs-8">
                 <div class="checkbox icheck">
                     <label>
-                        <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                        <?php echo $form->field($model, 'rememberMe', [
+                            'options' => [
+                                'tag' => false
+                            ],
+                            'inputOptions' => ['class' => 'form-control'],
+                        ])->checkbox() ?>
                     </label>
                 </div>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
-                <?= Html::submitButton('Sign In', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
+                <?php echo Html::submitButton('Sign In', ['class' => 'btn btn-primary btn-block btn-flat', 'name' => 'login-button']) ?>
             </div>
             <!-- /.col -->
         </div>
