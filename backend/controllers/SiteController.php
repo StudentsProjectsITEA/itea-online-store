@@ -45,11 +45,17 @@ class SiteController extends BaseController
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => [
+                            'login',
+                            'error',
+                            ],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'account'],
+                        'actions' => [
+                            'logout',
+                            'index',
+                            ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -85,7 +91,7 @@ class SiteController extends BaseController
     public function actionIndex()
     {
         if (Yii::$app->user->isGuest) {
-            return $this->redirect('site/login');
+            return $this->redirect('/site/login');
         }
 
         return $this->render('index');
@@ -165,15 +171,5 @@ class SiteController extends BaseController
     public function actionSimpleTables()
     {
         return $this->render('simple-tables');
-    }
-
-    /**
-     * Displays admin account.
-     *
-     * @return string
-     */
-    public function actionAccount()
-    {
-        return $this->render('account');
     }
 }

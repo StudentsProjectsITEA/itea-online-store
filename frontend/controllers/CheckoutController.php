@@ -8,6 +8,8 @@ use frontend\models\CheckoutForm;
 use frontend\models\User;
 use frontend\repositories\UserRepository;
 use yii\db\Exception;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use Yii;
@@ -42,6 +44,34 @@ class CheckoutController extends BaseController
         $this->checkoutForm = $checkoutForm;
         $this->orderDetails = $orderDetails;
         parent::__construct($id, $module, $userRepository, $config);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'index',
+                            'create',
+                        ],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
     }
 
     /**

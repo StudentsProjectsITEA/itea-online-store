@@ -13,6 +13,7 @@ use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\di\NotInstantiableException;
+use yii\filters\AccessControl;
 use yii\web\BadRequestHttpException;
 use yii\filters\VerbFilter;
 use frontend\models\LoginForm;
@@ -80,24 +81,25 @@ class SiteController extends BaseController
     public function behaviors()
     {
         return [
-            /*
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => [
+                            'index',
+                            'login',
+                            'registration',
+                            'reset-password',
+                            'verify-email',
+                            'resend-verification-email',
+                            'contact',
+                            'about',
+                        ],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
                 ],
             ],
-            */
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

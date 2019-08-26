@@ -7,6 +7,7 @@ use common\repositories\OrderRepository;
 use frontend\models\ChangePasswordForm;
 use frontend\repositories\UserRepository;
 use yii\base\Exception;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -53,6 +54,21 @@ class UserController extends BaseController
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => [
+                            'view',
+                            'update',
+                            'change-password',
+                            'logout',
+                        ],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
