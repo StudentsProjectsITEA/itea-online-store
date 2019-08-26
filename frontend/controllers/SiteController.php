@@ -96,7 +96,6 @@ class SiteController extends BaseController
                             'about',
                         ],
                         'allow' => true,
-                        'roles' => ['?'],
                     ],
                 ],
             ],

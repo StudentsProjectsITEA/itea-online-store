@@ -75,7 +75,6 @@ class ProductController extends BaseController
                             'view',
                         ],
                         'allow' => true,
-                        'roles' => ['?'],
                     ],
                 ],
             ],

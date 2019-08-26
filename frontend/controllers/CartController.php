@@ -64,7 +64,6 @@ class CartController extends BaseController
                             'remove',
                         ],
                         'allow' => true,
-                        'roles' => ['?'],
                     ],
                 ],
             ],
