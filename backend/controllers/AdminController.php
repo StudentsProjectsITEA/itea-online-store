@@ -10,22 +10,23 @@ use Yii;
 use backend\models\Admin;
 use backend\models\AdminSearch;
 use yii\db\StaleObjectException;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * AdminController implements the CRUD actions for Admin model.
  */
-class AdminController extends Controller
+class AdminController extends BaseController
 {
     private $repository;
+    private $searchModel;
 
     public function __construct($id, $module, $config = [])
     {
-        parent::__construct($id, $module, $config);
         $this->layout = 'main';
         $this->repository = new AdminRepository();
+        $this->searchModel = new AdminSearch();
+        parent::__construct($id, $module, $config);
     }
 
     /**
@@ -49,11 +50,10 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AdminSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $this->searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel' => $this->searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -66,6 +66,8 @@ class AdminController extends Controller
      */
     public function actionView($id)
     {
+        $this->layout = 'main-layout';
+
         return $this->render('view', [
             'model' => $this->repository->findAdminById($id),
         ]);

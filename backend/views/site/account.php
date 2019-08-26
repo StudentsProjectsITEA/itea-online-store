@@ -1,16 +1,11 @@
 <?php
 
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\web\YiiAsset;
-use yii\widgets\DetailView;
-
 /* @var $this yii\web\View */
-/* @var $model backend\models\Admin */
+
+use yii\helpers\Url;
 
 $this->title = 'Account';
 $this->params['breadcrumbs'][] = $this->title;
-YiiAsset::register($this);
 ?>
 
 <!-- Main content -->
@@ -23,16 +18,12 @@ YiiAsset::register($this);
             <div class="box box-primary">
                 <div class="box-body box-profile">
                     <img class="profile-user-img img-responsive img-circle"
-                         src="<?php echo Url::to('@web/img/user2-160x160.jpg'); ?>"
+                         src="<?php echo Url::to('@web/img/user4-128x128.jpg'); ?>"
                          alt="User profile picture">
 
-                    <h3 class="profile-username text-center">
-                        <?php echo Html::encode($model->username) ?>
-                    </h3>
+                    <h3 class="profile-username text-center">Nina Mcintire</h3>
 
-                    <p class="text-muted text-center">
-                        <?php echo Html::encode($model->email) ?>
-                    </p>
+                    <p class="text-muted text-center">Software Engineer</p>
 
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
@@ -335,32 +326,6 @@ YiiAsset::register($this);
                     <!-- /.tab-pane -->
 
                     <div class="tab-pane" id="settings">
-                        <p>
-                            <?php echo Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                            <?php echo Html::a('Delete', ['delete', 'id' => $model->id], [
-                                'class' => 'btn btn-danger',
-                                'data' => [
-                                    'confirm' => 'Are you sure you want to delete this item?',
-                                    'method' => 'post',
-                                ],
-                            ]) ?>
-                        </p>
-
-                        <?php echo DetailView::widget([
-                            'model' => $model,
-                            'attributes' => [
-                                'id',
-                                'username',
-                                'auth_key',
-                                'password_hash',
-                                'password_reset_token',
-                                'email:email',
-                                'verification_token',
-                                'status_id',
-                                'created_time:datetime',
-                                'updated_time:datetime',
-                            ],
-                        ]) ?>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label for="inputName" class="col-sm-2 control-label">Name</label>
