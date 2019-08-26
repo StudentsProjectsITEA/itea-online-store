@@ -37,8 +37,11 @@ YiiAsset::register($this);
                     <p class="text-muted text-center">
                         <?php echo Html::encode($model->email) ?>
                     </p>
-
-                    <?php echo Html::a('<b>Update</b>', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-block']) ?>
+<!--                    <a href="#settings" data-toggle="tab">Settings</a>-->
+                    <?php echo Html::a('<b>Update</b>', '#settings', [
+                        'class' => 'btn btn-primary btn-block',
+                        'data-toggle' => 'tab',
+                    ]) ?>
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -394,7 +397,9 @@ YiiAsset::register($this);
 
                         <?php ActiveForm::end(); ?>
 
-                        <br><hr><br>
+                        <br>
+                        <hr>
+                        <br>
 
                         <div class="form-group">
                             <strong>
