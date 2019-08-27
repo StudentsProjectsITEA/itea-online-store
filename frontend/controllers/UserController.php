@@ -68,6 +68,9 @@ class UserController extends BaseController
                         'roles' => ['@'],
                     ],
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    Yii::$app->session->setFlash('error', 'You do not have access to this page.');
+                },
             ],
             'verbs' => [
                 'class' => VerbFilter::class,

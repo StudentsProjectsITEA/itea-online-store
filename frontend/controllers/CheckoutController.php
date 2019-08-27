@@ -52,18 +52,6 @@ class CheckoutController extends BaseController
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => [
-                            'index',
-                            'create',
-                        ],
-                        'allow' => true,
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

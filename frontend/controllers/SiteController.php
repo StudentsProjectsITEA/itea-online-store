@@ -83,21 +83,23 @@ class SiteController extends BaseController
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => [
+                    'login',
+                    'registration',
+                    ],
                 'rules' => [
                     [
+                        'allow' => true,
                         'actions' => [
-                            'index',
                             'login',
                             'registration',
-                            'reset-password',
-                            'verify-email',
-                            'resend-verification-email',
-                            'contact',
-                            'about',
                         ],
-                        'allow' => true,
+                        'roles' => ['?'],
                     ],
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    Yii::$app->session->setFlash('error', 'You do not have access to this page.');
+                },
             ],
             'verbs' => [
                 'class' => VerbFilter::class,

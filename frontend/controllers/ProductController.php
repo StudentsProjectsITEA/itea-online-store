@@ -66,18 +66,6 @@ class ProductController extends BaseController
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => [
-                            'index',
-                            'view',
-                        ],
-                        'allow' => true,
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [
