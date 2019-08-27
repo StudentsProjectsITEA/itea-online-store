@@ -41,11 +41,16 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
+            'enablePrettyUrl' => false,
+            'showScriptName' => false,
+            'rules' => require 'backend-urls.php',
+        ],/*
+        'urlManagerFrontEnd' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => '@frontend/web',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
+        ],*/
     ],
     'params' => $params,
 ];

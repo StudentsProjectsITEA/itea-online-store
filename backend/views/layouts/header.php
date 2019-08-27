@@ -10,7 +10,7 @@ use yii\web\View;
 
 <header class="main-header">
     <!-- Logo -->
-    <a href="<?php echo Url::to('/') ?>" class="logo">
+    <a href="<?php echo Url::to('/admin') ?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">
             <b>
@@ -45,6 +45,10 @@ use yii\web\View;
                 <?php echo $this->render('navbar-tasks') ?>
 
                 <?php echo $this->render('navbar-account') ?>
+
+                <li>
+                    <?php echo Html::a('<i class="fa fa-home"></i>', Url::to('/')) ?>
+                </li>
 
             </ul>
         </div>

@@ -47,9 +47,9 @@ class SiteController extends BaseController
                     [
                         'actions' => [
                             'login',
-                            'error',
                             ],
                         'allow' => true,
+                        'roles' => ['?'],
                     ],
                     [
                         'actions' => [
@@ -90,10 +90,6 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect('site/login');
-        }
-
         return $this->render('index');
     }
 
