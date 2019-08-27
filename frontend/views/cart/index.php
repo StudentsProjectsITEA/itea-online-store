@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = 'Cart';
 <h2 class="sub-page__title"><?php echo Html::encode($this->title) ?></h2>
 
 <?php if (!empty($cartItems = $cart->getItems())): ?>
+
     <section class="basket-page container">
         <?php echo $this->render('item', [
             'cartItems' => $cartItems,
@@ -22,9 +23,9 @@ $this->params['breadcrumbs'][] = 'Cart';
             'cart' => $cart,
         ]) ?>
     </section>
+
 <?php else: ?>
-    <div class="container cart center">
-        <h3 class="sub-page__sub-title"><?php echo Html::encode('Cart is empty!') ?></h3>
-        <?php echo Html::img('@web/img/empty_cart.jpg') ?>
-    </div>
+
+    <?php echo $this->render('empty'); ?>
+
 <?php endif; ?>

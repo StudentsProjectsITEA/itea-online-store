@@ -170,11 +170,11 @@ use yii\helpers\Html;
     </ul>
 </div>
 
-<?php echo $this->render('card-payment', [
+<?php /* echo $this->render('card-payment', [
     'model' => $model,
     'form' => $form,
     'user' => $user,
-]) ?>
+]) */ ?>
 
 <?php echo Html::submitButton('Place order', ['class' => 'section-profile-content-btn']) ?>
 
