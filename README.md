@@ -138,61 +138,17 @@ server {
         deny all;
     }
 }
- 
-server {
-    charset utf-8;
-    client_max_body_size 128M;
-
-    listen 80; ## listen for ipv4
-    #listen [::]:80 default_server ipv6only=on; ## listen for ipv6
-
-    server_name admin.online-store.site;
-    root        /home/username/projects/online-store/backend/web/;
-    index       index.php;
-
-    access_log  /home/username/projects/online-store/backend/runtime/logs/backend-access.log;
-    error_log   /home/username/projects/online-store/backend/runtime/logs/backend-error.log;
-
-    location / {
-        # Redirect everything that isn't a real file to index.php
-        try_files $uri $uri/ /index.php$is_args$args;
-    }
-
-    # uncomment to avoid processing of calls to non-existing static files by Yii
-    location ~ \.(js|css|png|jpg|gif|swf|ico|pdf|mov|fla|zip|rar)$ {
-        try_files $uri =404;
-    }
-    error_page 404 /404.html;
-
-    # deny accessing php files for the /assets directory
-    location ~ ^/assets/.*\.php$ {
-        deny all;
-    }
-
-    location ~ \.php$ {
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        #fastcgi_pass 127.0.0.1:9000;
-        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
-        try_files $uri =404;
-    }
-
-    location ~* /\. {
-        deny all;
-    }
-}
 ```
 
 Thereafter your web server domens are:
 ``` 
 http://online-store.site/ - for frontend
-http://admin.online-store.site/ - for backend
+http://online-store.site/admin/ - for backend
 ```
 7. Change the hosts file to point the domain to your server.
 Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 ```
 127.0.0.1   online-store.site
-127.0.0.1   admin.online-store.site
 ```
 8. If the system does not automatically create log files, run the command in terminal to create them:
 ```
