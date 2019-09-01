@@ -4,12 +4,6 @@
     <br>
 </p>
 
-Documentation of Yii 2 Advanced Project Template is at [README.md](https://github.com/yiisoft/yii2-app-advanced/blob/master/docs/guide/README.md).
-
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-advanced.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-advanced)
-
 Requirements to development
 -------------------
 - PHP version 7.3
@@ -130,5 +124,7 @@ For backend:
 ⋅ username: store-admin
 ⋅ password: itea1234
 ```
+
+Contacts: [pro100rost](https://github.com/pro100rost), [for-web-an](https://github.com/for-web-an)
 
 Enjoy :)
