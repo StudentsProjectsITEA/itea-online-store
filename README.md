@@ -152,7 +152,7 @@ Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 ```
 8. If the system does not automatically create log files, run the command in terminal to create them:
 ```
-./makefile
+./makelogfiles
 ```
 9. For development, you can create test data for working with the project:
 ```
