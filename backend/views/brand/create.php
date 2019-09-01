@@ -11,19 +11,32 @@ $this->params['breadcrumbs'][] = ['label' => 'All brands', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<br>
-<div class="container">
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <!-- form start -->
 
-    <?php $form = ActiveForm::begin(); ?>
+                <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                <div class="box-body">
 
-    <?php echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+                    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <div class="form-group">
-        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    <?php echo $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+                </div>
+
+                <div class="box-footer">
+                    <?php echo Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+
+            </div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
+</section>

@@ -11,20 +11,35 @@ $this->params['breadcrumbs'][] = ['label' => 'Photos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="photo-update">
 
-    <?php $form = ActiveForm::begin(); ?>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <!-- form start -->
 
-    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+                <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $form->field($model, 'is_main')->checkbox() ?>
+                <div class="box-body">
 
-    <?php echo $form->field($model, 'product_id')->textInput() ?>
+                    <?php echo $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <div class="form-group">
-        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    <?php echo $form->field($model, 'is_main')->checkbox() ?>
+
+                    <?php echo $form->field($model, 'product_id')->textInput() ?>
+
+                </div>
+
+                <div class="box-footer">
+                    <?php echo Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+
+            </div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
+</section>

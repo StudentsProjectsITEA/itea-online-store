@@ -1,6 +1,7 @@
 <?php
 
 use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\web\View;
@@ -47,11 +48,25 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'aria-describedby' => 'example2_info',
                             ],
                             'columns' => [
+                                ['class' => 'yii\grid\SerialColumn'],
                                 'id:text',
                                 'username',
                                 'email:email',
                                 'created_time:datetime',
                                 'updated_time:datetime',
+                                [
+                                    'class' => ActionColumn::class,
+                                    'header' => 'Action',
+                                    'template' => '{view} {update}',
+                                    'buttons' => [
+                                        'view' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-eye"></span>', ['/admin/view', 'id' => $this->params['identityId']]);
+                                        },
+                                        'update' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-pencil"></span>', ['/admin/view', 'id' => $this->params['identityId'], '#' => 'settings']);
+                                        },
+                                    ],
+                                ],
                             ]
                         ]) ?>
                     </div>

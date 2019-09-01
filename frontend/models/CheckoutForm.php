@@ -23,6 +23,12 @@ use yii\base\Model;
  * @property string $country
  * @property string $city
  * @property string $street
+ * @property int $home_number
+ * @property int $cardNumber
+ * @property string $nameOnCard
+ * @property int $expiryMonth
+ * @property int $expiryYear
+ * @property int $cvcCode
  *
  */
 class CheckoutForm extends Model
@@ -36,6 +42,7 @@ class CheckoutForm extends Model
     public $country;
     public $city;
     public $street;
+    public $home_number;
     public $cardNumber;
     public $nameOnCard;
     public $expiryMonth;
@@ -64,8 +71,8 @@ class CheckoutForm extends Model
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'mobile', 'email', 'payment_id', 'shipping_id', 'country', 'city', 'street'], 'required'],
-            [['payment_id', 'shipping_id'], 'integer'],
+            [['first_name', 'last_name', 'mobile', 'email', 'payment_id', 'shipping_id', 'country', 'city', 'street', 'home_number'], 'required'],
+            [['payment_id', 'shipping_id', 'home_number'], 'integer'],
             [['country', 'city', 'street'], 'string', 'max' => 255],
             [['first_name', 'last_name', 'country', 'city', 'street', 'nameOnCard'], 'match', 'pattern' => $this->regularWord['name'], 'message' => $this->message['name']],
 
@@ -109,7 +116,7 @@ class CheckoutForm extends Model
         $order->status_id = $order::STATUS_NEW;
         $order->payment_id = $this->payment_id;
         $order->shipping_id = $this->shipping_id;
-        $order->shipping_address = $this->country . ', ' . $this->city . ', ' . $this->street;
+        $order->shipping_address = $this->country . ', ' . $this->city . ', ' . $this->street . ', ' . $this->home_number;
         $order->created_time = time();
         $order->updated_time = time();
         $order->user_id = Yii::$app->user->id ?? '';

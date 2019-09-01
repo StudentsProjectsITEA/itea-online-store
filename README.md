@@ -13,50 +13,11 @@ Documentation of Yii 2 Advanced Project Template is at [README.md](https://githu
 Requirements to development
 -------------------
 - PHP version 7.3
-- PhpStorm, ValentinaDB
-- Linux
 - Nginx
 - Composer
 - Git
-
-Directory structure
--------------------
-
-```
-common
-    config/              contains shared configurations
-    mail/                contains view files for e-mails
-    models/              contains model classes used in both backend and frontend
-    tests/               contains tests for common classes    
-console
-    config/              contains console configurations
-    controllers/         contains console controllers (commands)
-    migrations/          contains database migrations
-    models/              contains console-specific model classes
-    runtime/             contains files generated during runtime
-backend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains backend configurations
-    controllers/         contains Web controller classes
-    models/              contains backend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for backend application    
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-frontend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains frontend configurations
-    controllers/         contains Web controller classes
-    models/              contains frontend-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for frontend application
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    widgets/             contains frontend widgets
-vendor/                  contains dependent 3rd-party packages
-environments/            contains environment-based overrides
-```
-
+- Software: PhpStorm, ValentinaDB
+- OS: Linux, Mac OS
 
 Preparing project
 -------------------
@@ -159,4 +120,15 @@ Path to hosts file in Linux: `/etc/hosts` and add the following lines:
 php yii test-data/add - to add test data
 php yii test-data/delete - to delete test data
 ```
-To login into the project, you need to first sign up, with any of your email address, username and password. Then, you can login into the application with same email address and password at any time. Enjoy :)
+After insertion test data, you can sign in to app using the following data:
+```
+For frontend:
+⋅ username: store-user
+⋅ password: itea1234
+
+For backend:
+⋅ username: store-admin
+⋅ password: itea1234
+```
+
+Enjoy :)

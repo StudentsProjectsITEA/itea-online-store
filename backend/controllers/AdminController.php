@@ -58,6 +58,7 @@ class AdminController extends BaseController
                             'index',
                             'view',
                             'create',
+                            'update',
                             'search',
                             ],
                         'allow' => true,

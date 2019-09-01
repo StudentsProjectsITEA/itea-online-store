@@ -1,31 +1,27 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use backend\models\Admin;
+use yii\web\View;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\Admin */
+/* @var $this View */
+/* @var $model Admin */
 
 $this->title = 'Create Admin';
 $this->params['breadcrumbs'][] = ['label' => 'All admins', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<br>
-<div class="container">
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            <!-- general form elements -->
+            <div class="box box-primary">
 
-    <?php $form = ActiveForm::begin(); ?>
+                <?php echo $this->render('create-form', ['model' => $model]); ?>
 
-    <?php echo $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
-
-    <?php echo $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
-
-    <?php echo $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
-
-    <div class="form-group">
-        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            </div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
+</section>

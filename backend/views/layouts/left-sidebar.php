@@ -208,37 +208,6 @@ use yii\widgets\Menu;
                         ],
                     ],
                 ],
-                ['label' => 'Forms',
-                    'options' => ['class' => 'treeview'],
-                    'template' => '<a href="#"><i class="fa fa-edit"></i><span>{label}</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>',
-                    'items' => [
-                        [
-                            'label' => 'General Elements',
-                            'url' => ['/site/general-forms'],
-                            'template' => '<a href="' . "{url}" . '"><i class="fa fa-circle-o"></i>{label}</a>',
-                        ],
-                        [
-                            'label' => 'Advanced Elements',
-                            'url' => ['/site/advanced-forms'],
-                            'template' => '<a href="' . "{url}" . '"><i class="fa fa-circle-o"></i>{label}</a>',
-                        ],
-                    ],
-                ],
-                ['label' => 'Tables',
-                    'options' => ['class' => 'treeview'],
-                    'template' => '<a href="#"><i class="fa fa-table"></i><span>{label}</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>',
-                    'items' => [
-                        [
-                            'label' => 'Simple tables',
-                            'url' => ['site/simple-tables'],
-                            'template' => '<a href="' . "{url}" . '"><i class="fa fa-circle-o"></i>{label}</a>',
-                        ],
-                    ],
-                ],
-                ['label' => 'Simple Page',
-                    'url' => ['site/blank'],
-                    'template' => '<a href="' . "{url}" . '"><i class="fa fa-paste"></i><span>{label}</span></a>',
-                ],
             ],
             'options' => [
                 'class' => 'sidebar-menu',

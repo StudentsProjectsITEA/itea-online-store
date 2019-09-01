@@ -33,7 +33,7 @@ AppAsset::register($this);
 
     <?php echo $this->render('header') ?>
 
-    <?php echo $this->render('right-sidebar') ?>
+    <?php echo $this->render('left-sidebar') ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="overflow-x: auto;">
@@ -47,7 +47,7 @@ AppAsset::register($this);
                     'links' => $this->params['breadcrumbs'],
                     'tag' => 'ol',
                     'homeLink' => [
-                        'url' => '/',
+                        'url' => '/admin',
                         'label' => '<i class="fa fa-dashboard"></i> Home',
                         'encode' => false,
                     ],

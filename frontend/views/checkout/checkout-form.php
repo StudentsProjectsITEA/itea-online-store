@@ -98,6 +98,17 @@ use yii\helpers\Html;
             'class' => 'checkout-delivery-content-label',
         ]) ?>
 
+    <?php echo $form
+        ->field($model, 'home_number')
+        ->textInput([
+            'class' => 'checkout-delivery-content-input',
+            'placeholder' => 'Your home number...',
+            'value' => $model->home_number,
+        ])
+        ->label('Home number', [
+            'class' => 'checkout-delivery-content-label',
+        ]) ?>
+
 </div>
 
 <div class="checkout-delivery-method">
@@ -113,13 +124,13 @@ use yii\helpers\Html;
             ])
             ->radioList(
                 [
-                    $orderDetails::SHIPPING_PICKUP => 'pickup',
-                    $orderDetails::SHIPPING_COURIER => 'courier',
-                    $orderDetails::SHIPPING_POST_OFFICE => 'post-office'
+                    OrderDetails::SHIPPING_PICKUP => 'pickup',
+                    OrderDetails::SHIPPING_COURIER => 'courier',
+                    OrderDetails::SHIPPING_POST_OFFICE => 'post-office'
                 ],
                 [
-                    'item' => function ($index, $label, $name, $checked, $value) {
-                        $orderDetails = Yii::$container->get(OrderDetails::class);
+                    'item' => function ($index, $label, $name, $checked, $value) use ($orderDetails) {
+
                         $item = '<li>';
                         $item .= '<input id="' . $label . '" class="delivery-input" type="radio" name="' . $name . '" value="' . $value . '">';
                         $item .= '<label class="delivery-link" title="' . $orderDetails->shippingTitle[$label] . '" for="' . $label . '">';
@@ -148,18 +159,18 @@ use yii\helpers\Html;
             ])
             ->radioList(
                 [
-                    $orderDetails::PAYMENT_BANK_TRANSFER => 'bank-transfer',
-                    $orderDetails::PAYMENT_CASH_RECEIPT => 'cash-receipt',
-                    $orderDetails::PAYMENT_CARD_ONLINE => 'card'
+                    OrderDetails::PAYMENT_BANK_TRANSFER => 'bank-transfer',
+                    OrderDetails::PAYMENT_CASH_RECEIPT => 'cash-receipt',
+                    OrderDetails::PAYMENT_CARD_ONLINE => 'card'
                 ],
                 [
-                    'item' => function ($index, $label, $name, $checked, $value) {
-                        $orderDetails = Yii::$container->get(OrderDetails::class);
+                    'item' => function ($index, $label, $name, $checked, $value) use ($orderDetails) {
+
                         $item = '<li>';
                         $item .= '<input id="' . $label . '" class="delivery-input" type="radio" name="' . $name . '" value="' . $value . '">';
-                        $item .= '<label class="delivery-link" title="' . $orderDetails->paymentTitle[$label] . '" for="' . $label . '">';
+                        $item .= '<label class="delivery-link" title="' . ($orderDetails->paymentTitle[$label] ?? '') . '" for="' . $label . '">';
                         $item .= '<div class="delivery-link-block">';
-                        $item .= '<p>' . $orderDetails->paymentDescription[$label] . '</p>';
+                        $item .= '<p>' . ($orderDetails->paymentDescription[$label] ?? '') . '</p>';
                         $item .= '</div></label></li>';
 
                         return $item;

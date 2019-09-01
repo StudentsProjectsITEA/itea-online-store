@@ -1,5 +1,6 @@
 <?php
 
+use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -48,6 +49,19 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'id:text',
                                 'name:text',
                                 'description:ntext',
+                                [
+                                    'class' => ActionColumn::class,
+                                    'header' => 'Action',
+                                    'template' => '{view} {update}',
+                                    'buttons' => [
+                                        'view' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-eye"></span>', $url);
+                                        },
+                                        'update' => function ($url, $model, $key) {
+                                            return Html::a('<span class="fa fa-pencil"></span>', $url);
+                                        },
+                                    ],
+                                ],
                             ]
                         ]) ?>
                     </div>

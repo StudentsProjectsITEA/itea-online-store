@@ -11,25 +11,38 @@ $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<br>
-<div class="container">
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <!-- form start -->
 
-    <?php $form = ActiveForm::begin(); ?>
+                <?php $form = ActiveForm::begin(); ?>
 
-    <?php echo $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+                <div class="box-body">
 
-    <?php echo $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
+                    <?php echo $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?php echo $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+                    <?php echo $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
 
-    <?php echo $form->field($model, 'mobile')->textInput() ?>
+                    <?php echo $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
 
-    <?php echo $form->field($model, 'email')->textInput() ?>
+                    <?php echo $form->field($model, 'mobile')->textInput() ?>
 
-    <div class="form-group">
-        <?php echo Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    <?php echo $form->field($model, 'email')->textInput() ?>
+
+                </div>
+
+                <div class="box-footer">
+                    <?php echo Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+
+            </div>
+        </div>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
+</section>
